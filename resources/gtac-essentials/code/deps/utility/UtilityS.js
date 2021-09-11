@@ -1174,6 +1174,11 @@ util.callClientFunction = (client, functionName, ...args) =>
 	triggerNetworkEvent('callClientFunction', client, functionName, ...args);
 };
 
+util.callClientsFunction = (functionName, ...args) =>
+{
+	triggerNetworkEvent('callClientFunction', null, functionName, ...args);
+};
+
 util.requestClientVariable = (client, variableName, callback) =>
 {
 	requestClientVariables.set(client, callback);
@@ -1204,10 +1209,5 @@ util.setClientsVariable = (variableName, variableValue) =>
 util.setClientsProperty = (variableName, variableValue) =>
 {
 	triggerNetworkEvent('setClientVariable', null, variableName, variableValue);
-};
-
-util.setClientVariableFloat = (client, variableName, variableValue) =>
-{
-	triggerNetworkEvent('setClientVariableFloat', client, variableName, variableValue);
 };
 

@@ -5,6 +5,7 @@ chat.colours = {};
 
 // data
 chat.messages.PM_NOT_SPAWNED		= 'Player {0} is not spawned.';
+chat.messages.PM_NOT_IN_VEHICLE		= 'Player {0} is not in a vehicle.';
 chat.messages.PM_INVALID_OPTION		= 'Invalid option. Available options are {0}. You typed: {1}';
 chat.messages.PM_ELEMENT_NOT_FOUND	= '{0} not found. You typed: {1}';
 chat.messages.PM_MODEL_NOT_FOUND	= '{0} model not found. You typed: {1}';
@@ -48,6 +49,11 @@ chat.invalidElement = function(client, elementTypeId, inputText)
 chat.notSpawned = function(client, targetClient)
 {
 	chat.pm(client, chat.messages.PM_NOT_SPAWNED, targetClient.name);
+};
+
+chat.notInVehicle = function(client, targetClient)
+{
+	chat.pm(client, chat.messages.PM_NOT_IN_VEHICLE, targetClient.name);
 };
 
 chat.invalidModel = function(client, elementTypeId, inputText)

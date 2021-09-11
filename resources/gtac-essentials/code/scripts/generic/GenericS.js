@@ -3,12 +3,14 @@ global.cmds = global.cmds || {};
 
 generic.spawnHealth = null;
 generic.spawnArmour = null;
+generic.snowing = false;
 
 // events
 events.onPlayerJoined.push((event,client) =>
 {
 	util.setClientVariable(client, 'generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariable(client, 'generic.spawnArmour', generic.spawnArmour);
+	util.callClientFunction(target, 'forceSnowing', generic.snowing);
 });
 
 // commands
@@ -509,6 +511,58 @@ cmds.mass = (client, _target, _mass) =>
 	util.setClientProperty(target, 'localPlayer.mass', mass);
 };
 
+cmds.vehiclehealth = (client, _target, _health) =>
+{
+	[_target, _health] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isFloat(v)
+	],
+	[
+		client.name
+	], _target, _health);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(!target.player.vehicle)
+		return chat.notInVehicle(client, target);
+	
+	if(_health === undefined)
+		return util.requestClientProperty(target, 'localPlayer.vehicle.health', (health) => chat.all(target.name + "'s vehicle health is " + health + "."));
+	
+	var health = util.float(_health, null);
+	if(health === null)
+		return chat.float(client, 'Vehicle Health', _health);
+	
+	chat.all(client.name + " set " + target.name + "'s vehicle health to " + health + ".");
+	util.setClientProperty(target, 'localPlayer.vehicle.health', health);
+};
+
+cmds.snow = (client, _state) =>
+{
+	[_state] = util.grabArgs(client,
+	[
+		(v) => util.isBool(v)
+	],
+	[
+	], _state);
+	
+	if(_state === undefined)
+		return chat.all('The weather is currently ' + (generic.snowing ? '' : 'not ') + 'snowing.');
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Snow', _state);
+	
+	chat.all(client.name + " set the snowing status to " + (state ? "on" : "off") + ".");
+	generic.setSnowing(state);
+};
+
 
 
 
@@ -567,4 +621,16 @@ generic.loadSpawnArmour = () =>
 
 generic.loadSpawnHealth();
 generic.loadSpawnArmour();
+
+
+
+
+generic.setSnowing = (state) =>
+{
+	generic.snowing = state;
+	util.callClientsFunction('forceSnowing', state);
+};
+
+
+
 
