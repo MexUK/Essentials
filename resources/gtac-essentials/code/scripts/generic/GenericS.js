@@ -11,6 +11,8 @@ events.onPlayerJoined.push((event,client) =>
 	util.setClientVariable(client, 'generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariable(client, 'generic.spawnArmour', generic.spawnArmour);
 	util.callClientFunction(client, 'forceSnowing', generic.snowing);
+	
+	clientData.set(client, 'proofs', [false, false, false, false, false]);
 });
 
 // commands
@@ -611,6 +613,235 @@ cmds.speed = (client, _target, _speed) =>
 	else
 		util.setClientProperty(target, 'localPlayer.velocity', velocity);
 };
+
+cmds.whospawned = (client) =>
+{
+	var clients = getClients();
+	var spawnedClients = [];
+	for(var i in clients)
+	{
+		if(clients[i].player)
+		{
+			spawnedClients.push(clients[i]);
+		}
+	}
+	if(spawnedClients.length == 0)
+		chat.all('There are no spawned players.');
+	else
+		chat.all('Players spawned: ' + spawnedClients.map(v => v.name).join(', '));
+};
+
+cmds.whoinvehicle = (client) =>
+{
+	var clients = getClients();
+	var occupantClients = [];
+	for(var i in clients)
+	{
+		if(clients[i].player && clients[i].player.vehicle)
+		{
+			occupantClients.push(clients[i]);
+		}
+	}
+	if(occupantClients.length == 0)
+		chat.all('There are no players in a vehicle.');
+	else
+		chat.all('Players in a vehicle: ' + occupantClients.map(v => v.name).join(', '));
+};
+
+cmds.occupants = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(!target.player.vehicle)
+		return chat.notInVehicle(client, target);
+	
+	var occupants = target.player.vehicle.getOccupants();
+	occupants = occupants.map((v,i) => getClientFromPlayerElement(v).name + (i == 0 ? ' (Driver)' : ' (Passenger)'));
+	chat.all(target.name + "'s vehicle occupants (" + occupants.length + " ped" + (occupants.length == 1 ? "" : "s") + "): " + occupants.join(', '));
+};
+
+var proofIDs =
+{
+	BULLET_PROOF:		0,
+	FIRE_PROOF:			1,
+	EXPLOSION_PROOF:	2,
+	COLLISION_PROOF:	3,
+	MELEE_PROOF:		4
+};
+
+cmds.bulletproof = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var proofs = clientData.get(client, 'proofs');
+	if(_state === undefined)
+		return chat.all(target.name + ' is ' + (proofs[proofIDs.BULLET_PROOF] ? '' : 'not ') + 'bullet proof.');
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Bullet Proof', _state);
+	
+	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "bullet proof.");
+	proofs[proofIDs.BULLET_PROOF] = state;
+	clientData.set(client, 'proofs', proofs);
+	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
+};
+
+cmds.fireproof = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var proofs = clientData.get(client, 'proofs');
+	if(_state === undefined)
+		return chat.all(target.name + ' is ' + (proofs[proofIDs.FIRE_PROOF] ? '' : 'not ') + 'fire proof.');
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Fire Proof', _state);
+	
+	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "fire proof.");
+	proofs[proofIDs.FIRE_PROOF] = state;
+	clientData.set(client, 'proofs', proofs);
+	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
+};
+
+cmds.explosionproof = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var proofs = clientData.get(client, 'proofs');
+	if(_state === undefined)
+		return chat.all(target.name + ' is ' + (proofs[proofIDs.EXPLOSION_PROOF] ? '' : 'not ') + 'explosion proof.');
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Explosion Proof', _state);
+	
+	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "explosion proof.");
+	proofs[proofIDs.EXPLOSION_PROOF] = state;
+	clientData.set(client, 'proofs', proofs);
+	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
+};
+
+cmds.collisionproof = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var proofs = clientData.get(client, 'proofs');
+	if(_state === undefined)
+		return chat.all(target.name + ' is ' + (proofs[proofIDs.COLLISION_PROOF] ? '' : 'not ') + 'collision proof.');
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Collision Proof', _state);
+	
+	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "collision proof.");
+	proofs[proofIDs.COLLISION_PROOF] = state;
+	clientData.set(client, 'proofs', proofs);
+	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
+};
+
+cmds.meleeproof = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var proofs = clientData.get(client, 'proofs');
+	if(_state === undefined)
+		return chat.all(target.name + ' is ' + (proofs[proofIDs.MELEE_PROOF] ? '' : 'not ') + 'melee proof.');
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Melee Proof', _state);
+	
+	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "melee proof.");
+	proofs[proofIDs.MELEE_PROOF] = state;
+	clientData.set(client, 'proofs', proofs);
+	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
+};
+
 
 
 

@@ -61,6 +61,14 @@ generic.setLocalPlayerBleeding = function(state)
 	localPlayer.bleeding = state;
 };
 
+generic.setLocalPlayerProofs = function(proofs)
+{
+	if(!localClient.player)
+		return;
+	
+	localPlayer.setProofs(...proofs);
+};
+
 // events
 addEventHandler('onPedSpawn', (event,ped) =>
 {
