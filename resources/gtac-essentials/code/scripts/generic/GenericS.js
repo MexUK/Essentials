@@ -421,7 +421,7 @@ cmds.bleeding = (client, _target, _state) =>
 		return chat.bool(client, 'Bleeding', _state);
 	
 	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "bleeding.");
-	util.callClientFunction(target, 'generic.setLocalPlayerbleeding', state);
+	util.callClientFunction(target, 'generic.setLocalPlayerBleeding', state);
 };
 
 cmds.falloffbike = (client, _target, _state) =>

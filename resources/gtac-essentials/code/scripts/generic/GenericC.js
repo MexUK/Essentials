@@ -53,7 +53,7 @@ generic.setLocalPlayerArmour = function(armour)
 	localPlayer.armour = armour;
 };
 
-generic.setLocalPlayerbleeding = function(state)
+generic.setLocalPlayerBleeding = function(state)
 {
 	if(!localClient.player)
 		return;

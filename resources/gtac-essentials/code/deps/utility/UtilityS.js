@@ -1179,6 +1179,16 @@ util.callClientsFunction = (functionName, ...args) =>
 	triggerNetworkEvent('callClientFunction', null, functionName, ...args);
 };
 
+util.callClientMethod = (client, methodName, ...args) =>
+{
+	triggerNetworkEvent('callClientMethod', client, methodName, ...args);
+};
+
+util.callClientsMethod = (methodName, ...args) =>
+{
+	triggerNetworkEvent('callClientMethod', null, methodName, ...args);
+};
+
 util.requestClientVariable = (client, variableName, callback) =>
 {
 	requestClientVariables.set(client, callback);

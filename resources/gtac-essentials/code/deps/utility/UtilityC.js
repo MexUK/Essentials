@@ -478,6 +478,13 @@ addNetworkHandler('callClientFunction', (functionName, ...args) =>
 		func(...args);
 });
 
+addNetworkHandler('callClientMethod', (methodName, ...args) =>
+{
+	var func = util.getResolvedItem(methodName);
+	if(func)
+		func(...args);
+});
+
 addNetworkHandler('requestClientVariable', (variableName) =>
 {
 	var value = util.getResolvedItem(variableName);
