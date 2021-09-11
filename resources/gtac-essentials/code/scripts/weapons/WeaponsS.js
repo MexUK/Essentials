@@ -45,6 +45,40 @@ cmds.weapon = (client, _target, _weapon, _ammunition) =>
 	util.callClientMethod(target, 'weapons.giveLocalPlayerWeapon', weapon, ammunition);
 };
 
+cmds.weaponall = (client, _weapon, _ammunition) =>
+{
+	var maxWeapon = 36;
+	var maxAmmunition = 65535;
+	var defaultAmmunition = 2500;
+	
+	[_weapon, _ammunition] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, maxWeapon),
+		(v) => util.isInt(v) && util.between(util.int(v), 0, maxAmmunition)
+	],
+	[
+		undefined,
+		defaultAmmunition
+	], _weapon, _ammunition);
+	
+	if(_weapon === undefined)
+		return chat.pm(client, "You didn't specify a weapon.");
+	
+	var weapon = util.int(_weapon, -1);
+	if(weapon < 0 || weapon > maxWeapon)
+		return chat.intBetween(client, 'Weapon', 0, maxWeapon, _weapon);
+	
+	var ammunition = util.int(_ammunition, -1);
+	if(ammunition < 0 || ammunition > maxAmmunition)
+		return chat.intBetween(client, 'Ammunition', 0, maxAmmunition, _ammunition);
+	
+	if(ammunition == defaultAmmunition)
+		chat.all(client.name + " gave weapon " + util.getWeaponName(weapon) + " to all players.");
+	else
+		chat.all(client.name + " gave weapon " + util.getWeaponName(weapon) + " with " + ammunition + " ammunition to all players.");
+	util.callClientsMethod('weapons.giveLocalPlayerWeapon', weapon, ammunition);
+};
+
 cmds.clearweapons = (client, _target) =>
 {
 	[_target] = util.grabArgs(client,
