@@ -4,7 +4,7 @@
 
 <server>
 	<!-- General Information -->
-	<servername>GTAC VC Essentials</servername>
+	<servername>GTAC Essentials</servername>
 	<game>gta:vc</game>
 	<gamemode>Essentials</gamemode>
 	<serverbrowser>false</serverbrowser>
