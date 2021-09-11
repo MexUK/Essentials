@@ -1,0 +1,5 @@
+<data>
+	<alias command="pos" alias="position" />
+	<alias command="car" alias="vehicle" />
+	<alias command="car" alias="veh" />
+</data>

@@ -1,0 +1,78 @@
+<!--
+	Please see https://wiki.gtaconnected.com/ServerConfiguration for a list of options and information
+-->
+
+<server>
+	<!-- General Information -->
+	<servername>GTAC VC Essentials</servername>
+	<game>gta:vc</game>
+	<gamemode>Essentials</gamemode>
+	<serverbrowser>false</serverbrowser>
+	<maxplayers>100</maxplayers>
+	<password></password>
+	<minclientversion>1.2.25</minclientversion>
+	<duplicatenames>false</duplicatenames>
+
+	<!-- Networking -->
+	<port>22000</port>
+	<httpport>22000</httpport>
+	<httpserver>true</httpserver>
+	<syncinterval>100</syncinterval>
+	<processinterval>100</processinterval>
+	<syncmethod>replay</syncmethod>
+	<compresspackets>false</compresspackets>
+	<packetcompressionlevel>default</packetcompressionlevel>
+	<synclocalentities>false</synclocalentities>
+
+	<!-- Element Streaming -->
+	<streamindistance>200</streamindistance>
+	<streamoutdistance>250</streamoutdistance>
+	<pickupstreamindistance>30</pickupstreamindistance>
+	<pickupstreamoutdistance>50</pickupstreamoutdistance>
+
+	<!-- Logging -->
+	<logpath>logs</logpath>
+	<logtimestamp>[%d/%m/%Y - %X]</logtimestamp>
+
+	<!-- Modules -->
+	<!-- https://wiki.gtaconnected.com/Modules -->
+	<modules>
+	</modules>
+
+	<!-- Global CVars -->
+	<!-- https://wiki.gtaconnected.com/CVars -->
+	<cvar name="nametags" value="0" />
+	<cvar name="gunshops" value="0" />
+	<cvar name="uniquestuntjumps" value="0" />
+	<cvar name="stuntjumps" value="0" />
+	<cvar name="stauntontoiletcamera" value="0" />
+	<cvar name="gates" value="0" />
+	<cvar name="trains" value="0" />
+	<cvar name="planes" value="0" />
+	<cvar name="maximumwantedlevel" value="0" />
+	<cvar name="defaultparkedcars" value="0" />
+	<cvar name="ambulances" value="0" />
+	<cvar name="traffic" value="0" />
+	<cvar name="civilians" value="1" />
+	<cvar name="defaultpickups" value="0" />
+	<cvar name="singleplayer" value="0" />
+	<cvar name="bigmap" value="0" />
+	<cvar name="iv_playerwalking" value="0" />
+    <cvar name="iv_scenariopeds" value="0" />
+    <cvar name="iv_randomcops" value="0" />
+    <cvar name="iv_sptraffic" value="0" />
+    <cvar name="iv_spcopmodels" value="0" />
+    <cvar name="iv_spbulletspread" value="0" />
+    <cvar name="iv_skiplobby" value="0" />
+
+	<!-- Rules -->
+	<!-- https://wiki.gtaconnected.com/ServerRules -->
+	<rule name="Owner" value="(NAME HERE)" />
+	<rule name="Website" value="(WEBSITE HERE)" />
+
+	<!-- Resources -->
+	<!-- https://wiki.gtaconnected.com/Resources -->
+	<resources>
+		<resource src="gtac-essentials" />
+	</resources>
+</server>

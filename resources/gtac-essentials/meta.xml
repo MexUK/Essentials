@@ -1,0 +1,51 @@
+<meta>
+	<info author="Mex" description="" />
+	
+	
+	
+	
+	<!-- before any dependency or script -->
+	
+	<script src="code/before-load-and-after-load/BeforeS.js" type="server" language="javascript" />
+	
+	
+	
+	
+	
+	<!-- dependencies -->
+	
+	<script src="code/deps/utility/UtilityS.js" type="server" language="javascript" />
+	<script src="code/deps/utility/UtilityC.js" type="client" language="javascript" />
+	
+	<script src="code/deps/client-data/ClientDataS.js" type="server" language="javascript" />
+	
+	<script src="code/deps/chat/ChatS.js" type="server" language="javascript" />
+	<script src="code/deps/chat/ChatC.js" type="client" language="javascript" />
+	
+	<script src="code/deps/xml/XMLS.js" type="server" language="javascript" />
+	
+	
+	
+	
+	<!-- scripts -->
+	
+	<script src="code/scripts/admin/AdminS.js" type="server" language="javascript" />
+	
+	<script src="code/scripts/generic/GenericS.js" type="server" language="javascript" />
+	<script src="code/scripts/generic/GenericC.js" type="client" language="javascript" />
+	
+	<script src="code/scripts/spawn-and-respawn/SpawnAndRespawnS.js" type="server" language="javascript" />
+	
+	<script src="code/scripts/command-aliases/CommandAliasesS.js" type="server" language="javascript" />
+	
+	<script src="code/scripts/key-binds/KeyBindsS.js" type="server" language="javascript" />
+	
+	<script src="code/scripts/temp-vehicles/TempVehiclesS.js" type="server" language="javascript" />
+	
+	
+	
+	
+	<!-- after all scripts -->
+	
+	<script src="code/before-load-and-after-load/AfterS.js" type="server" language="javascript" />
+</meta>
