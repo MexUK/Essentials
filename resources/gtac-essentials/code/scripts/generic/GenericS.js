@@ -114,12 +114,12 @@ cmds.vehicleinfo = (client, _target) =>
 		chat.all(target.name + " isn't in a vehicle.");
 };
 
-cmds.playermodel = (client, _target, _newSkin) =>
+cmds.playermodel = (client, _target, _newModel) =>
 {
-	var defaultNewSkin = 168;
+	var defaultNewModel = 168;
 	var maxSkin = 250;
 	
-	[_target, _newSkin] = util.grabArgs(client,
+	[_target, _newModel] = util.grabArgs(client,
 	[
 		(v) => util.isClient(v),
 		(v) => util.isInt(v)// && util.isSkin(util.int(v), 0, maxSkin)
@@ -127,7 +127,7 @@ cmds.playermodel = (client, _target, _newSkin) =>
 	[
 		client.name,
 		undefined
-	], _target, _newSkin);
+	], _target, _newModel);
 	
 	var target = util.findClient(_target, client);
 	if(!target)
@@ -136,15 +136,51 @@ cmds.playermodel = (client, _target, _newSkin) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
-	if(_newSkin === undefined)
+	if(_newModel === undefined)
 		return chat.all(target.name + "'s player model ID: " + target.player.modelIndex);
 	
-	var newSkin = util.int(_newSkin, defaultNewSkin);
-	if(newSkin < 0 || newSkin > maxSkin)
-		return chat.intBetween(client, 'player Model ID', 0, maxSkin, _newSkin);
+	var newModel = util.int(_newModel, defaultNewModel);
+	if(newModel < 0 || newModel > maxSkin)
+		return chat.intBetween(client, 'player Model ID', 0, maxSkin, _newModel);
 	
-	chat.all(target.name + " changed "+util.their(client, target)+" player model ID to " + newSkin);
-	target.player.modelIndex = newSkin;
+	chat.all(target.name + " changed "+util.their(client, target)+" player model ID to " + newModel);
+	target.player.modelIndex = newModel;
+};
+
+cmds.vehiclemodel = (client, _target, _newModel) =>
+{
+	var defaultNewModel = 168;
+	var maxSkin = 250;
+	
+	[_target, _newModel] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isInt(v)// && util.isSkin(util.int(v), 0, maxSkin)
+	],
+	[
+		client.name,
+		undefined
+	], _target, _newModel);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(!target.player.vehicle)
+		return chat.notInVehicle(client, target);
+	
+	if(_newModel === undefined)
+		return chat.all(target.name + "'s vehicle model ID: " + target.player.vehicle.modelIndex);
+	
+	var newModel = util.int(_newModel, defaultNewModel);
+	if(newModel < 0 || newModel > maxSkin)
+		return chat.intBetween(client, 'Vehicle Model ID', 0, maxSkin, _newModel);
+	
+	chat.all(target.name + " changed "+util.their(client, target)+" vehicle model ID to " + newModel);
+	target.player.vehicle.modelIndex = newModel;
 };
 
 cmds['goto'] = (client, _target, _radius) =>
