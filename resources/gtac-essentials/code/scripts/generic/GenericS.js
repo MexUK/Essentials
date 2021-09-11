@@ -10,7 +10,7 @@ events.onPlayerJoined.push((event,client) =>
 {
 	util.setClientVariable(client, 'generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariable(client, 'generic.spawnArmour', generic.spawnArmour);
-	util.callClientFunction(target, 'forceSnowing', generic.snowing);
+	util.callClientFunction(client, 'forceSnowing', generic.snowing);
 });
 
 // commands
@@ -561,6 +561,41 @@ cmds.snow = (client, _state) =>
 	
 	chat.all(client.name + " set the snowing status to " + (state ? "on" : "off") + ".");
 	generic.setSnowing(state);
+};
+
+cmds.speed = (client, _target, _speed) =>
+{
+	[_target, _speed] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isFloat(v)
+	],
+	[
+		client.name
+	], _target, _speed);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_speed === undefined)
+		return util.requestClientProperty(target, target.player.vehicle ? 'localPlayer.vehicle.velocity.squaredLength' : 'localPlayer.velocity.squaredLength', (speed) => chat.all(target.name + "'s speed is " + speed + "."));
+	
+	var speed = util.float(_speed, null);
+	if(speed === null)
+		return chat.float(client, 'Speed', _speed);
+	
+	chat.all(client.name + " set " + target.name + "'s speed to " + speed + ".");
+	var velocity = target.player.vehicle ? target.player.vehicle.velocity : target.player.velocity;
+	var heading = target.player.vehicle ? target.player.vehicle.heading : target.player.heading;
+	velocity = velocity.addPolar(speed, heading + (Math.PI / 2.0));
+	if(target.player.vehicle)
+		util.setClientProperty(target, 'localPlayer.vehicle.velocity', velocity);
+	else
+		util.setClientProperty(target, 'localPlayer.velocity', velocity);
 };
 
 
