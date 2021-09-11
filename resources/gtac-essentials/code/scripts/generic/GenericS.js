@@ -451,6 +451,64 @@ cmds.falloffbike = (client, _target, _state) =>
 	util.setClientProperty(target, 'localPlayer.canBeKnockedOffBike', state);
 };
 
+cmds.crouch = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_state === undefined)
+		return util.requestClientProperty(target, 'localPlayer.crouched', (state) => chat.all(target.name + "'s crouch status is " + (state ? "crouched" : "not crouched") + "."));
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Crouch Status', _state);
+	
+	chat.all(client.name + " set " + target.name + "'s crouch status to " + (state ? "crouched" : "not crouched") + ".");
+	util.setClientProperty(target, 'localPlayer.crouching', state);
+};
+
+cmds.mass = (client, _target, _mass) =>
+{
+	[_target, _mass] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isFloat(v)
+	],
+	[
+		client.name
+	], _target, _mass);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_mass === undefined)
+		return util.requestClientProperty(target, 'localPlayer.mass', (mass) => chat.all(target.name + "'s mass is " + mass + "."));
+	
+	var mass = util.float(_mass, null);
+	if(mass === null)
+		return chat.float(client, 'Mass', _mass);
+	
+	chat.all(client.name + " set " + target.name + "'s mass to " + mass + ".");
+	util.setClientProperty(target, 'localPlayer.mass', mass);
+};
+
 
 
 
