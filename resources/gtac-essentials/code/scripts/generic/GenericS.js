@@ -412,7 +412,7 @@ cmds.bleeding = (client, _target, _state) =>
 		return chat.notSpawned(client, target);
 	
 	if(_state === undefined)
-		return chat.all(target.name + " is " + (client.player.bleeding ? "" : "not ") + "bleeding.");
+		return util.requestClientProperty(target, 'localPlayer.bleeding', (state) => chat.all(target.name + " is " + (state ? "" : "not ") + "bleeding."));
 	
 	var state = util.bool(_state, null);
 	if(state === null)
@@ -420,6 +420,35 @@ cmds.bleeding = (client, _target, _state) =>
 	
 	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "bleeding.");
 	util.callClientFunction(target, 'generic.setLocalPlayerbleeding', state);
+};
+
+cmds.falloffbike = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_state === undefined)
+		return util.requestClientProperty(target, 'localPlayer.canBeKnockedOffBike', (state) => chat.all(target.name + " " + (state ? "can" : "cannot") + " be knocked off a bike."));
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Fall Off Bike', _state);
+	
+	chat.all(client.name + " set " + target.name + "'s fall off bike status to " + (state ? "on" : "off ") + ".");
+	util.setClientProperty(target, 'localPlayer.canBeKnockedOffBike', state);
 };
 
 

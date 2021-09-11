@@ -484,6 +484,12 @@ addNetworkHandler('requestClientVariable', (variableName) =>
 	triggerNetworkEvent('requestClientVariable', value);
 });
 
+addNetworkHandler('requestClientProperty', (variableName) =>
+{
+	var value = util.getResolvedItem(variableName);
+	triggerNetworkEvent('requestClientProperty', value);
+});
+
 addNetworkHandler('setClientVariable', (variableName, variableValue) =>
 {
 	var parts = variableName.split('.');
