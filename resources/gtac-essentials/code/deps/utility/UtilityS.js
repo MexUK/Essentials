@@ -4,6 +4,20 @@ util.timers = {};
 util.messages = {};
 
 // data
+util.boolOptionsLower = new Map();
+util.boolOptionsLower.set('true', true);
+util.boolOptionsLower.set('false', false);
+util.boolOptionsLower.set('t', true);
+util.boolOptionsLower.set('f', false);
+util.boolOptionsLower.set('on', true);
+util.boolOptionsLower.set('off', false);
+util.boolOptionsLower.set('1', true);
+util.boolOptionsLower.set('0', false);
+util.boolOptionsLower.set('en', true);
+util.boolOptionsLower.set('dis', false);
+util.boolOptionsLower.set('enabled', true);
+util.boolOptionsLower.set('disabled', false);
+
 util.areas = [
 	['Downtown', 0, -1613.03, 413.128, 0.0, -213.73, 1677.32, 300.0, 1],
 	['Vice Point', 0, 163.656, -351.153, 0.0, 1246.03, 1398.85, 300.0, 1],
@@ -974,6 +988,11 @@ util.float = (inputText, defaultValue) =>
 	return inputText !== undefined && !isNaN(parseFloat(inputText)) ? parseFloat(inputText) : defaultValue;
 };
 
+util.bool = (inputText, defaultValue) =>
+{
+	return inputText !== undefined && util.boolOptionsLower.has(inputText.toLowerCase()) ? util.boolOptionsLower.get(inputText) : defaultValue;
+};
+
 util.isInt = (inputText) =>
 {
 	return inputText !== undefined && !isNaN(parseInt(inputText));
@@ -982,6 +1001,11 @@ util.isInt = (inputText) =>
 util.isFloat = (inputText) =>
 {
 	return inputText !== undefined && !isNaN(parseFloat(inputText));
+};
+
+util.isBool = (inputText) =>
+{
+	return inputText !== undefined && util.boolOptionsLower.has(inputText.toLowerCase());
 };
 
 util.between = (value, min, max) =>

@@ -13,6 +13,7 @@ chat.messages.PM_INT_BETWEEN		= 'Integer for {0} should be between {1} and {2}. 
 chat.messages.PM_FLOAT_BETWEEN		= 'Number for {0} should be between {1} and {2}. You typed: {3}';
 chat.messages.PM_INT				= '{0} should be an integer. You typed: {1}';
 chat.messages.PM_FLOAT				= '{0} should be a number. You typed: {1}';
+chat.messages.PM_BOOL				= '{0} should be a boolean (e.g. on, off, 1, 0, etc.). You typed: {1}';
 
 chat.colours.all = toColour(255, 0, 20);
 chat.colours.pm = toColour(255, 128, 20);
@@ -77,5 +78,10 @@ chat.int = function(client, intName, inputText)
 chat.float = function(client, floatName, inputText)
 {
 	chat.pm(client, chat.messages.PM_FLOAT, floatName, inputText);
+};
+
+chat.bool = function(client, boolName, inputText)
+{
+	chat.pm(client, chat.messages.PM_BOOL, boolName, inputText);
 };
 

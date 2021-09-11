@@ -53,6 +53,14 @@ generic.setLocalPlayerArmour = function(armour)
 	localPlayer.armour = armour;
 };
 
+generic.setLocalPlayerbleeding = function(state)
+{
+	if(!localClient.player)
+		return;
+	
+	localPlayer.bleeding = state;
+};
+
 // events
 addEventHandler('onPedSpawn', (event,ped) =>
 {

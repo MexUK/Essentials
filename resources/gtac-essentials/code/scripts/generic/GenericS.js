@@ -393,7 +393,34 @@ cmds.spawnarmour = (client, _armour) =>
 	generic.setSpawnArmour(armour);
 };
 
-
+cmds.bleeding = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_state === undefined)
+		return chat.all(target.name + " is " + (client.player.bleeding ? "" : "not ") + "bleeding.");
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Bleeding', _state);
+	
+	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "bleeding.");
+	util.callClientFunction(target, 'generic.setLocalPlayerbleeding', state);
+};
 
 
 
