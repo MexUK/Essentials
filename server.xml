@@ -58,12 +58,12 @@
 	<cvar name="singleplayer" value="0" />
 	<cvar name="bigmap" value="0" />
 	<cvar name="iv_playerwalking" value="0" />
-    <cvar name="iv_scenariopeds" value="0" />
-    <cvar name="iv_randomcops" value="0" />
-    <cvar name="iv_sptraffic" value="0" />
-    <cvar name="iv_spcopmodels" value="0" />
-    <cvar name="iv_spbulletspread" value="0" />
-    <cvar name="iv_skiplobby" value="0" />
+	<cvar name="iv_scenariopeds" value="0" />
+	<cvar name="iv_randomcops" value="0" />
+	<cvar name="iv_sptraffic" value="0" />
+	<cvar name="iv_spcopmodels" value="0" />
+	<cvar name="iv_spbulletspread" value="0" />
+	<cvar name="iv_skiplobby" value="0" />
 
 	<!-- Rules -->
 	<!-- https://wiki.gtaconnected.com/ServerRules -->
