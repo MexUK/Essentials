@@ -14,6 +14,20 @@ events.onPlayerJoined.push((event,client) =>
 });
 
 // commands
+cmds.commands = (client) =>
+{
+	var cmds2 = [];
+	for(var cmd in cmds)
+		cmds2.push(cmd);
+	
+	cmds2.sort();
+	
+	var cmdCount = cmds2.length;
+	cmds2 = '/' + cmds2.join(' /');
+	
+	chat.all('Commands (' + cmdCount + '): ' + cmds2);
+};
+
 cmds.pos = (client, _target, _dp) =>
 {
 	var defaultDp = 5;
