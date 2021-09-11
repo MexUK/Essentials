@@ -497,6 +497,13 @@ addNetworkHandler('requestClientProperty', (variableName) =>
 	triggerNetworkEvent('requestClientProperty', value);
 });
 
+addNetworkHandler('requestClientFunctionCall', (functionName, ...args) =>
+{
+	var func = util.getResolvedItem(functionName);
+	if(func)
+		triggerNetworkEvent('requestClientFunctionCall', func(...args));
+});
+
 addNetworkHandler('setClientVariable', (variableName, variableValue) =>
 {
 	var parts = variableName.split('.');

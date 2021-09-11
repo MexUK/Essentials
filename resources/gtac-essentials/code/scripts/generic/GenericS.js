@@ -878,6 +878,71 @@ cmds.meleeproof = (client, _target, _state) =>
 	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
 };
 
+cmds.opengarage = (client, _garage) =>
+{
+	var maxGarage = 50;
+	
+	[_garage] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, maxGarage)
+	],
+	[
+	], _garage);
+	
+	if(_garage === undefined)
+		return chat.pm(client, "You didn't type a garage ID.");
+	
+	var garage = util.int(_garage, -1);
+	if(garage < 0 || garage > maxGarage)
+		return chat.pm(client, 'Invalid garage ID.');
+	
+	chat.all(client.name + ' opened garage ' + garage + '.');
+	util.callClientsFunction('openGarage', garage);
+};
+
+cmds.closegarage = (client, _garage) =>
+{
+	var maxGarage = 50;
+	
+	[_garage] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, maxGarage)
+	],
+	[
+	], _garage);
+	
+	if(_garage === undefined)
+		return chat.pm(client, "You didn't type a garage ID.");
+	
+	var garage = util.int(_garage, -1);
+	if(garage < 0 || garage > maxGarage)
+		return chat.pm(client, 'Invalid garage ID.');
+	
+	chat.all(client.name + ' closed garage ' + garage + '.');
+	util.callClientsFunction('closeGarage', garage);
+};
+
+cmds.isgarageclosed = (client, _garage) =>
+{
+	var maxGarage = 50;
+	
+	[_garage] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, maxGarage)
+	],
+	[
+	], _garage);
+	
+	if(_garage === undefined)
+		return chat.pm(client, "You didn't type a garage ID.");
+	
+	var garage = util.int(_garage, -1);
+	if(garage < 0 || garage > maxGarage)
+		return chat.pm(client, 'Invalid garage ID.');
+	
+	util.requestClientFunctionCall(client, 'isGarageClosed', (closed) => chat.all('Garage ' + garage + ' is ' + (closed ? 'closed' : 'open') + '.'), garage);
+};
+
 
 
 

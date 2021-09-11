@@ -1148,6 +1148,7 @@ util.loadXMLRoot = (path) =>
 // network
 var requestClientVariables = new Map();
 var requestClientProperties = new Map();
+var requestClientFunctionCalls = new Map();
 
 addNetworkHandler('requestClientVariable', (client, result) =>
 {
@@ -1166,6 +1167,16 @@ addNetworkHandler('requestClientProperty', (client, result) =>
 	
 	var callback = requestClientProperties.get(client);
 	requestClientProperties.delete(client);
+	callback(result);
+});
+
+addNetworkHandler('requestClientFunctionCall', (client, result) =>
+{
+	if(!requestClientFunctionCalls.has(client))
+		return;
+	
+	var callback = requestClientFunctionCalls.get(client);
+	requestClientFunctionCalls.delete(client);
 	callback(result);
 });
 
@@ -1199,6 +1210,12 @@ util.requestClientProperty = (client, propertyName, callback) =>
 {
 	requestClientProperties.set(client, callback);
 	triggerNetworkEvent('requestClientProperty', client, propertyName);
+};
+
+util.requestClientFunctionCall = (client, functionName, callback, ...args) =>
+{
+	requestClientFunctionCalls.set(client, callback);
+	triggerNetworkEvent('requestClientFunctionCall', client, functionName, ...args);
 };
 
 util.setClientVariable = (client, variableName, variableValue) =>
