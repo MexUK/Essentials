@@ -15,21 +15,25 @@ util.modelRanges[GAME_GTA_III].objects = { min: 0, max: 8000 };
 util.modelRanges[GAME_GTA_III].vehicles = { min: 90, max: 150 };
 util.modelRanges[GAME_GTA_III].blips = { min: 0, max: 20 };
 util.modelRanges[GAME_GTA_III].peds = { min: 1, max: 126, invalid: [26, 27, 28, 29] };
+util.modelRanges[GAME_GTA_III].weapons = { min: 0, max: 12 };
 
 util.modelRanges[GAME_GTA_VC].objects = { min: 0, max: 8000 };
 util.modelRanges[GAME_GTA_VC].vehicles = { min: 130, max: 236 };
 util.modelRanges[GAME_GTA_VC].blips = { min: 0, max: 39 };
 util.modelRanges[GAME_GTA_VC].peds = { min: 0, max: 195, invalid: [8] };
+util.modelRanges[GAME_GTA_VC].weapons = { min: 0, max: 36 };
 
 util.modelRanges[GAME_GTA_SA].objects = { min: 0, max: 8000 };
 util.modelRanges[GAME_GTA_SA].vehicles = { min: 400, max: 611 };
 util.modelRanges[GAME_GTA_SA].blips = { min: 0, max: 63 };
 util.modelRanges[GAME_GTA_SA].peds = { min: 0, max: 312 };
+util.modelRanges[GAME_GTA_SA].weapons = { min: 0, max: 46 };
 
 util.modelRanges[GAME_GTA_IV].objects = { min: 0, max: 8000 };
 util.modelRanges[GAME_GTA_IV].vehicles = { min: 100, max: 100 };
 util.modelRanges[GAME_GTA_IV].blips = { min: 0, max: 94 };
 util.modelRanges[GAME_GTA_IV].peds = { min: 100, max: 100 };
+util.modelRanges[GAME_GTA_IV].weapons = { min: 0, max: 46 };
 
 util.boolOptionsLower = new Map();
 util.boolOptionsLower.set('true', true);
@@ -190,7 +194,23 @@ util.weaponModelIds = [
 	278, 279, 281, 282, 283, 284, 280, 276, 285, 286,
 	287, 288, 289, 290
 ];
-util.weaponNames = [
+util.weaponNames = [];
+util.weaponNames[GAME_GTA_III] = [
+	'Fist',
+	'Baseball Bat',
+	'Colt 45',
+	'Uzi',
+	'Shotgun',
+	'AK-47',
+	'M16',
+	'Sniper Rifle',
+	'Rocket Launcher',
+	'Flamethrower',
+	'Molotov',
+	'Grenade',
+	'Detonator'
+];
+util.weaponNames[GAME_GTA_VC] = [
 	'Unarmed',
 	'Brass Knuckles',
 	'Screw Driver',
@@ -225,6 +245,104 @@ util.weaponNames = [
 	'Flame Thrower',
 	'M60',
 	'Minigun'
+];
+util.weaponNames[GAME_GTA_SA] = [
+	'Fist',
+	'Brass Knuckles',
+	'Golf Club',
+	'Nightstick',
+	'Knife',
+	'Baseball Bat',
+	'Shovel',
+	'Pool Cue',
+	'Katana',
+	'Chainsaw',
+	'Purple Dildo',
+	'Dildo',
+	'Vibrator',
+	'Silver Vibrator',
+	'Flowers',
+	'Cane',
+	'Grenade',
+	'Tear Gas',
+	'Molotov Cocktail',
+	'9mm',
+	'Silenced 9mm',
+	'Desert Eagle',
+	'Shotgun',
+	'Sawnoff Shotgun',
+	'Combat Shotgun',
+	'Micro SMG/Uzi',
+	'MP5',
+	'AK-47',
+	'M4',
+	'Tec-9',
+	'Country Rifle',
+	'Sniper Rifle',
+	'RPG',
+	'HS Rocket',
+	'Flamethrower',
+	'Minigun',
+	'Satchel Charge',
+	'Detonator',
+	'Spraycan',
+	'Fire Extinguisher',
+	'Camera',
+	'Night Vision Goggles',
+	'Thermal Goggles',
+	'Parachute',
+	'Cellphone',
+	'Jetpack',
+	'Skateboard'
+];
+util.weaponNames[GAME_GTA_IV] = [
+	'UNARMED Fist',
+	'BASEBALLBAT w_bat',
+	'POOLCUE w_cue',
+	'KNIFE w_knife',
+	'GRENADE w_grenade',
+	'MOLOTOV w_molotov',
+	'ROCKET cj_rpg_rocket',
+	'PISTOL w_glock',
+	'UNUSED0',
+	'DEAGLE w_eagle, w_e2_eagle(TBOGT only)',
+	'SHOTGUN w_pumpshot',
+	'BARETTA w_shotgun',
+	'MICRO_UZI w_uzi',
+	'MP5 w_mp5',
+	'AK47 w_ak47',
+	'M4 w_m4',
+	'SNIPERRIFLE w_psg1',
+	'M40A1 w_rifle',
+	'RLAUNCHER rpg',
+	'FTHROWER',
+	'MINIGUN',
+	'Grenade Launcher',
+	'w_e1_sweeper(TLAD)',
+	'',
+	'w_e1_cuehalf(TLAD)',
+	'grenade',
+	'w_sawnoff(TLAD)',
+	'w_cz75(TLAD)',
+	'w_pipebomb(TLAD)',
+	'w_44amag(TBoGT)',
+	'w_e2_aa12_exp(TBoGT)',
+	'w_e2_aa12(TBoGT)',
+	'w_e2_p90(TBoGT)',
+	'w_e2_uzi(TBoGT)',
+	'w_e2_m249(TBoGT)',
+	'w_e2_dsr1(TBoGT)',
+	'w_e2_stickybomb(TBoGT)',
+	'Buzzard Rocket Launcher(TBoGT)',
+	'Buzzard Rockets(TBoGT)',
+	'Buzzard Miniguns(TBoGT)',
+	'APC Cannons(TBoGT)',
+	'Parachute(TBoGT)',
+	'EPISODIC_22',
+	'EPISODIC_23',
+	'EPISODIC_24',
+	'CAMERA',
+	'OBJECT'
 ];
 
 // events
@@ -890,7 +1008,7 @@ util.findVehicleModel = function(text, defaultVehicleModelId)
 	var minVehicleModelId = 130;
 	var maxVehicleModelId = 236;
 	
-	if(!isNaN(textInt) && textInt >= minVehicleModelId && textInt <= maxVehicleModelId)
+	if(!isNaN(textInt) && textInt >= minVehicleModelId && textInt <= maxVehicleModelId && !util._in(util.getInvalidVehicleModels(), textInt))
 	{
 		return textInt;
 	}
@@ -924,16 +1042,24 @@ util.isVehicleModel = (text) =>
 };
 
 util.getMinObjectModel = () => util.modelRanges[server.game].objects.min;
-util.getMaxObjectModel = () => util.modelRanges[server.game].vehicles.max;
+util.getMaxObjectModel = () => util.modelRanges[server.game].objects.max;
+util.getInvalidObjectModels = () => util.modelRanges[server.game].objects.invalid || [];
 
 util.getMinVehicleModel = () => util.modelRanges[server.game].vehicles.min;
 util.getMaxVehicleModel = () => util.modelRanges[server.game].vehicles.max;
+util.getInvalidVehicleModels = () => util.modelRanges[server.game].vehicles.invalid || [];
 
 util.getMinPedModel = () => util.modelRanges[server.game].peds.min;
 util.getMaxPedModel = () => util.modelRanges[server.game].peds.max;
+util.getInvalidPedModels = () => util.modelRanges[server.game].peds.invalid || [];
 
 util.getMinBlipModel = () => util.modelRanges[server.game].blips.min;
 util.getMaxBlipModel = () => util.modelRanges[server.game].blips.max;
+util.getInvalidBlipModels = () => util.modelRanges[server.game].blips.invalid || [];
+
+util.getMinWeapon = () => util.modelRanges[server.game].weapons.min;
+util.getMaxWeapon = () => util.modelRanges[server.game].weapons.max;
+util.getInvalidWeapons = () => util.modelRanges[server.game].weapons.invalid || [];
 
 util.getVehicleModelName = function(vehicleModelId)
 {
@@ -945,19 +1071,19 @@ util.findWeapon = function(text)
 {
 	var textInt = parseInt(text, 10);
 	
-	var minWeaponlId = 0;
-	var maxweaponId = 36;
+	var minWeaponId = util.getMinWeapon();
+	var maxWeaponId = util.getMaxWeapon();
 	
-	if(!isNaN(textInt) && textInt >= minWeaponlId && textInt <= maxweaponId)
+	if(!isNaN(textInt) && textInt >= minWeaponId && textInt <= maxWeaponId && !util._in(util.getInvalidWeapons(), textInt))
 	{
 		return textInt;
 	}
 	
 	var weaponNameLower = text.toLowerCase();
 	
-	for(var weaponId=0; weaponId<util.weaponNames.length; weaponId++)
+	for(var weaponId=0; weaponId<util.weaponNames[server.game].length; weaponId++)
 	{
-		if(util.weaponNames[weaponId].toLowerCase().indexOf(weaponNameLower) != -1)
+		if(util.weaponNames[server.game][weaponId].toLowerCase().indexOf(weaponNameLower) != -1)
 		{
 			return weaponId;
 		}
@@ -973,12 +1099,25 @@ util.isWeapon = (text) =>
 
 util.getWeaponName = function(weaponId)
 {
-	return util.weaponNames[weaponId];
+	return util.weaponNames[server.game][weaponId];
 };
 
 util.getWeaponModelId = function(weaponId)
 {
 	return util.weaponModelIds[weaponId];
+};
+
+
+util._in = (arr, value) =>
+{
+	for(var i in arr)
+	{
+		if(value == arr[i])
+		{
+			return true;
+		}
+	}
+	return false;
 };
 
 
@@ -992,7 +1131,7 @@ util.findObjectModel = function(text)
 	var min = 0;
 	var max = 8000;
 	
-	if(!isNaN(textInt) && textInt >= min && textInt <= max)
+	if(!isNaN(textInt) && textInt >= min && textInt <= max && !util._in(util.getInvalidObjectModels(), textInt))
 	{
 		return textInt;
 	}
@@ -1016,7 +1155,7 @@ util.findPedModel = function(text)
 	var min = 1;
 	var max = 195;
 	
-	if(!isNaN(textInt) && textInt >= min && textInt <= max && textInt != 8)
+	if(!isNaN(textInt) && textInt >= min && textInt <= max && textInt != 8 && !util._in(util.getInvalidPedModels(), textInt))
 	{
 		return textInt;
 	}
@@ -1040,7 +1179,7 @@ util.findBlipIcon = function(text)
 	var min = 0;
 	var max = 39;
 	
-	if(!isNaN(textInt) && textInt >= min && textInt <= max)
+	if(!isNaN(textInt) && textInt >= min && textInt <= max && !util._in(util.getInvalidBlipModels(), textInt))
 	{
 		return textInt;
 	}

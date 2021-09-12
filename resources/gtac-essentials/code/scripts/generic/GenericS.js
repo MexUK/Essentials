@@ -116,13 +116,14 @@ cmds.vehicleinfo = (client, _target) =>
 
 cmds.playermodel = (client, _target, _newModel) =>
 {
-	var defaultNewModel = 168;
-	var maxSkin = 250;
+	var minModel = util.getMinPedModel();
+	var maxModel = util.getMaxPedModel();
+	var defaultNewModel = minModel;
 	
 	[_target, _newModel] = util.grabArgs(client,
 	[
 		(v) => util.isClient(v),
-		(v) => util.isInt(v)// && util.isSkin(util.int(v), 0, maxSkin)
+		(v) => util.isInt(v) && util.between(util.int(v), minModel, maxModel)
 	],
 	[
 		client.name,
@@ -140,8 +141,8 @@ cmds.playermodel = (client, _target, _newModel) =>
 		return chat.all(target.name + "'s player model ID: " + target.player.modelIndex);
 	
 	var newModel = util.int(_newModel, defaultNewModel);
-	if(newModel < 0 || newModel > maxSkin)
-		return chat.intBetween(client, 'player Model ID', 0, maxSkin, _newModel);
+	if(newModel < 0 || newModel > maxModel)
+		return chat.intBetween(client, 'player Model ID', 0, maxModel, _newModel);
 	
 	chat.all(target.name + " changed "+util.their(client, target)+" player model ID to " + newModel);
 	target.player.modelIndex = newModel;
@@ -149,13 +150,14 @@ cmds.playermodel = (client, _target, _newModel) =>
 
 cmds.vehiclemodel = (client, _target, _newModel) =>
 {
-	var defaultNewModel = 168;
-	var maxSkin = 250;
+	var minModel = util.getMinVehicleModel();
+	var maxModel = util.getMaxVehicleModel();
+	var defaultNewModel = minModel;
 	
 	[_target, _newModel] = util.grabArgs(client,
 	[
 		(v) => util.isClient(v),
-		(v) => util.isInt(v)// && util.isSkin(util.int(v), 0, maxSkin)
+		(v) => util.isVehicleModel(v)
 	],
 	[
 		client.name,
@@ -173,13 +175,13 @@ cmds.vehiclemodel = (client, _target, _newModel) =>
 		return chat.notInVehicle(client, target);
 	
 	if(_newModel === undefined)
-		return chat.all(target.name + "'s vehicle model ID: " + target.player.vehicle.modelIndex);
+		return chat.all(target.name + "'s vehicle model: " + util.getVehicleModelName(target.player.vehicle.modelIndex) + ' (' + target.player.vehicle.modelIndex + ')');
 	
-	var newModel = util.int(_newModel, defaultNewModel);
-	if(newModel < 0 || newModel > maxSkin)
-		return chat.intBetween(client, 'Vehicle Model ID', 0, maxSkin, _newModel);
+	var newModel = util.findVehicleModel(_newModel, defaultNewModel);
+	if(newModel < minModel || newModel > maxModel)
+		return chat.intBetween(client, 'Vehicle Model ID', minModel, maxModel, _newModel);
 	
-	chat.all(target.name + " changed "+util.their(client, target)+" vehicle model ID to " + newModel);
+	chat.all(target.name + " changed "+util.their(client, target)+" vehicle model to " + util.getVehicleModelName(newModel) + ' (' + newModel + ')');
 	target.player.vehicle.modelIndex = newModel;
 };
 
