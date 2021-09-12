@@ -849,7 +849,7 @@ util.killTimer = function(timerName)
 };
 
 // vehicle
-util.findVehicleModelId = function(text, defaultVehicleModelId)
+util.findVehicleModel = function(text, defaultVehicleModelId)
 {
 	if(text === undefined)
 		return defaultVehicleModelId;
@@ -889,6 +889,11 @@ util.findVehicleModelId = function(text, defaultVehicleModelId)
 	}
 	
 	return -1;
+};
+
+util.isVehicleModel = (text) =>
+{
+	return util.findVehicleModel(text) != -1;
 };
 
 util.getVehicleModelName = function(vehicleModelId)
@@ -945,10 +950,10 @@ util.findObjectModel = function(text)
 {
 	var textInt = parseInt(text, 10);
 	
-	var minWeaponlId = 0;
-	var maxweaponId = 8000;
+	var min = 0;
+	var max = 8000;
 	
-	if(!isNaN(textInt) && textInt >= minWeaponlId && textInt <= maxweaponId)
+	if(!isNaN(textInt) && textInt >= min && textInt <= max)
 	{
 		return textInt;
 	}
@@ -960,6 +965,33 @@ util.isObjectModel = (text) =>
 {
 	return util.findObjectModel(text) != -1;
 };
+
+
+
+
+
+util.findPedModel = function(text)
+{
+	var textInt = parseInt(text, 10);
+	
+	var min = 1;
+	var max = 195;
+	
+	if(!isNaN(textInt) && textInt >= min && textInt <= max && textInt != 8)
+	{
+		return textInt;
+	}
+	
+	return -1;
+};
+
+util.isPedModel = (text) =>
+{
+	return util.findPedModel(text) != -1;
+};
+
+
+
 
 
 

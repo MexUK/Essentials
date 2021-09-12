@@ -16,12 +16,12 @@ events.onPedExitVehicle.push((event, ped, vehicle, seat) =>
 });
 
 // commands
-cmds.v = (client, _model) =>
+cmds.tempvehicle = (client, _model) =>
 {
 	if(!client.player)
 		return chat.notSpawned(client);
 	
-	var vehicleModelId = util.findVehicleModelId(_model, 191);
+	var vehicleModelId = util.findVehicleModel(_model, 191);
 	if(vehicleModelId == -1)
 		return chat.invalidModel(client, ELEMENT_VEHICLE, _model);
 	
