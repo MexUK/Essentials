@@ -11,7 +11,7 @@ cmds.weapon = (client, _target, _weapon, _ammunition) =>
 	[_target, _weapon, _ammunition] = util.grabArgs(client,
 	[
 		(v) => util.isClient(v),
-		(v) => util.isInt(v) && util.between(util.int(v), 0, maxWeapon),
+		(v) => util.isWeapon(v),
 		(v) => util.isInt(v) && util.between(util.int(v), 0, maxAmmunition)
 	],
 	[
@@ -30,7 +30,7 @@ cmds.weapon = (client, _target, _weapon, _ammunition) =>
 	if(_weapon === undefined)
 		return util.requestClientProperty(target, 'localPlayer.weapon', (weapon) => chat.all(target.name + "'s current weapon is " + util.getWeaponName(weapon) + "."));
 	
-	var weapon = util.int(_weapon, -1);
+	var weapon = util.findWeapon(_weapon);
 	if(weapon < 0 || weapon > maxWeapon)
 		return chat.intBetween(client, 'Weapon', 0, maxWeapon, _weapon);
 	
@@ -53,7 +53,7 @@ cmds.weaponall = (client, _weapon, _ammunition) =>
 	
 	[_weapon, _ammunition] = util.grabArgs(client,
 	[
-		(v) => util.isInt(v) && util.between(util.int(v), 0, maxWeapon),
+		(v) => util.isWeapon(v),
 		(v) => util.isInt(v) && util.between(util.int(v), 0, maxAmmunition)
 	],
 	[
@@ -64,7 +64,7 @@ cmds.weaponall = (client, _weapon, _ammunition) =>
 	if(_weapon === undefined)
 		return chat.pm(client, "You didn't specify a weapon.");
 	
-	var weapon = util.int(_weapon, -1);
+	var weapon = util.findWeapon(_weapon);
 	if(weapon < 0 || weapon > maxWeapon)
 		return chat.intBetween(client, 'Weapon', 0, maxWeapon, _weapon);
 	

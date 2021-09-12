@@ -222,6 +222,11 @@ util.degArr = (arr) =>
 	return arr.map(v => util.degrees(v));
 };
 
+util.radArr = (arr) =>
+{
+	return arr.map(v => util.radians(v));
+};
+
 // area
 util.getAreaName = function(pos)
 {
@@ -294,6 +299,7 @@ util.getLastArgFloat = function(str, defaultValue)
 };
 
 // array
+/*
 util.array = function(...args)
 {
 	var out = [];
@@ -308,6 +314,7 @@ util.array = function(...args)
 	
 	return out;
 };
+*/
 
 util.getArrayKey = function(arr, value)
 {
@@ -890,9 +897,19 @@ util.getVehicleModelName = function(vehicleModelId)
 };
 
 // weapon
-util.findWeaponModelId = function(weaponName)
+util.findWeapon = function(text)
 {
-	var weaponNameLower = weaponName.toLowerCase();
+	var textInt = parseInt(text, 10);
+	
+	var minWeaponlId = 0;
+	var maxweaponId = 36;
+	
+	if(!isNaN(textInt) && textInt >= minWeaponlId && textInt <= maxweaponId)
+	{
+		return textInt;
+	}
+	
+	var weaponNameLower = text.toLowerCase();
 	
 	for(var weaponId=0; weaponId<util.weaponNames.length; weaponId++)
 	{
@@ -905,6 +922,11 @@ util.findWeaponModelId = function(weaponName)
 	return -1;
 };
 
+util.isWeapon = (text) =>
+{
+	return util.findWeapon(text) != -1;
+};
+
 util.getWeaponName = function(weaponId)
 {
 	return util.weaponNames[weaponId];
@@ -914,6 +936,31 @@ util.getWeaponModelId = function(weaponId)
 {
 	return util.weaponModelIds[weaponId];
 };
+
+
+
+
+
+util.findObjectModel = function(text)
+{
+	var textInt = parseInt(text, 10);
+	
+	var minWeaponlId = 0;
+	var maxweaponId = 8000;
+	
+	if(!isNaN(textInt) && textInt >= minWeaponlId && textInt <= maxweaponId)
+	{
+		return textInt;
+	}
+	
+	return -1;
+};
+
+util.isObjectModel = (text) =>
+{
+	return util.findObjectModel(text) != -1;
+};
+
 
 
 
@@ -940,9 +987,27 @@ util.round = (number, dp) =>
 	return Math.round((number + Number.EPSILON) * multiplier) / multiplier;
 };
 
-util.array = (object) =>
+util.array = (object, count) =>
 {
-	return Array.prototype.slice.call(object, 0);
+	if(count === undefined || count === null)
+		return Array.prototype.slice.call(object, 0);
+	else
+		return Array.prototype.slice.call(object, 0, count);
+};
+
+util.posArray = (pos) =>
+{
+	return util.array(pos, 3);
+};
+
+util.rotArray = (rot, deg) =>
+{
+	rot = [rot.x, rot.y, rot.z];
+	if(deg)
+		return util.degArr(util.array(rot));
+	else
+		return util.array(rot);
+		
 };
 
 util.pos = (client) =>
@@ -991,6 +1056,34 @@ util.float = (inputText, defaultValue) =>
 util.bool = (inputText, defaultValue) =>
 {
 	return inputText !== undefined && util.boolOptionsLower.has(inputText.toLowerCase()) ? util.boolOptionsLower.get(inputText) : defaultValue;
+};
+
+util.vec3 = (inputText, defaultValue) =>
+{
+	if(inputText === undefined)
+		return defaultValue;
+	var vec3 = new Vec3();
+	var parts = inputText.split(',').map(v => util.float(v));
+	vec3.x = parts[0];
+	vec3.y = parts[1];
+	vec3.z = parts[2];
+	return vec3;
+};
+
+util.vec3Rot = (inputText, inputIsDeg, defaultValue) =>
+{
+	if(!inputIsDeg)
+		return util.vec3(inputText, defaultValue);
+	
+	if(inputText === undefined)
+		return defaultValue;
+	
+	var vec3 = new Vec3();
+	var parts = inputText.split(',').map(v => util.radians(util.float(v)));
+	vec3.x = parts[0];
+	vec3.y = parts[1];
+	vec3.z = parts[2];
+	return vec3;
 };
 
 util.isInt = (inputText) =>

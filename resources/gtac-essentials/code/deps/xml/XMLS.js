@@ -1,6 +1,6 @@
 global.xml = {};
 
-// getters
+// get
 xml.getAttr = (path, tag, attr) =>
 {
 	tag = tag.toLowerCase();
@@ -49,7 +49,7 @@ xml.get = (path, tag) =>
 	return '';
 };
 
-// setters
+// set
 xml.set = (path, tag, value) =>
 {
 	var doc2 = xml.doc2(path);
@@ -77,6 +77,50 @@ xml.set = (path, tag, value) =>
 	
 	doc2.save(path, root2);
 	return true;
+};
+
+// add
+xml.add = (path, tag, attributes, value) =>
+{
+	var doc2 = xml.doc2(path);
+	if(!doc2)
+		doc2 = new XmlDocument2();
+	
+	var root2 = doc2.rootElement;
+	var element2 = new XmlElement2();
+	element2.name = tag;
+	for(var k in attributes)
+		element2.attributes.push(new XmlAttribute2(k, attributes[k]));
+	if(value !== undefined && value !== null && value !== '')
+		element2.value = value;
+	root2.children.push(element2);
+	
+	doc2.save(path, root2);
+	return true;
+};
+
+// load
+xml.load = (path, tag, callback) =>
+{
+	var doc2 = xml.doc2(path);
+	if(!doc2)
+		doc2 = new XmlDocument2();
+	
+	var tagLower = tag.toLowerCase();
+	var root2 = doc2.rootElement;
+	
+	for(var i in root2.children)
+	{
+		var element2 = root2.children[i];
+		if (element2.name.toLowerCase() != tagLower)
+			continue;
+		
+		var attributes = {};
+		for(var k in element2.attributes)
+			attributes[element2.attributes[k].name] = element2.attributes[k].value;
+		
+		callback(attributes);
+	}
 };
 
 // utility
@@ -127,7 +171,8 @@ xml.doc2 = (path) =>
 
 global.XmlDocument2 = function()
 {
-	this.rootElement = null;
+	this.rootElement = new XmlElement2();
+	this.rootElement.name = 'Root';
 	
 	this.load = (file) =>
 	{
@@ -153,9 +198,11 @@ global.XmlDocument2 = function()
 			var element2 = new XmlElement2();
 			element2.name = element.name;
 			element2.value = element.text;
-			for(var i2 in element2.attributes)
+			var i2 = 0;
+			for(var attributeName in element.attributes)
 			{
-				element2.attributes[i] = new XmlAttribute2(element.attributes[i2], element.getStringAttribute(element.attributes[i2]));
+				element2.attributes[i2] = new XmlAttribute2(attributeName, element.attributes[attributeName]);
+				i2++;
 			}
 			
 			root2.children[i] = element2;
@@ -183,13 +230,18 @@ global.XmlDocument2 = function()
 			str += element.name;
 			for(var i2 in element.attributes)
 				str += " " + element.attributes[i2].name + "=\"" + element.attributes[i2].value + "\"";
-			str += ">";
-			
-			str += element.value;
-			
-			str += '</';
-			str += element.name;
-			str += ">";
+			if(element.value === undefined || element.value === null || element.value === '')
+			{
+				str += ' />';
+			}
+			else
+			{
+				str += ">";
+				str += element.value;
+				str += '</';
+				str += element.name;
+				str += ">";
+			}
 			
 			lines.push(str);
 		}
