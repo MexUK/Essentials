@@ -4,6 +4,33 @@ util.timers = {};
 util.messages = {};
 
 // data
+util.modelRanges = [];
+
+util.modelRanges[GAME_GTA_III] = {};
+util.modelRanges[GAME_GTA_VC] = {};
+util.modelRanges[GAME_GTA_SA] = {};
+util.modelRanges[GAME_GTA_IV] = {};
+
+util.modelRanges[GAME_GTA_III].objects = { min: 0, max: 8000 };
+util.modelRanges[GAME_GTA_III].vehicles = { min: 90, max: 150 };
+util.modelRanges[GAME_GTA_III].blips = { min: 0, max: 20 };
+util.modelRanges[GAME_GTA_III].peds = { min: 1, max: 126, invalid: [26, 27, 28, 29] };
+
+util.modelRanges[GAME_GTA_VC].objects = { min: 0, max: 8000 };
+util.modelRanges[GAME_GTA_VC].vehicles = { min: 130, max: 236 };
+util.modelRanges[GAME_GTA_VC].blips = { min: 0, max: 39 };
+util.modelRanges[GAME_GTA_VC].peds = { min: 0, max: 195, invalid: [8] };
+
+util.modelRanges[GAME_GTA_SA].objects = { min: 0, max: 8000 };
+util.modelRanges[GAME_GTA_SA].vehicles = { min: 400, max: 611 };
+util.modelRanges[GAME_GTA_SA].blips = { min: 0, max: 63 };
+util.modelRanges[GAME_GTA_SA].peds = { min: 0, max: 312 };
+
+util.modelRanges[GAME_GTA_IV].objects = { min: 0, max: 8000 };
+util.modelRanges[GAME_GTA_IV].vehicles = { min: 100, max: 100 };
+util.modelRanges[GAME_GTA_IV].blips = { min: 0, max: 94 };
+util.modelRanges[GAME_GTA_IV].peds = { min: 100, max: 100 };
+
 util.boolOptionsLower = new Map();
 util.boolOptionsLower.set('true', true);
 util.boolOptionsLower.set('false', false);
@@ -896,9 +923,21 @@ util.isVehicleModel = (text) =>
 	return util.findVehicleModel(text) != -1;
 };
 
+util.getMinObjectModel = () => util.modelRanges[server.game].objects.min;
+util.getMaxObjectModel = () => util.modelRanges[server.game].vehicles.max;
+
+util.getMinVehicleModel = () => util.modelRanges[server.game].vehicles.min;
+util.getMaxVehicleModel = () => util.modelRanges[server.game].vehicles.max;
+
+util.getMinPedModel = () => util.modelRanges[server.game].peds.min;
+util.getMaxPedModel = () => util.modelRanges[server.game].peds.max;
+
+util.getMinBlipModel = () => util.modelRanges[server.game].blips.min;
+util.getMaxBlipModel = () => util.modelRanges[server.game].blips.max;
+
 util.getVehicleModelName = function(vehicleModelId)
 {
-	return util.vehicleModelNames[vehicleModelId];
+	return util.vehicleModelNames[vehicleModelId - util.getMinVehicleModel()];
 };
 
 // weapon
@@ -988,6 +1027,30 @@ util.findPedModel = function(text)
 util.isPedModel = (text) =>
 {
 	return util.findPedModel(text) != -1;
+};
+
+
+
+
+
+util.findBlipIcon = function(text)
+{
+	var textInt = parseInt(text, 10);
+	
+	var min = 0;
+	var max = 39;
+	
+	if(!isNaN(textInt) && textInt >= min && textInt <= max)
+	{
+		return textInt;
+	}
+	
+	return -1;
+};
+
+util.isBlipIcon = (text) =>
+{
+	return util.findBlipIcon(text) != -1;
 };
 
 
