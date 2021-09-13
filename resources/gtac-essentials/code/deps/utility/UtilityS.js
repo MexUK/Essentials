@@ -1638,6 +1638,11 @@ util.bindCommand = (cmd2, callback) =>
 	});
 };
 
+util.unbindCommand = (cmd) =>
+{
+	removeCommandHandler(cmd);
+};
+
 util.cleanSplit = (text) =>
 {
 	var t = text.trim().replace(/[\s\t]+/g, ' ').split(' ');

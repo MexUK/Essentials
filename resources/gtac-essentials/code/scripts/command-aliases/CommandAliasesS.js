@@ -39,6 +39,34 @@ cmds.commandalias = (client, _commandName, _commandAlias) =>
 	commandAliases.addCommandAlias(_commandName, commandAlias);
 };
 
+cmds.removecommandalias = (client, _commandName) =>
+{
+	if(_commandName === undefined)
+		return chat.pm(client, "You didn't type a command name.");
+	
+	if(!util.isCommand(_commandName))
+		return chat.pm(client, 'Command not found.');
+	
+	var commandName = _commandName;
+	var commandIsAnAlias = commandAliases.isCommandAnAlias(commandName);
+	if(!commandIsAnAlias)
+		return chat.pm(client, 'Command /' + commandName + ' is not an alias of any command.');
+	
+	var commandAliasOf = commandAliases.getCommandAliasOf(commandName);
+	chat.all(client.name + " removed command alias /" + commandName + " from command /" + commandAliasOf.original + ".");
+	
+	commandAliases.removeCommandAlias(_commandName);
+};
+
+cmds.commandaliases = (client) =>
+{
+	var aliases = commandAliases.commandAliases.map((v) => '/' + v.clone + ' (/' + v.original + ')');
+	if(aliases.length == 0)
+		chat.all('There are no command aliases.');
+	else
+		chat.all('Command aliases: ' + aliases.join(' '));
+};
+
 
 
 
@@ -84,6 +112,12 @@ commandAliases.createCommandAlias = (originalName, cloneName) =>
 	util.bindCommand(cloneName, cmds[originalName]);
 };
 
+commandAliases.destroyCommandAlias = (cloneName) =>
+{
+	cmds[cloneName] = undefined;
+	util.unbindCommand(cloneName);
+};
+
 commandAliases.addCommandAlias = (originalName, cloneName) =>
 {
 	commandAliases.createCommandAlias(originalName, cloneName);
@@ -97,7 +131,20 @@ commandAliases.addCommandAlias = (originalName, cloneName) =>
 	});
 };
 
-
+commandAliases.removeCommandAlias = (cloneName) =>
+{
+	var cloneNameLower = cloneName.toLowerCase();
+	commandAliases.destroyCommandAlias(cloneName);
+	for(var i in commandAliases.commandAliases)
+	{
+		if(cloneNameLower == commandAliases.commandAliases[i].clone.toLowerCase())
+		{
+			commandAliases.commandAliases.splice(i, 1);
+			break;
+		}
+	}
+	xml.remove(commandAliases.path, 'Command', 'clone', cloneName);
+};
 
 
 
