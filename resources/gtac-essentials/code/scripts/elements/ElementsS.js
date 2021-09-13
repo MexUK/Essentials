@@ -64,14 +64,38 @@ elements.nearElements = (client, elementName, distanceAway) =>
 	return near;
 };
 
+elements.getElementDataById = (elementName, elementId) =>
+{
+	for(var i in elements.data[elementName])
+	{
+		if(elements.data[elementName][i].id == elementId)
+		{
+			return elements.data[elementName][i];
+		}
+	}
+	return null;
+};
+
+elements.removeElement = (elementName, elementId) =>
+{
+	for(var i in elements.data[elementName])
+	{
+		if(elements.data[elementName][i].id == elementId)
+		{
+			elements.data[elementName].splice(i, 1);
+			return;
+		}
+	}
+};
+
 // commands
 cmds.object = (client, _model, _distanceAway) =>
 {
 	if(elements.data.objects.length > elements.MAX_OBJECTS)
 		return chat.pm(client, 'Max amount of objects already reached! (' + elements.data.objects.length + '/' + elements.MAX_OBJECTS + ')');
 	
-	var minModel = getMinObjectModel();
-	var maxModel = getMaxObjectModel();
+	var minModel = util.getMinObjectModel();
+	var maxModel = util.getMaxObjectModel();
 	var maxDistanceAway = 150.0;
 	var defaultDistanceAway = 20.0;
 	
@@ -540,6 +564,148 @@ cmds.nearblips = (client, _distanceAway) =>
 
 
 
+cmds.removeobject = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_OBJECTS),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a object ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_OBJECTS)
+		return chat.intBetween(client, 'Object ID', 0, elements.MAX_OBJECTS, _elementId);
+	
+	if(!elements.isObject(elementId))
+		return chat.pm(client, 'Object ID ' + elementId + ' does not exist.');
+	
+	chat.all(client.name + " removed object ID " + elementId + ". (Model " + getElementFromId(elementId).modelIndex + ")");
+	elements.removeObject(elementId);
+};
+
+cmds.removeVehicle = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_VEHICLES),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_VEHICLES)
+		return chat.intBetween(client, 'Vehicle ID', 0, elements.MAX_VEHICLES, _elementId);
+	
+	if(!elements.isVehicle(elementId))
+		return chat.pm(client, 'Vehicle ID ' + elementId + ' does not exist.');
+	
+	chat.all(client.name + " removed vehicle ID " + elementId + ". (Model " + util.getVehicleModelName(getElementFromId(elementId).modelIndex) + " ID " + getElementFromId(elementId).modelIndex + ")");
+	elements.removeVehicle(elementId);
+};
+
+cmds.removePickup = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_PICKUPS),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a pickup ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_PICKUPS)
+		return chat.intBetween(client, 'Pickup ID', 0, elements.MAX_PICKUPS, _elementId);
+	
+	if(!elements.isPickup(elementId))
+		return chat.pm(client, 'Pickup ID ' + elementId + ' does not exist.');
+	
+	chat.all(client.name + " removed pickup ID " + elementId + ". (Model " + elements.getElementDataById('pickups', elementId).model + ")");
+	elements.removePickup(elementId);
+};
+
+cmds.removeSphere = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_SPHERES),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a sphere ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_SPHERES)
+		return chat.intBetween(client, 'Sphere ID', 0, elements.MAX_SPHERES, _elementId);
+	
+	if(!elements.isSphere(elementId))
+		return chat.pm(client, 'Sphere ID ' + elementId + ' does not exist.');
+	
+	chat.all(client.name + " removed sphere ID " + elementId + ". (Radius " + elements.getElementDataById('spheres', elementId).radius + ")");
+	elements.removeSphere(elementId);
+};
+
+cmds.removeblip = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_BLIPS),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a blip ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_BLIPS)
+		return chat.intBetween(client, 'Blip ID', 0, elements.MAX_BLIPS, _elementId);
+	
+	if(!elements.isBlip(elementId))
+		return chat.pm(client, 'Blip ID ' + elementId + ' does not exist.');
+	
+	chat.all(client.name + " removed blip ID " + elementId + ". (Icon " + elements.getElementDataById('blips', elementId).icon + ")");
+	elements.removeBlip(elementId);
+};
+
+cmds.removeped = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_PEDS),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a ped ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_PEDS)
+		return chat.intBetween(client, 'Ped ID', 0, elements.MAX_PEDS, _elementId);
+	
+	if(!elements.isPed(elementId))
+		return chat.pm(client, 'Ped ID ' + elementId + ' does not exist.');
+	
+	chat.all(client.name + " removed ped ID " + elementId + ". (Model " + getElementFromId(elementId).modelIndex + ")");
+	elements.removePed(elementId);
+};
+
+
+
+
+
 
 
 // objects
@@ -554,6 +720,12 @@ elements.addObject = (model, position, rotation) =>
 		rotation:	util.rotArray(rotation, true).join(',')
 	});
 	return element;
+};
+elements.removeObject = (elementId) =>
+{
+	destroyElement(getElementFromId(elementId));
+	elements.removeElement('objects', elementId);
+	xml.remove(elements.gamePath(elements.paths.objects), 'Object', 'id', elementId);
 };
 elements.createObject = (model, position, rotation) =>
 {
@@ -581,6 +753,12 @@ elements.addVehicle = (model, position, rotation) =>
 	});
 	return element;
 };
+elements.removeVehicle = (elementId) =>
+{
+	destroyElement(getElementFromId(elementId));
+	elements.removeElement('vehicles', elementId);
+	xml.remove(elements.gamePath(elements.paths.vehicles), 'Vehicle', 'id', elementId);
+};
 elements.createVehicle = (model, position, rotation) =>
 {
 	var element = gta.createVehicle(model, position);
@@ -606,6 +784,12 @@ elements.addPickup = (model, position) =>
 	});
 	return element;
 };
+elements.removePickup = (elementId) =>
+{
+	destroyElement(getElementFromId(elementId));
+	elements.removeElement('pickups', elementId);
+	xml.remove(elements.gamePath(elements.paths.pickups), 'Pickup', 'id', elementId);
+};
 elements.createPickup = (model, position) =>
 {
 	var element = gta.createPickup(model, position);
@@ -628,6 +812,12 @@ elements.addSphere = (position, radius) =>
 		radius:		radius
 	});
 	return element;
+};
+elements.removeSphere = (elementId) =>
+{
+	destroyElement(getElementFromId(elementId));
+	elements.removeElement('spheres', elementId);
+	xml.remove(elements.gamePath(elements.paths.spheres), 'Sphere', 'id', elementId);
 };
 elements.createSphere = (position, radius) =>
 {
@@ -653,6 +843,12 @@ elements.addBlip = (icon, position, size, colour) =>
 		colour:		colour
 	});
 	return element;
+};
+elements.removeBlip = (elementId) =>
+{
+	destroyElement(getElementFromId(elementId));
+	elements.removeElement('blips', elementId);
+	xml.remove(elements.gamePath(elements.paths.blips), 'Blip', 'id', elementId);
 };
 elements.createBlip = (icon, position, size, colour) =>
 {
@@ -682,6 +878,12 @@ elements.addPed = (model, position, heading, pedType) =>
 	});
 	return element;
 };
+elements.removePed = (elementId) =>
+{
+	destroyElement(getElementFromId(elementId));
+	elements.removeElement('peds', elementId);
+	xml.remove(elements.gamePath(elements.paths.peds), 'Ped', 'id', elementId);
+};
 elements.createPed = (model, position, heading, pedType) =>
 {
 	var element = gta.createCivilian(model, position, pedType);
@@ -695,6 +897,16 @@ elements.createPed = (model, position, heading, pedType) =>
 	});
 	return element;
 };
+
+
+
+elements.isObject = (elementId) => elements.getElementDataById('objects', elementId) != null;
+elements.isVehicle = (elementId) => elements.getElementDataById('vehicles', elementId) != null;
+elements.isPickup = (elementId) => elements.getElementDataById('pickups', elementId) != null;
+elements.isSphere = (elementId) => elements.getElementDataById('spheres', elementId) != null;
+elements.isPed = (elementId) => elements.getElementDataById('peds', elementId) != null;
+elements.isBlip = (elementId) => elements.getElementDataById('blips', elementId) != null;
+
 
 // load elements
 xml.load(elements.gamePath(elements.paths.objects), 'Object', (data) => elements.createObject(util.int(data.model), util.vec3(data.position), util.vec3Rot(data.rotation, true)));

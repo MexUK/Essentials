@@ -79,6 +79,41 @@ xml.set = (path, tag, value) =>
 	return true;
 };
 
+// remove
+xml.remove = (path, tag, attributeName, attributeValue) =>
+{
+	var doc2 = xml.doc2(path);
+	if(!doc2)
+		doc2 = new XmlDocument2();
+	
+	var tagLower = tag.toLowerCase();
+	var attributeNameLower = attributeName.toLowerCase();
+	var root2 = doc2.rootElement;
+	for(var i in root2.children)
+	{
+		var element2 = root2.children[i];
+		if (element2.name.toLowerCase() != tagLower)
+			continue;
+		
+		var attributeValueMatch = false;
+		for(var i2 in element2.attributes)
+		{
+			if(attributeNameLower == element2.attributes[i2].name.toLowerCase() && attributeValue.toString() == element2.attributes[i2].value)
+			{
+				attributeValueMatch = true;
+			}
+		}
+		if(!attributeValueMatch)
+			continue;
+		
+		root2.children.splice(i, 1);
+		doc2.save(path, root2);
+		return true;
+	}
+	
+	return false;
+};
+
 // add
 xml.add = (path, tag, attributes, value) =>
 {
