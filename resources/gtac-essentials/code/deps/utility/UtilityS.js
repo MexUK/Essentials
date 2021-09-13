@@ -1689,6 +1689,13 @@ util.vehRot = (client) =>
 	return rot;
 };
 
+util.plural = (text, count) =>
+{
+	if(count == 1)
+		return count + ' ' + text;
+	return count + ' ' + text + 's';
+};
+
 util.their = (client, target) =>
 {
 	return client == target ? 'their' : target.name + "'s";

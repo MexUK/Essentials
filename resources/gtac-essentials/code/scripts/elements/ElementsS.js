@@ -1,12 +1,12 @@
 global.elements = {};
 global.cmds = global.cmds || {};
 
-elements.MAX_OBJECTS = 2048;
-elements.MAX_VEHICLES = 512;
-elements.MAX_PICKUPS = 330;
-elements.MAX_SPHERES = 127;
-elements.MAX_BLIPS = 127;
-elements.MAX_PEDS = 512 - server.maxClients;
+elements.MAX_OBJECTS	= 2048;
+elements.MAX_VEHICLES	= 512;
+elements.MAX_PICKUPS	= 330;
+elements.MAX_SPHERES	= 127;
+elements.MAX_BLIPS		= 127;
+elements.MAX_PEDS		= 512 - server.maxClients;
 
 elements.gameFolderNames =
 [
@@ -16,6 +16,53 @@ elements.gameFolderNames =
 	'sa',
 	'iv'
 ];
+
+elements.paths = {};
+elements.paths.objects = 'data/scripts/elements/{0}/Objects.xml';
+elements.paths.vehicles = 'data/scripts/elements/{0}/Vehicles.xml';
+elements.paths.pickups = 'data/scripts/elements/{0}/Pickups.xml';
+elements.paths.spheres = 'data/scripts/elements/{0}/Spheres.xml';
+elements.paths.peds = 'data/scripts/elements/{0}/Peds.xml';
+elements.paths.blips = 'data/scripts/elements/{0}/Blips.xml';
+
+elements.data = {};
+elements.data.objects = [];
+elements.data.vehicles = [];
+elements.data.pickups = [];
+elements.data.spheres = [];
+elements.data.peds = [];
+elements.data.blips = [];
+
+elements.near = {};
+elements.near.maxDistanceAway		= 1000000.0;
+elements.near.defaultDistanceAway	= 20.0;
+
+// api
+elements.gamePath = (path) =>
+{
+	var folderName = elements.gameFolderNames[server.game];
+	if(!folderName)
+		folderName = 'UnknownGame';
+	return util.format(path, folderName);
+};
+
+elements.nearElements = (client, elementName, distanceAway) =>
+{
+	var near = [];
+	var clientPosition = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	for(var i in elements.data[elementName])
+	{
+		var element = elements.data[elementName][i];
+		var distance = clientPosition.distance(element.position);
+		if(distance <= distanceAway)
+		{
+			near.push([element.id, distance]);
+		}
+	}
+	near.sort((a,b) => a[1] > b[1]);
+	near = near.map((v) => v[0]);
+	return near;
+};
 
 // commands
 cmds.object = (client, _model, _distanceAway) =>
@@ -30,7 +77,7 @@ cmds.object = (client, _model, _distanceAway) =>
 	
 	[_model, _distanceAway] = util.grabArgs(client,
 	[
-		(v) => util.isObjectModel(v),
+		(v) => util.isInt(v) && util.between(util.int(v), minModel, maxModel),
 		(v) => util.isFloat(v) && util.between(util.float(v), -maxDistanceAway, maxDistanceAway)
 	],
 	[
@@ -123,7 +170,7 @@ cmds.pickup = (client, _model, _distanceAway, _type) =>
 	
 	[_model, _distanceAway, _type] = util.grabArgs(client,
 	[
-		(v) => util.isObjectModel(v),
+		(v) => util.isInt(v) && util.between(util.int(v), minModel, maxModel),
 		(v) => util.isFloat(v) && util.between(util.float(v), -maxDistanceAway, maxDistanceAway),
 		(v) => util.isInt(v) && util.between(util.int(v), minType, maxType)
 	],
@@ -220,7 +267,7 @@ cmds.ped = (client, _model, _distanceAway, _type) =>
 	
 	[_model, _distanceAway, _type] = util.grabArgs(client,
 	[
-		(v) => util.isPedModel(v),
+		(v) => util.isInt(v) && util.between(util.int(v), minModel, maxModel),
 		(v) => util.isFloat(v) && util.between(util.float(v), -maxDistanceAway, maxDistanceAway),
 		(v) => util.isInt(v) && util.between(util.int(v), minType, maxType)
 	],
@@ -280,7 +327,7 @@ cmds.blip = (client, _icon, _distanceAway, _size) =>
 	
 	[_icon, _distanceAway, _size] = util.grabArgs(client,
 	[
-		(v) => util.isBlipIcon(v),
+		(v) => util.isInt(v) && util.between(util.int(v), minIcon, maxIcon),
 		(v) => util.isFloat(v) && util.between(util.float(v), -maxDistanceAway, maxDistanceAway),
 		(v) => util.isInt(v) && util.between(util.int(v), minSize, maxSize)
 	],
@@ -319,18 +366,21 @@ cmds.blip = (client, _icon, _distanceAway, _size) =>
 	elements.addBlip(icon, position, size, colour);
 };
 
-
-
-
-
 cmds.maxplayers = (client) => chat.all('Max players: ' + server.maxClients);
 cmds.maxobjects = (client) => chat.all('Max objects: ' + elements.MAX_OBJECTS);
 cmds.maxvehicles = (client) => chat.all('Max vehicles: ' + elements.MAX_VEHICLES);
 cmds.maxpickups = (client) => chat.all('Max pickups: ' + elements.MAX_PICKUPS);
 cmds.maxspheres = (client) => chat.all('Max spheres: ' + elements.MAX_SPHERES);
-cmds.maxpeds = (client) => chat.all('Max peds (excluding ' + server.maxClients + ' player peds): ' + elements.MAX_PEDS);
+cmds.maxpeds = (client) => chat.all('Max peds: ' + elements.MAX_PEDS + ' (excluding ' + server.maxClients + ' player peds)');
 cmds.maxblips = (client) => chat.all('Max blips: ' + elements.MAX_BLIPS);
 
+cmds.players = (client) => chat.all('Players: ' + getClients().length + '/' + server.maxClients);
+cmds.objects = (client) => chat.all('Objects: ' + elements.data.objects.length + '/' + elements.MAX_OBJECTS);
+cmds.vehicles = (client) => chat.all('Vehicles: ' + elements.data.vehicles.length + '/' + elements.MAX_VEHICLES);
+cmds.pickups = (client) => chat.all('Pickups: ' + elements.data.pickups.length + '/' + elements.MAX_PICKUPS);
+cmds.spheres = (client) => chat.all('Spheres: ' + elements.data.spheres.length + '/' + elements.MAX_SPHERES);
+cmds.peds = (client) => chat.all('Peds: ' + elements.data.peds.length + '/' + elements.MAX_PEDS + ' (excluding ' + getClients().length + '/' + server.maxClients + ' player peds)');
+cmds.blips = (client) => chat.all('Blips: ' + elements.data.blips.length + '/' + elements.MAX_BLIPS);
 
 
 
@@ -339,12 +389,151 @@ cmds.maxblips = (client) => chat.all('Max blips: ' + elements.MAX_BLIPS);
 
 
 
-elements.gamePath = (path) =>
+
+
+
+cmds.nearobjects = (client, _distanceAway) =>
 {
-	var folderName = elements.gameFolderNames[server.game];
-	if(!folderName)
-		folderName = 'UnknownGame';
-	return util.format(path, folderName);
+	[_distanceAway] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v) && util.between(util.float(v), -elements.near.maxDistanceAway, elements.near.maxDistanceAway),
+	],
+	[
+		elements.near.defaultDistanceAway
+	], _distanceAway);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var distanceAway = util.float(_distanceAway);
+	if(distanceAway < -elements.near.maxDistanceAway || distanceAway > elements.near.maxDistanceAway)
+		return chat.intBetween(client, 'Distance Away', -elements.near.maxDistanceAway, elements.near.maxDistanceAway, _distanceAway);
+	
+	var near = elements.nearElements(client, 'objects', distanceAway);
+	if(near.length == 0)
+		chat.all(client.name + " is not near any objects. (" + distanceAway + " units)");
+	else
+		chat.all(client.name + " is near " + util.plural('object', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+};
+
+cmds.nearvehicles = (client, _distanceAway) =>
+{
+	[_distanceAway] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v) && util.between(util.float(v), -elements.near.maxDistanceAway, elements.near.maxDistanceAway),
+	],
+	[
+		elements.near.defaultDistanceAway
+	], _distanceAway);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var distanceAway = util.float(_distanceAway);
+	if(distanceAway < -elements.near.maxDistanceAway || distanceAway > elements.near.maxDistanceAway)
+		return chat.intBetween(client, 'Distance Away', -elements.near.maxDistanceAway, elements.near.maxDistanceAway, _distanceAway);
+	
+	var near = elements.nearElements(client, 'vehicles', distanceAway);
+	if(near.length == 0)
+		chat.all(client.name + " is not near any vehicles. (" + distanceAway + " units)");
+	else
+		chat.all(client.name + " is near " + util.plural('vehicle', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+};
+
+cmds.nearpickups = (client, _distanceAway) =>
+{
+	[_distanceAway] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v) && util.between(util.float(v), -elements.near.maxDistanceAway, elements.near.maxDistanceAway),
+	],
+	[
+		elements.near.defaultDistanceAway
+	], _distanceAway);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var distanceAway = util.float(_distanceAway);
+	if(distanceAway < -elements.near.maxDistanceAway || distanceAway > elements.near.maxDistanceAway)
+		return chat.intBetween(client, 'Distance Away', -elements.near.maxDistanceAway, elements.near.maxDistanceAway, _distanceAway);
+	
+	var near = elements.nearElements(client, 'pickups', distanceAway);
+	if(near.length == 0)
+		chat.all(client.name + " is not near any pickups. (" + distanceAway + " units)");
+	else
+		chat.all(client.name + " is near " + util.plural('pickup', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+};
+
+cmds.nearspheres = (client, _distanceAway) =>
+{
+	[_distanceAway] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v) && util.between(util.float(v), -elements.near.maxDistanceAway, elements.near.maxDistanceAway),
+	],
+	[
+		elements.near.defaultDistanceAway
+	], _distanceAway);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var distanceAway = util.float(_distanceAway);
+	if(distanceAway < -elements.near.maxDistanceAway || distanceAway > elements.near.maxDistanceAway)
+		return chat.intBetween(client, 'Distance Away', -elements.near.maxDistanceAway, elements.near.maxDistanceAway, _distanceAway);
+	
+	var near = elements.nearElements(client, 'spheres', distanceAway);
+	if(near.length == 0)
+		chat.all(client.name + " is not near any spheres. (" + distanceAway + " units)");
+	else
+		chat.all(client.name + " is near " + util.plural('sphere', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+};
+
+cmds.nearpeds = (client, _distanceAway) =>
+{
+	[_distanceAway] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v) && util.between(util.float(v), -elements.near.maxDistanceAway, elements.near.maxDistanceAway),
+	],
+	[
+		elements.near.defaultDistanceAway
+	], _distanceAway);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var distanceAway = util.float(_distanceAway);
+	if(distanceAway < -elements.near.maxDistanceAway || distanceAway > elements.near.maxDistanceAway)
+		return chat.intBetween(client, 'Distance Away', -elements.near.maxDistanceAway, elements.near.maxDistanceAway, _distanceAway);
+	
+	var near = elements.nearElements(client, 'peds', distanceAway);
+	if(near.length == 0)
+		chat.all(client.name + " is not near any peds. (" + distanceAway + " units)");
+	else
+		chat.all(client.name + " is near " + util.plural('ped', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+};
+
+cmds.nearblips = (client, _distanceAway) =>
+{
+	[_distanceAway] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v) && util.between(util.float(v), -elements.near.maxDistanceAway, elements.near.maxDistanceAway),
+	],
+	[
+		elements.near.defaultDistanceAway
+	], _distanceAway);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var distanceAway = util.float(_distanceAway);
+	if(distanceAway < -elements.near.maxDistanceAway || distanceAway > elements.near.maxDistanceAway)
+		return chat.intBetween(client, 'Distance Away', -elements.near.maxDistanceAway, elements.near.maxDistanceAway, _distanceAway);
+	
+	var near = elements.nearElements(client, 'blips', distanceAway);
+	if(near.length == 0)
+		chat.all(client.name + " is not near any blips. (" + distanceAway + " units)");
+	else
+		chat.all(client.name + " is near " + util.plural('blip', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 
@@ -352,25 +541,6 @@ elements.gamePath = (path) =>
 
 
 
-
-
-
-
-elements.paths = {};
-elements.paths.objects = 'data/scripts/elements/{0}/Objects.xml';
-elements.paths.vehicles = 'data/scripts/elements/{0}/Vehicles.xml';
-elements.paths.pickups = 'data/scripts/elements/{0}/Pickups.xml';
-elements.paths.spheres = 'data/scripts/elements/{0}/Spheres.xml';
-elements.paths.peds = 'data/scripts/elements/{0}/Peds.xml';
-elements.paths.blips = 'data/scripts/elements/{0}/Blips.xml';
-
-elements.data = {};
-elements.data.objects = [];
-elements.data.vehicles = [];
-elements.data.pickups = [];
-elements.data.spheres = [];
-elements.data.peds = [];
-elements.data.blips = [];
 
 // objects
 elements.addObject = (model, position, rotation) =>
@@ -389,6 +559,7 @@ elements.createObject = (model, position, rotation) =>
 	var element = gta.createObject(model, position);
 	element.setRotation(rotation);
 	elements.data.objects.push({
+		id:			element.id,
 		model:		model,
 		position:	position,
 		rotation:	rotation
@@ -413,6 +584,7 @@ elements.createVehicle = (model, position, rotation) =>
 	var element = gta.createVehicle(model, position);
 	element.setRotation(rotation);
 	elements.data.vehicles.push({
+		id:			element.id,
 		model:		model,
 		position:	position,
 		rotation:	rotation
@@ -435,6 +607,7 @@ elements.createPickup = (model, position) =>
 {
 	var element = gta.createPickup(model, position);
 	elements.data.pickups.push({
+		id:			element.id,
 		model:		model,
 		position:	position
 	});
@@ -456,6 +629,7 @@ elements.createSphere = (position, radius) =>
 {
 	var element = gta.createSphere(position, radius);
 	elements.data.spheres.push({
+		id:			element.id,
 		position:	position,
 		radius:		radius
 	});
@@ -480,6 +654,7 @@ elements.createBlip = (icon, position, size, colour) =>
 	var element = gta.createBlip(icon, position, size, colour);
 	element.position = position;
 	elements.data.blips.push({
+		id:			element.id,
 		icon:		icon,
 		position:	position,
 		size:		size,
@@ -506,6 +681,7 @@ elements.createPed = (model, position, heading, pedType) =>
 	var element = gta.createCivilian(model, position, pedType);
 	element.heading = heading;
 	elements.data.peds.push({
+		id:			element.id,
 		model:		model,
 		position:	position,
 		heading:	heading,
