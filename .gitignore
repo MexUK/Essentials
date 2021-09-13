@@ -2,3 +2,4 @@
 *.dll
 logs/*
 resources/gtac-essentials/data/scripts/elements/*/*.xml
+resources/gtac-essentials/data/scripts/admin/Players.xml

@@ -1620,6 +1620,12 @@ util.bindCommand = (cmd2, callback) =>
 {
 	addCommandHandler(cmd2, (cmd,arg,client) =>
 	{
+		if(admin.isCommandDisabled(cmd))
+			return chat.pm(client, 'Command /' + cmd + ' is disabled.');
+		
+		if(admin.getClientLevel(client) < admin.getCommandLevel(cmd))
+			return chat.pm(client, 'Command /' + cmd + ' requires admin level ' + admin.getCommandLevel(cmd) + '.');
+		
 		var args = util.cleanSplit(arg);
 		args.unshift(client);
 		callback.apply(null, args);

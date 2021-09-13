@@ -1,0 +1,14 @@
+﻿<Root>
+	<Command name="object" level="5" />
+	<Command name="vehicle" level="5" />
+	<Command name="pickup" level="5" />
+	<Command name="sphere" level="5" />
+	<Command name="blip" level="5" />
+	<Command name="ped" level="5" />
+	<Command name="removeobject" level="5" />
+	<Command name="removevehicle" level="5" />
+	<Command name="removepickup" level="5" />
+	<Command name="removesphere" level="5" />
+	<Command name="removeblip" level="5" />
+	<Command name="removeped" level="5" />
+</Root>

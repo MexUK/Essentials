@@ -1,32 +1,136 @@
 global.xml = {};
 
 // get
-xml.getAttr = (path, tag, attr) =>
+xml.getAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, defaultValue) =>
 {
-	tag = tag.toLowerCase();
-	
 	var root = xml.root(path);
 	if(!root)
-		return '';
+		return defaultValue;
+	
+	var tagLower = tag.toLowerCase();
+	var attributeNameMatchLower = attributeNameMatch.toLowerCase();
+	var attributeValueMatchLower = attributeValueMatch.toLowerCase();
+	var attributeNameFetchLower = attributeNameFetch.toLowerCase();
 	
 	for(var i in root.children)
 	{
 		var tag2 = root.children[i];
-		if (tag2.name.toLowerCase() != tag)
+		if (tag2.name.toLowerCase() != tagLower)
+			continue;
+		
+		let entry = {};
+		for(var attributeName in tag2.attributes)
+		{
+			let attributeValue = tag2.attributes[attributeName];
+			if(attributeNameMatchLower == attributeName.toLowerCase() && attributeValueMatchLower == attributeValue.toLowerCase())
+			{
+				for(var attributeName2 in tag2.attributes)
+				{
+					if(attributeNameFetchLower == attributeName2.toLowerCase())
+					{
+						let attributeValue2 = tag2.attributes[attributeName2];
+						return attributeValue2;
+					}
+				}
+				return defaultValue;
+			}
+		};
+	}
+	
+	return defaultValue;
+};
+
+xml.setAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, attributeValueNew) =>
+{
+	var doc2 = xml.doc2(path);
+	if(!doc2)
+		doc2 = new XmlDocument2();
+	var root2 = doc2.rootElement;
+	
+	var tagLower = tag.toLowerCase();
+	var attributeNameMatchLower = attributeNameMatch.toLowerCase();
+	var attributeValueMatchLower = attributeValueMatch.toLowerCase();
+	var attributeNameFetchLower = attributeNameFetch.toLowerCase();
+	
+	for(var i in root2.children)
+	{
+		var tag2 = root2.children[i];
+		if (tag2.name.toLowerCase() != tagLower)
 			continue;
 		
 		let entry = {};
 		for(var i2 in tag2.attributes)
 		{
-			let attr2 = tag2.attributes[i2];
-			if(attr == attr2)
+			let attributeName = tag2.attributes[i2].name;
+			let attributeValue = tag2.attributes[i2].value;
+			if(attributeNameMatchLower == attributeName.toLowerCase() && attributeValueMatchLower == attributeValue.toLowerCase())
 			{
-				return tag2.getAttribute(attr2);
+				for(var i3 in tag2.attributes)
+				{
+					let attributeName2 = tag2.attributes[i3].name;
+					if(attributeNameFetchLower == attributeName2.toLowerCase())
+					{
+						tag2.attributes[i3].value = attributeValueNew;
+						doc2.save(path, root2);
+						return true;
+					}
+				}
+				
+				tag2.attributes.push(new XmlAttribute2(attributeNameFetch, attributeValueNew));
+				doc2.save(path, root2);
+				return true;
 			}
 		};
 	}
 	
-	return '';
+	var element2 = new XmlElement2();
+	element2.name = tag;
+	element2.attributes.push(new XmlAttribute2(attributeNameMatch, attributeValueMatch));
+	element2.attributes.push(new XmlAttribute2(attributeNameFetch, attributeValueNew));
+	root2.children.push(element2);
+	
+	doc2.save(path, root2);
+	return true;
+};
+
+xml.removeAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameRemove) =>
+{
+	var doc2 = xml.doc2(path);
+	if(!doc2)
+		doc2 = new XmlDocument2();
+	var root2 = doc2.rootElement;
+	
+	var tagLower = tag.toLowerCase();
+	var attributeNameMatchLower = attributeNameMatch.toLowerCase();
+	var attributeValueMatchLower = attributeValueMatch.toLowerCase();
+	var attributeNameRemoveLower = attributeNameRemove.toLowerCase();
+	
+	for(var i in root2.children)
+	{
+		var tag2 = root2.children[i];
+		if (tag2.name.toLowerCase() != tagLower)
+			continue;
+		
+		let entry = {};
+		for(var i2 in tag2.attributes)
+		{
+			let attributeName = tag2.attributes[i2].name;
+			let attributeValue = tag2.attributes[i2].value;
+			if(attributeNameMatchLower == attributeName.toLowerCase() && attributeValueMatchLower == attributeValue.toLowerCase())
+			{
+				for(var i3 in tag2.attributes)
+				{
+					let attributeName2 = tag2.attributes[i3].name;
+					if(attributeNameRemoveLower == attributeName2.toLowerCase())
+					{
+						tag2.attributes.splice(i3, 1);
+						doc2.save(path, root2);
+						return true;
+					}
+				}
+			}
+		};
+	}
 };
 
 xml.get = (path, tag) =>
