@@ -1744,6 +1744,15 @@ util.vec3Rot = (inputText, inputIsDeg, defaultValue) =>
 	return vec3;
 };
 
+util.toString = (object) =>
+{
+	if(object instanceof Vec3)
+		return object.x+','+object.y+','+object.z;
+	if(object instanceof Vec2)
+		return object.x+','+object.y;
+	return object.toString();
+};
+
 util.isInt = (inputText) =>
 {
 	return inputText !== undefined && !isNaN(parseInt(inputText));

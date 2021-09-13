@@ -548,6 +548,7 @@ elements.addObject = (model, position, rotation) =>
 	var element = elements.createObject(model, position, rotation);
 	xml.add(elements.gamePath(elements.paths.objects), 'Object',
 	{
+		id:			element.id,
 		model:		model,
 		position:	util.posArray(position).join(','),
 		rotation:	util.rotArray(rotation, true).join(',')
@@ -573,6 +574,7 @@ elements.addVehicle = (model, position, rotation) =>
 	var element = elements.createVehicle(model, position, rotation);
 	xml.add(elements.gamePath(elements.paths.vehicles), 'Vehicle',
 	{
+		id:			element.id,
 		model:		model,
 		position:	util.posArray(position).join(','),
 		rotation:	util.rotArray(rotation, true).join(',')
@@ -598,6 +600,7 @@ elements.addPickup = (model, position) =>
 	var element = elements.createPickup(model, position);
 	xml.add(elements.gamePath(elements.paths.pickups), 'Pickup',
 	{
+		id:			element.id,
 		model:		model,
 		position:	util.posArray(position).join(',')
 	});
@@ -620,6 +623,7 @@ elements.addSphere = (position, radius) =>
 	var element = elements.createSphere(position, radius);
 	xml.add(elements.gamePath(elements.paths.spheres), 'Sphere',
 	{
+		id:			element.id,
 		position:	util.posArray(position).join(','),
 		radius:		radius
 	});
@@ -642,6 +646,7 @@ elements.addBlip = (icon, position, size, colour) =>
 	var element = elements.createBlip(icon, position, size, 0xFF0025FF);
 	xml.add(elements.gamePath(elements.paths.blips), 'Blip',
 	{
+		id:			element.id,
 		icon:		icon,
 		position:	util.posArray(position).join(','),
 		size:		size,
@@ -669,6 +674,7 @@ elements.addPed = (model, position, heading, pedType) =>
 	var element = elements.createPed(model, position, heading, pedType);
 	xml.add(elements.gamePath(elements.paths.peds), 'Ped',
 	{
+		id:			element.id,
 		model:		model,
 		position:	util.posArray(position).join(','),
 		heading:	heading,
@@ -698,6 +704,12 @@ xml.load(elements.gamePath(elements.paths.spheres), 'Sphere', (data) => elements
 xml.load(elements.gamePath(elements.paths.peds), 'Ped', (data) => elements.createPed(util.int(data.model), util.vec3(data.position), util.float(data.heading), util.int(data.pedType)));
 xml.load(elements.gamePath(elements.paths.blips), 'Blip', (data) => elements.createBlip(util.int(data.icon), util.vec3(data.position), util.int(data.size), util.int(data.colour)));
 
+xml.save(elements.gamePath(elements.paths.objects), 'Object', elements.data.objects, ['id', 'model', 'position', 'rotation']);
+xml.save(elements.gamePath(elements.paths.vehicles), 'Vehicle', elements.data.vehicles, ['id', 'model', 'position', 'rotation']);
+xml.save(elements.gamePath(elements.paths.pickups), 'Pickup', elements.data.pickups, ['id', 'model', 'position']);
+xml.save(elements.gamePath(elements.paths.spheres), 'Sphere', elements.data.spheres, ['id', 'position', 'radius']);
+xml.save(elements.gamePath(elements.paths.peds), 'Ped', elements.data.peds, ['id', 'model', 'position', 'heading', 'pedType']);
+xml.save(elements.gamePath(elements.paths.blips), 'Blip', elements.data.blips, ['id', 'icon', 'position', 'size', 'colour']);
 
 
 

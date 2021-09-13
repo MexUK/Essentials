@@ -123,6 +123,24 @@ xml.load = (path, tag, callback) =>
 	}
 };
 
+// save
+xml.save = (path, tag, data, attributes) =>
+{
+	var doc2 = new XmlDocument2();
+	var root2 = doc2.rootElement;
+	
+	for(var i in data)
+	{
+		var element = new XmlElement2();
+		element.name = tag;
+		for(var i2 in attributes)
+			element.attributes[i2] = new XmlAttribute2(attributes[i2], util.toString(data[i][attributes[i2]]));
+		root2.children[i] = element;
+	}
+	
+	doc2.save(path, root2);
+};
+
 // utility
 xml.root = (path) =>
 {
