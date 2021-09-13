@@ -1,4 +1,5 @@
-<data>
-	<alias command="pos" alias="position" />
-	<alias command="rot" alias="rotation" />
-</data>
+﻿<Root>
+	<Command original="position" clone="pos" />
+	<Command original="rotation" clone="rot" />
+	<Command original="position" clone="p" />
+</Root>

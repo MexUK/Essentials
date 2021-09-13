@@ -30,7 +30,7 @@ cmds.commands = (client) =>
 	chat.all('Commands (' + cmdCount + '): ' + cmds2);
 };
 
-cmds.pos = (client, _target, _dp) =>
+cmds.position = (client, _target, _dp) =>
 {
 	var defaultDp = 5;
 	var maxDp = 14;
@@ -61,7 +61,7 @@ cmds.pos = (client, _target, _dp) =>
 		chat.all(target.name + "'s position (Vehicle): " + util.vehPos(target).map(v => util.round(v, dp)).join(' '));
 };
 
-cmds.rot = (client, _target, _dp, _deg) =>
+cmds.rotation = (client, _target, _dp, _deg) =>
 {
 	var options = [['deg'], ['rad']];
 	var defaultDp = 5;

@@ -779,6 +779,12 @@ util.radArr = (arr) =>
 	return arr.map(v => util.radians(v));
 };
 
+// word
+util.isAre = (count) =>
+{
+	return count == 1 ? 'is' : 'are';
+};
+
 // area
 util.getAreaName = function(pos)
 {
