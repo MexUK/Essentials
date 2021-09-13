@@ -945,6 +945,105 @@ cmds.isgarageclosed = (client, _garage) =>
 	util.requestClientFunctionCall(client, 'isGarageClosed', (closed) => chat.all('Garage ' + garage + ' is ' + (closed ? 'closed' : 'open') + '.'), garage);
 };
 
+cmds.time = (client, _time) =>
+{
+	var minHour = 0;
+	var maxHour = 23;
+	var minMinute = 0;
+	var maxMinute = 59;
+	
+	[_time] = util.grabArgs(client,
+	[
+		(v) => v && v.replace(' ', ':').split(':').length > 0
+	],
+	[
+	], _time);
+	
+	if(_time === undefined)
+		return chat.all("Game time: " + gta.time.hour + ":" + gta.time.minute + " (" + gta.time.second + " seconds)");
+	
+	var time = _time.replace(' ', ':').split(':');
+	var hour = util.int(time[0], -1);
+	var minute = util.int(time[1], -1);
+	if(hour < minHour || hour > maxHour)
+		return chat.pm(client, 'Invalid hour for game time.');
+	if(minute < minMinute || minute > maxMinute)
+		return chat.pm(client, 'Invalid minute for game time.');
+	
+	chat.all(client.name + " changed the game time to " + util.hour(hour) + ":" + util.minute(minute) + ".");
+	gta.time.hour = hour;
+	gta.time.minute = minute;
+};
+
+cmds.hour = (client, _hour) =>
+{
+	var minHour = 0;
+	var maxHour = 23;
+	
+	[_hour] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _hour);
+	
+	if(_hour === undefined)
+		return chat.all("Game hour: " + gta.time.hour);
+	
+	var hour = util.int(_hour, -1);
+	if(hour < minHour || hour > maxHour)
+		return chat.pm(client, 'Invalid hour for game time.');
+	
+	chat.all(client.name + " changed the game hour to " + util.hour(hour) + ".");
+	gta.time.hour = hour;
+};
+
+cmds.minute = (client, _minute) =>
+{
+	var minMinute = 0;
+	var maxMinute = 59;
+	
+	[_minute] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _minute);
+	
+	if(_minute === undefined)
+		return chat.all("Game minute: " + gta.time.minute);
+	
+	var minute = util.int(_minute, -1);
+	if(minute < minMinute || minute > maxMinute)
+		return chat.pm(client, 'Invalid minute for game time.');
+	
+	chat.all(client.name + " changed the game minute to " + util.minute(minute) + ".");
+	gta.time.minute = minute;
+};
+
+cmds.second = (client, _second) =>
+{
+	var minSecond = 0;
+	var maxSecond = 59.99;
+	
+	[_second] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v)
+	],
+	[
+	], _second);
+	
+	if(_second === undefined)
+		return chat.all("Game second: " + gta.time.second);
+	
+	var second = util.float(_second, -1);
+	if(second < minSecond || second > maxSecond)
+		return chat.pm(client, 'Invalid second for game time.');
+	
+	chat.all(client.name + " changed the game second to " + second + ".");
+	gta.time.second = second;
+};
+
 
 
 

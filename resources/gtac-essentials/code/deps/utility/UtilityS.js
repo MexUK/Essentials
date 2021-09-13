@@ -1716,6 +1716,16 @@ util.bool = (inputText, defaultValue) =>
 	return inputText !== undefined && util.boolOptionsLower.has(inputText.toLowerCase()) ? util.boolOptionsLower.get(inputText) : defaultValue;
 };
 
+util.hour = (hour) =>
+{
+	return hour < 10 ? ('0' + hour) : hour;
+};
+
+util.minute = (minute) =>
+{
+	return minute < 10 ? ('0' + minute) : minute;
+};
+
 util.vec3 = (inputText, defaultValue) =>
 {
 	if(inputText === undefined)

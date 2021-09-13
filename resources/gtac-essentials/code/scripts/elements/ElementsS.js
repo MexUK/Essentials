@@ -568,7 +568,7 @@ cmds.removeobject = (client, _elementId) =>
 {
 	[_elementId] = util.grabArgs(client,
 	[
-		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_OBJECTS),
+		(v) => util.isInt(v),
 	],
 	[
 	], _elementId);
@@ -587,11 +587,11 @@ cmds.removeobject = (client, _elementId) =>
 	elements.removeObject(elementId);
 };
 
-cmds.removeVehicle = (client, _elementId) =>
+cmds.removevehicle = (client, _elementId) =>
 {
 	[_elementId] = util.grabArgs(client,
 	[
-		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_VEHICLES),
+		(v) => util.isInt(v),
 	],
 	[
 	], _elementId);
@@ -610,11 +610,11 @@ cmds.removeVehicle = (client, _elementId) =>
 	elements.removeVehicle(elementId);
 };
 
-cmds.removePickup = (client, _elementId) =>
+cmds.removepickup = (client, _elementId) =>
 {
 	[_elementId] = util.grabArgs(client,
 	[
-		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_PICKUPS),
+		(v) => util.isInt(v),
 	],
 	[
 	], _elementId);
@@ -633,11 +633,11 @@ cmds.removePickup = (client, _elementId) =>
 	elements.removePickup(elementId);
 };
 
-cmds.removeSphere = (client, _elementId) =>
+cmds.removesphere = (client, _elementId) =>
 {
 	[_elementId] = util.grabArgs(client,
 	[
-		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_SPHERES),
+		(v) => util.isInt(v),
 	],
 	[
 	], _elementId);
@@ -660,7 +660,7 @@ cmds.removeblip = (client, _elementId) =>
 {
 	[_elementId] = util.grabArgs(client,
 	[
-		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_BLIPS),
+		(v) => util.isInt(v),
 	],
 	[
 	], _elementId);
@@ -683,7 +683,7 @@ cmds.removeped = (client, _elementId) =>
 {
 	[_elementId] = util.grabArgs(client,
 	[
-		(v) => util.isInt(v) && util.between(util.int(v), 0, elements.MAX_PEDS),
+		(v) => util.isInt(v),
 	],
 	[
 	], _elementId);
