@@ -17,4 +17,6 @@
 	<Command name="enablecommand" level="8" />
 	<Command name="addspawn" level="6" />
 	<Command name="removespawn" level="6" />
+	<Command name="killplayer" level="5" />
+	<Command name="mapper" level="8" />
 </Root>

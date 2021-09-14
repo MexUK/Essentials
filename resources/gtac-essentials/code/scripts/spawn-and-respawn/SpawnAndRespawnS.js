@@ -68,6 +68,8 @@ cmds.removespawn = (client) =>
 	if(distanceAway > maxDistanceAway)
 		return chat.pm(client, 'There are no spawn positions near you.');
 	
+	chat.all(client.name + ' removed a spawn position.');
+	
 	spawn.spawns.splice(positions[0][1], 1);
 	xml.removeAttr2(spawn.getPath(), 'Spawn',
 	{
@@ -75,7 +77,6 @@ cmds.removespawn = (client) =>
 		y: position.y,
 		z: position.z,
 	});
-	chat.all(client.name + ' removed a spawn position.');
 };
 
 cmds.spawns = (client) =>

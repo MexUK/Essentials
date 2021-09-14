@@ -1,0 +1,2 @@
+mexui.init();
+

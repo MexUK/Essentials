@@ -774,6 +774,24 @@ elements.createObject = (model, position, rotation) =>
 	return element;
 };
 
+elements.setObjectPositionRotation = (elementId, position, rotation) =>
+{
+	elements.data.forEach(v =>
+	{
+		if(v.id == elementId)
+		{
+			v.position = position;
+			v.rotation = rotation;
+		}
+	});
+	xml.setAttr2(elements.gamePath(elements.paths.objects), 'Object', {
+		id:			elementId
+	}, {
+		position:	position,
+		rotation:	rotation
+	});
+};
+
 // vehicles
 elements.addVehicle = (model, position, rotation) =>
 {

@@ -34,6 +34,86 @@
 	
 	
 	
+	
+	<!-- mexui -->
+	<file type="client" src="code/scripts/mapper/mexui/Images/down-arrow.png" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/mexui.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Native.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Utility.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entity/Transition.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entity/StyleableEntity.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entity/Component.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Component/Control.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Component/Entry.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Component/Event.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Component/Window.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entity/ControlAxis.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entity/ControlWithEntries.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entry/DropDownItem.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entry/GridColumn.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entry/GridRow.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entry/ListRow.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entry/Tab.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Entry/TreeRow.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Button.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/CheckBox.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/DropDown.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Grid.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Image.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Line.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/List.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/ProgressBar.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/RadioButton.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Rectangle.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/ScrollBar.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Slider.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/TabPanel.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Text.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/TextInput.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Tree.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Character.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Characters.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Day.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Date.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Digit.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Digits.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Hour.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Integer.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Letter.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/LetterDigit.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Letters.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/LettersDigits.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Minute.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Month.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Number.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Password.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/PositiveInteger.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/PositiveNumber.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/RangedInteger.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/RangedNumber.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Second.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/TextArea.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Time.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Week.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/WeekDay.js" />
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Control/Year.js" />
+	
+	<script language="javascript" type="client" src="code/scripts/mapper/mexui/Core/Init.js" />
+	
+	
+	
+	
+	
+	
+	
 	<!-- scripts -->
 	
 	<script src="code/scripts/accounts/AccountsS.js" type="server" language="javascript" />
@@ -60,6 +140,11 @@
 	<script src="code/scripts/weapons/WeaponsS.js" type="server" language="javascript" />
 	<script src="code/scripts/weapons/WeaponsC.js" type="client" language="javascript" />
 	
+	
+	<script src="code/scripts/mapper/Server.js" type="server" language="javascript" />
+	
+	<script src="code/scripts/mapper/mathjs.js" type="client" language="javascript" />
+	<script src="code/scripts/mapper/Client.js" type="client" language="javascript" />
 	
 	
 	

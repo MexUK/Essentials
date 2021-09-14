@@ -2009,7 +2009,8 @@ util.getResolvedItem = (itemName) =>
 
 util.clientFunctionCalls =
 [
-	'keyBinds.onClientKeyDown'
+	'keyBinds.onClientKeyDown',
+	'mapper.storeActiveObject'
 ];
 
 addNetworkHandler('callServerFunction', (client, functionName, ...args) =>

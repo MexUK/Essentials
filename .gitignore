@@ -1,5 +1,6 @@
 *.exe
 *.dll
 logs/*
+htdocs/*
 resources/gtac-essentials/data/scripts/elements/*/*.xml
 resources/gtac-essentials/data/scripts/admin/Players.xml
