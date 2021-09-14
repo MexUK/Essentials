@@ -15,4 +15,6 @@
 	<Command name="setcommandlevel" level="8" />
 	<Command name="disablecommand" level="8" />
 	<Command name="enablecommand" level="8" />
+	<Command name="addspawn" level="6" />
+	<Command name="removespawn" level="6" />
 </Root>
