@@ -162,21 +162,23 @@ cmds.admin = (client) =>
 		chat.all("Admin online: " + clients.join(', '));
 };
 
-cmds.alladmin = (client) =>
+cmds.alladmin = (client, _level) =>
 {
+	var level = util.int(_level, 1);
+	
 	var names = [];
 	xml.load(admin.paths.players, 'Player', (data) =>
 	{
-		if(util.int(data.level) > 0)
+		if(util.int(data.level) >= level)
 		{
 			names.push(data.name + ' (' + data.level + ')');
 		}
 	});
 	
 	if(names.length == 0)
-		chat.all('There are no admin.');
+		chat.all('There are no admin for level ' + level + ' or higher.');
 	else
-		chat.all("All admin: " + names.join(', '));
+		chat.all('All admin for level ' + level + ' or higher: ' + names.join(', '));
 };
 
 
