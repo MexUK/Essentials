@@ -70,7 +70,7 @@ cmds.unkey = (client, _key) =>
 	keyBinds.unbindKey(client, key);
 };
 
-cmds.keys = (client, _key) =>
+cmds.keys = (client) =>
 {
 	var keys = keyBinds.getBoundKeys(client);
 	

@@ -1626,6 +1626,9 @@ util.bindCommand = (cmd2, callback) =>
 {
 	addCommandHandler(cmd2, (cmd,arg,client) =>
 	{
+		if(clientData.get(client, 'registered') && !clientData.get(client, 'loggedIn') && cmd.toLowerCase() != 'login')
+			return chat.pm(client, "You aren't logged in.");
+		
 		if(admin.isCommandDisabled(cmd))
 			return chat.pm(client, 'Command /' + cmd + ' is disabled.');
 		

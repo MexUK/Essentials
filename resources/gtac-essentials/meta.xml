@@ -27,7 +27,16 @@
 	
 	
 	
+	<!-- vendor -->
+	
+	<script src="code/vendor/sha512/sha512.js" type="server" language="javascript" />
+	
+	
+	
+	
 	<!-- scripts -->
+	
+	<script src="code/scripts/accounts/AccountsS.js" type="server" language="javascript" />
 	
 	<script src="code/scripts/admin/AdminS.js" type="server" language="javascript" />
 	
