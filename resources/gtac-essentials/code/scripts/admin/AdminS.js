@@ -153,13 +153,30 @@ cmds.commandlevels = (client) =>
 cmds.admin = (client) =>
 {
 	var clients = [];
-	getClients().forEach((client) => admin.getClientLevel(client) != 0 && clients.push([client.name, admin.getClientLevel(client)]));
+	getClients().forEach((client) => admin.getClientLevel(client) > 0 && clients.push([client.name, admin.getClientLevel(client)]));
 	clients.sort((a,b) => a[1] > b[1]);
 	clients = clients.map(v => v[0]+' ('+v[1]+')');
 	if(clients.length == 0)
 		chat.all('There are no admin online.');
 	else
 		chat.all("Admin online: " + clients.join(', '));
+};
+
+cmds.alladmin = (client) =>
+{
+	var names = [];
+	xml.load(admin.paths.players, 'Player', (data) =>
+	{
+		if(util.int(data.level) > 0)
+		{
+			names.push(data.name + ' (' + data.level + ')');
+		}
+	});
+	
+	if(names.length == 0)
+		chat.all('There are no admin.');
+	else
+		chat.all("All admin: " + names.join(', '));
 };
 
 
