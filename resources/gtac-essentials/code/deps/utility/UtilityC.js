@@ -529,3 +529,8 @@ util.getResolvedItem = (itemName) =>
 	return o;
 };
 
+util.callServerFunction = (functionName, ...args) =>
+{
+	triggerNetworkEvent('callServerFunction', functionName, ...args);
+};
+

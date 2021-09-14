@@ -54,14 +54,35 @@ clientData.setmap = (client, name, key, value) =>
 {
 	if(clientData.clients[client.index][name] === undefined)
 		clientData.clients[client.index][name] = new Map();
-	clientData.clients[client.index][name][key] = value;
+	clientData.clients[client.index][name].set(key, value);
 };
 
 clientData.unsetmap = (client, name, key) =>
 {
 	if(clientData.clients[client.index][name] === undefined)
 		return;
-	clientData.clients[client.index][name][key] = undefined;
+	clientData.clients[client.index][name].delete(key);
+};
+
+clientData.getmap = (client, name, key) =>
+{
+	if(clientData.clients[client.index][name] === undefined)
+		return;
+	return clientData.clients[client.index][name].get(key);
+};
+
+clientData.hasmap = (client, name, key) =>
+{
+	if(clientData.clients[client.index][name] === undefined)
+		return false;
+	return clientData.clients[client.index][name].has(key);
+};
+
+clientData.getmapcontainer = (client, name) =>
+{
+	if(clientData.clients[client.index][name] === undefined)
+		clientData.clients[client.index][name] = new Map();
+	return clientData.clients[client.index][name];
 };
 
 // clear

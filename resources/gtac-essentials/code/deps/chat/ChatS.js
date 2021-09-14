@@ -7,6 +7,8 @@ chat.colours = {};
 chat.messages.PM_NOT_SPAWNED		= 'Player {0} is not spawned.';
 chat.messages.PM_NOT_IN_VEHICLE		= 'Player {0} is not in a vehicle.';
 chat.messages.PM_INVALID_OPTION		= 'Invalid option. Available options are {0}. You typed: {1}';
+chat.messages.PM_INVALID_COMMAND	= 'Command /{0} not found.';
+chat.messages.PM_INVALID_KEY		= 'Key {0} not found.';
 chat.messages.PM_ELEMENT_NOT_FOUND	= '{0} not found. You typed: {1}';
 chat.messages.PM_MODEL_NOT_FOUND	= '{0} model not found. You typed: {1}';
 chat.messages.PM_INT_TOO_BIG		= 'Maximum number for {0} is {1}. You typed: {2}';
@@ -59,6 +61,16 @@ chat.notInVehicle = function(client, targetClient)
 chat.invalidModel = function(client, elementTypeId, inputText)
 {
 	chat.pm(client, chat.messages.PM_MODEL_NOT_FOUND, util.getElementTypeName(elementTypeId), inputText);
+};
+
+chat.invalidCommand = function(client, inputText)
+{
+	chat.pm(client, chat.messages.PM_INVALID_COMMAND, inputText);
+};
+
+chat.invalidKey = function(client, inputText)
+{
+	chat.pm(client, chat.messages.PM_INVALID_KEY, inputText);
 };
 
 chat.intTooBig = function(client, intName, max, inputText)

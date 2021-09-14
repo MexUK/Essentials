@@ -1743,6 +1743,31 @@ util.minute = (minute) =>
 	return minute < 10 ? ('0' + minute) : minute;
 };
 
+util.key = (text) =>
+{
+	if(text === undefined)
+		return;
+	return (text >= 'A' && text <= 'Z')
+		|| (text >= 'a' && text <= 'z')
+		|| (text >= '0' && text <= '9')
+		? text[0]
+		: null;
+};
+
+util.command = (text) =>
+{
+	if(text === undefined)
+		return text;
+	if(text[0] == '/')
+		text = text.substr(1);
+	return text;
+};
+
+util.isKey = (text) =>
+{
+	return util.key(text) != null;
+};
+
 util.vec3 = (inputText, defaultValue) =>
 {
 	if(inputText === undefined)
@@ -1965,6 +1990,32 @@ addNetworkHandler('requestClientFunctionCall', (client, result) =>
 	var callback = requestClientFunctionCalls.get(client);
 	requestClientFunctionCalls.delete(client);
 	callback(result);
+});
+
+util.getResolvedItem = (itemName) =>
+{
+	var o = global;
+	var parts = itemName.split('.');
+	for(var i in parts)
+		o = o[parts[i]];
+	return o;
+};
+
+util.clientFunctionCalls =
+[
+	'keyBinds.onClientKeyDown'
+];
+
+addNetworkHandler('callServerFunction', (client, functionName, ...args) =>
+{
+	for(var i in util.clientFunctionCalls)
+	{
+		if(functionName == util.clientFunctionCalls[i])
+		{
+			util.getResolvedItem(functionName)(client, ...args);
+			break;
+		}
+	}
 });
 
 util.callClientFunction = (client, functionName, ...args) =>

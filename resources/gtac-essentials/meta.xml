@@ -42,6 +42,7 @@
 	<script src="code/scripts/command-aliases/CommandAliasesS.js" type="server" language="javascript" />
 	
 	<script src="code/scripts/key-binds/KeyBindsS.js" type="server" language="javascript" />
+	<script src="code/scripts/key-binds/KeyBindsC.js" type="client" language="javascript" />
 	
 	<script src="code/scripts/temp-vehicles/TempVehiclesS.js" type="server" language="javascript" />
 	
