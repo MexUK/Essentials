@@ -223,7 +223,7 @@ xml.removeAttr2 = (path, tag, matchAttributes) =>
 		var matchCount = 0;
 		for(var k in matchAttributes)
 		{
-			if(attr[k.toLowerCase()] == matchAttributes[k].toLowerCase())
+			if(attr[k.toLowerCase()] == matchAttributes[k].toString().toLowerCase())
 			{
 				matchCount++;
 			}

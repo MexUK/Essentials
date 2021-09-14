@@ -1044,6 +1044,31 @@ cmds.second = (client, _second) =>
 	gta.time.second = second;
 };
 
+cmds.kill = (client,) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	chat.all(client.name + " killed themself via command.");
+	util.callClientFunction(client, 'generic.setLocalPlayerHealth', 0.0);
+};
+
+cmds.killplayer = (client, _target) =>
+{
+	if(_target === undefined)
+		return chat.pm(client, "You didn't type a player name.");
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	chat.all(client.name + " killed " + target.name + " via command.");
+	util.callClientFunction(target, 'generic.setLocalPlayerHealth', 0.0);
+};
+
 
 
 
