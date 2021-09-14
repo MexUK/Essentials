@@ -11,4 +11,8 @@
 	<Command name="removesphere" level="5" />
 	<Command name="removeblip" level="5" />
 	<Command name="removeped" level="5" />
+	<Command name="setlevel" level="8" />
+	<Command name="setcommandlevel" level="8" />
+	<Command name="disablecommand" level="8" />
+	<Command name="enablecommand" level="8" />
 </Root>

@@ -16,7 +16,20 @@ events.onPlayerJoined.push((event, client) =>
 });
 
 // commands
-cmds.level = (client, _target, _newLevel) =>
+cmds.level = (client, _target) =>
+{
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var level = admin.getClientLevel(target);
+	chat.all("Admin level for " + target.name+" is " + level + ".");
+};
+
+cmds.setlevel = (client, _target, _newLevel) =>
 {
 	var target = util.findClient(_target, client);
 	if(!target)
@@ -27,7 +40,7 @@ cmds.level = (client, _target, _newLevel) =>
 	
 	var level = admin.getClientLevel(target);
 	if(_newLevel === undefined)
-		return chat.all("Admin level for " + target.name+" is " + level + ".");
+		return chat.pm(client, "You didn't type a new player level.");
 	
 	var newLevel = util.int(_newLevel, 0);
 	var minNewLevel = -2000000000;
@@ -45,7 +58,20 @@ cmds.level = (client, _target, _newLevel) =>
 	admin.setClientLevel(target, newLevel);
 };
 
-cmds.commandlevel = (client, _commandName, _newLevel) =>
+cmds.commandlevel = (client, _commandName) =>
+{
+	if(_commandName === undefined)
+		return chat.pm(client, "You didn't type a command name.");
+	
+	if(!util.isCommand(_commandName))
+		return chat.pm(client, 'Command not found.');
+	
+	var commandName = _commandName;
+	var level = admin.getCommandLevel(commandName);
+	chat.all("Command level for /" + commandName + " is " + level + ".");
+};
+
+cmds.setcommandlevel = (client, _commandName, _newLevel) =>
 {
 	if(_commandName === undefined)
 		return chat.pm(client, "You didn't type a command name.");
@@ -57,7 +83,7 @@ cmds.commandlevel = (client, _commandName, _newLevel) =>
 	var oldLevel = admin.getCommandLevel(commandName);
 	
 	if(_newLevel === undefined)
-		return chat.all("Command level for /"+commandName+" is "+oldLevel + ".");
+		return chat.pm(client, "You didn't type a new command level.");
 	
 	var newLevel = util.int(_newLevel, 0);
 	var minNewLevel = -2000000000;

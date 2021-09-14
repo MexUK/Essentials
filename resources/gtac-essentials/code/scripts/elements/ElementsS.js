@@ -560,6 +560,40 @@ cmds.nearblips = (client, _distanceAway) =>
 		chat.all(client.name + " is near " + util.plural('blip', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
+cmds.nearplayers = (client, _distanceAway) =>
+{
+	[_distanceAway] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v) && util.between(util.float(v), -elements.near.maxDistanceAway, elements.near.maxDistanceAway),
+	],
+	[
+		elements.near.defaultDistanceAway
+	], _distanceAway);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var distanceAway = util.float(_distanceAway);
+	if(distanceAway < -elements.near.maxDistanceAway || distanceAway > elements.near.maxDistanceAway)
+		return chat.intBetween(client, 'Distance Away', -elements.near.maxDistanceAway, elements.near.maxDistanceAway, _distanceAway);
+	
+	var near = [];
+	var clientPosition = client.player.position;
+	getClients().map(v =>
+	{
+		if(v != client && v.player && v.player.position.distance(clientPosition) <= distanceAway)
+		{
+			near.push(client);
+		}
+	});
+	near = near.map(v => v.name);
+	
+	if(near.length == 0)
+		chat.all(client.name + " is not near any players. (" + distanceAway + " units)");
+	else
+		chat.all(client.name + " is near " + util.plural('player', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+};
+
 
 
 
