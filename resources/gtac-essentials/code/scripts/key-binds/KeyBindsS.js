@@ -25,12 +25,12 @@ keyBinds.onClientKeyDown = (client, keyCode) =>
 	if(!keyBinds.isKeyBound(client, key))
 		return;
 	
-	var command = keyBinds.getBoundCommand(client, key);
-	cmds[command.toLowerCase()](client);
+	var [command, args] = keyBinds.getBoundCommand(client, key);
+	cmds[command.toLowerCase()](client, ...args);
 };
 
 // commands
-cmds.key = (client, _key, _cmd) =>
+cmds.key = (client, _key, _cmd, ...args) =>
 {
 	var key = util.key(_key);
 	
@@ -39,9 +39,9 @@ cmds.key = (client, _key, _cmd) =>
 	
 	if(_cmd === undefined)
 	{
-		var command = keyBinds.getBoundCommand(client, key);
+		var [command, args] = keyBinds.getBoundCommand(client, key);
 		if(command)
-			return chat.all(client.name + " has command /" + command + " bound to key " + key + ".");
+			return chat.all(client.name + " has command /" + command + (args.length == 0 ? '' : (' ' + args.join(' '))) + " bound to key " + key + ".");
 		else
 			return chat.all(client.name + " doesn't have a command bound to key " + key + ".");
 	}
@@ -51,8 +51,8 @@ cmds.key = (client, _key, _cmd) =>
 	if(!util.isCommand(cmd))
 		return chat.invalidCommand(client, _cmd);
 	
-	chat.all(client.name + " binded " + key + " key to command /" + cmd);
-	keyBinds.bindKey(client, key, cmd);
+	chat.all(client.name + " binded " + key + " key to command /" + cmd + (args.length == 0 ? '' : (' ' + args.join(' '))));
+	keyBinds.bindKey(client, key, cmd, args);
 };
 
 cmds.unkey = (client, _key) =>
@@ -65,8 +65,8 @@ cmds.unkey = (client, _key) =>
 	if(!keyBinds.isKeyBound(client, key))
 		return chat.pm(client, "You don't have key " + key + " bound to a command.");
 	
-	var command = keyBinds.getBoundCommand(client, key);
-	chat.all(client.name + " unbinded " + key + " key from command /" + command);
+	var [command, args] = keyBinds.getBoundCommand(client, key);
+	chat.all(client.name + " unbinded " + key + " key from command /" + command + (args.length == 0 ? '' : (' ' + args.join(' '))) + ".");
 	keyBinds.unbindKey(client, key);
 };
 
@@ -86,19 +86,20 @@ cmds.keys = (client) =>
 
 
 
-keyBinds.createKeyBind = (client, key, cmd) =>
+keyBinds.createKeyBind = (client, key, cmd, args) =>
 {
-	clientData.setmap(client, 'keys', key, cmd);
+	clientData.setmap(client, 'keys', key, [cmd, args]);
 };
 
-keyBinds.bindKey = (client, key, cmd) =>
+keyBinds.bindKey = (client, key, cmd, args) =>
 {
-	keyBinds.createKeyBind(client, key, cmd);
+	keyBinds.createKeyBind(client, key, cmd, args);
 	xml.setAttr2(keyBinds.path, 'Key', {
 		name:		client.name
 	}, {
 		key:		key,
-		command:	cmd
+		command:	cmd,
+		args:		(args.length == 0 ? '' : args.join(' '))
 	});
 };
 
