@@ -24,3 +24,9 @@ cmds.unkey = (client, _key) =>
 	chat.all(client.name + " unbinded " + _key + " key from command /" + _cmd);
 	clientData.unsetmap(client, 'keys', _key);
 };
+
+cmds.keys = (client, _key) =>
+{
+	chat.all(client.name + " unbinded " + _key + " key from command /" + _cmd);
+	clientData.unsetmap(client, 'keys', _key);
+};

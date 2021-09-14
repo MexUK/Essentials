@@ -1,8 +1,17 @@
 global.teleports = {};
 
-teleports.path = 'data/scripts/teleports/Teleports.xml';
+teleports.path = 'data/scripts/teleports/{0}/Teleports.xml';
 
 teleports.teleports = [];
+
+teleports.gameFolderNames =
+[
+	'unknown',
+	'iii',
+	'vc',
+	'sa',
+	'iv'
+];
 
 // commands
 cmds.teleport = (client, _teleportName) =>
@@ -14,11 +23,7 @@ cmds.teleport = (client, _teleportName) =>
 		return chat.notSpawned(client, client);
 	
 	if(teleports.isTeleport(_teleportName))
-	{
-		var teleportName = _teleportName;
-		teleports.gotoTeleport(client, teleportName);
-		return chat.all(client.name + ' teleported to ' + teleportName + '.');
-	}
+		return chat.pm(client, "Teleport already exists.");
 	
 	var teleportName = _teleportName;
 	chat.all(client.name + " added teleport " + teleportName + ".");
@@ -66,13 +71,32 @@ cmds.gototeleport = (client, _teleportName) =>
 	teleports.gotoTeleport(client, teleportName);
 };
 
+cmds.updateteleport = (client, _teleportName) =>
+{
+	if(_teleportName === undefined)
+		return chat.pm(client, "You didn't type a teleport name.");
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(!teleports.isTeleport(_teleportName))
+		return chat.pm(client, "Teleport doesn't exist.");
+	
+	var teleportName = _teleportName;
+	chat.all(client.name + " updated teleport " + teleportName + ".");
+	
+	var position = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	var rotation = client.player.vehicle ? client.player.vehicle.getRotation() : new Vec3(0.0, 0.0, client.player.heading);
+	teleports.updateTeleport(teleportName, position, rotation);
+};
 
 
 
 
 
 
-teleports.getPath = () => teleports.path(server.game);
+
+teleports.getPath = () => util.format(teleports.path, teleports.gameFolderNames[server.game]);
 
 teleports.getTeleportData = (name) =>
 {
@@ -104,7 +128,7 @@ teleports.createTeleport = (name, position, rotation) =>
 teleports.addTeleport = (name, position, rotation) =>
 {
 	teleports.createTeleport(name, position, rotation);
-	xml.add(teleports.path, 'Teleport', {
+	xml.add(teleports.getPath(), 'Teleport', {
 		name:		name,
 		position:	util.posArray(position).join(','),
 		rotation:	util.rotArray(rotation, true).join(',')
@@ -122,13 +146,22 @@ teleports.removeTeleport = (name) =>
 			break;
 		}
 	}
-	xml.remove(teleports.path, 'Teleport', 'name', name);
+	xml.remove(teleports.getPath(), 'Teleport', 'name', name);
 };
 
 teleports.gotoTeleport = (client, name) =>
 {
 	var data = teleports.getTeleportData(name);
 	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', data.position, data.rotation);
+};
+
+teleports.updateTeleport = (name, position, rotation) =>
+{
+	var data = teleports.getTeleportData(name);
+	data.position = position;
+	data.rotation = rotation;
+	xml.setAttr(teleports.getPath(), 'Teleport', 'name', name, 'position', util.posArray(position).join(','));
+	xml.setAttr(teleports.getPath(), 'Teleport', 'name', name, 'rotation', util.rotArray(rotation, true).join(','));
 };
 
 
@@ -138,6 +171,6 @@ teleports.gotoTeleport = (client, name) =>
 
 (() =>
 {
-	xml.load(teleports.path, 'Teleport', (data) => teleports.createTeleport(data.name, util.vec3(data.position), util.vec3Rot(data.rotation, true)));
+	xml.load(teleports.getPath(), 'Teleport', (data) => teleports.createTeleport(data.name, util.vec3(data.position), util.vec3Rot(data.rotation, true)));
 })();
 
