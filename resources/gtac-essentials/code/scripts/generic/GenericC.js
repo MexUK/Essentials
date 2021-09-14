@@ -3,7 +3,7 @@ global.generic = {};
 generic.spawnArmour = null;
 generic.spawnHealth = null;
 
-generic.setLocalPlayerPositionRotation = function(position, heading)
+generic.setLocalPlayerPositionRotation = function(position, rotation)
 {
 	if(!localClient.player)
 		return;
@@ -11,12 +11,12 @@ generic.setLocalPlayerPositionRotation = function(position, heading)
 	if(localPlayer.vehicle)
 	{
 		localPlayer.vehicle.position = position;
-		localPlayer.vehicle.heading = heading;
+		localPlayer.vehicle.setRotation(rotation);
 	}
 	else
 	{
 		localPlayer.position = position;
-		localPlayer.heading = heading;
+		localPlayer.heading = rotation.z;
 	}
 };
 

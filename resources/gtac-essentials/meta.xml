@@ -45,6 +45,8 @@
 	
 	<script src="code/scripts/temp-vehicles/TempVehiclesS.js" type="server" language="javascript" />
 	
+	<script src="code/scripts/teleports/TeleportsS.js" type="server" language="javascript" />
+	
 	<script src="code/scripts/weapons/WeaponsS.js" type="server" language="javascript" />
 	<script src="code/scripts/weapons/WeaponsC.js" type="client" language="javascript" />
 	

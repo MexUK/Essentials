@@ -36,7 +36,7 @@ cmds.commandalias = (client, _commandName, _commandAlias) =>
 	var commandAlias = _commandAlias;
 	chat.all(client.name + " added command alias /" + commandAlias + " for command /" + commandName + ".");
 	
-	commandAliases.addCommandAlias(_commandName, commandAlias);
+	commandAliases.addCommandAlias(commandName, commandAlias);
 };
 
 cmds.removecommandalias = (client, _commandName) =>
@@ -55,7 +55,7 @@ cmds.removecommandalias = (client, _commandName) =>
 	var commandAliasOf = commandAliases.getCommandAliasOf(commandName);
 	chat.all(client.name + " removed command alias /" + commandName + " from command /" + commandAliasOf.original + ".");
 	
-	commandAliases.removeCommandAlias(_commandName);
+	commandAliases.removeCommandAlias(commandName);
 };
 
 cmds.commandaliases = (client) =>

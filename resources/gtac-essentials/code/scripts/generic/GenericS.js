@@ -223,7 +223,7 @@ cmds['goto'] = (client, _target, _radius) =>
 	targetPosition = targetPosition.addPolar(radius, target.player.heading + Math.PI/2.0);
 	var targetHeading = (target.player.vehicle ? target.player.vehicle.heading : target.player.heading) + Math.PI;
 	
-	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', targetPosition, targetHeading);
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', targetPosition, new Vec3(0.0, 0.0, targetHeading));
 	client.player.interior = target.player.interior;
 };
 
@@ -265,7 +265,7 @@ cmds['get'] = (client, _target, _radius) =>
 	clientPosition = clientPosition.addPolar(radius, client.player.heading + Math.PI/2.0);
 	var clientHeading = (client.player.vehicle ? client.player.vehicle.heading : client.player.heading) + Math.PI;
 	
-	util.callClientFunction(target, 'generic.setLocalPlayerPositionRotation', clientPosition, clientHeading);
+	util.callClientFunction(target, 'generic.setLocalPlayerPositionRotation', clientPosition, new Vec3(0.0, 0.0, clientHeading));
 	target.player.interior = client.player.interior;
 };
 
