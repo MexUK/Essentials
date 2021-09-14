@@ -1292,10 +1292,13 @@ util.addPair = function(object, queue, key, value, maxPairs)
 // ped
 util.getRandomPedModel = function()
 {
-	var skin = Math.floor(Math.random() * 196);
-	if(skin == 8)
-		skin = 9;
-	return skin;
+	for(;;)
+	{
+		var model = util.rand(util.getMinPedModel(), util.getMaxPedModel());
+		if(util._in(util.getInvalidPedModels(), model))
+			continue;
+		return model;
+	}
 };
 
 // position
