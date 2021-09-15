@@ -1069,6 +1069,35 @@ cmds.killplayer = (client, _target) =>
 	util.callClientFunction(target, 'generic.setLocalPlayerHealth', 0.0);
 };
 
+cmds.bounds = (client, _target, _state) =>
+{
+	[_target, _state] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target, _state);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_state === undefined)
+		return util.requestClientVariable(target, 'generic.drawBounds', (state) => chat.all(target.name + " collision boundaries are set to " + (state ? "" : "not ") + "render."));
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Bleeding', _state);
+	
+	chat.all(client.name + " set collision boundaries to " + (state ? "" : "not ") + "render for " + target.name + ".");
+	util.callClientFunction(target, 'generic.setLocalPlayerDrawBounds', state);
+};
+
 
 
 

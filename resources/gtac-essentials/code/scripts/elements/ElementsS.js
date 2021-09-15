@@ -742,6 +742,163 @@ cmds.removeped = (client, _elementId) =>
 
 
 
+elements.getElementTypeName = (elementId) =>
+{
+	switch(getElementFromId(elementId).type)
+	{
+		case ELEMENT_OBJECT:	return 'Object';
+		case ELEMENT_VEHICLE:	return 'Vehicle';
+		case ELEMENT_PICKUP:	return 'Pickup';
+		case ELEMENT_MARKER:	return 'Sphere';
+		case ELEMENT_PED:		return 'Peds';
+		case ELEMENT_BLIP:		return 'Blips';
+	}
+	return 'Unknown';
+};
+
+elements.isElementOnScreen = (client, elementId, onScreen) =>
+{
+	chat.all(elements.getElementTypeName(elementId) + " ID " + elementId + " is " + (onScreen ? '' : 'not ') + 'on ' + client.name + "'s screen.");
+};
+
+cmds.isobjectonscreen = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an object ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_OBJECTS)
+		return chat.intBetween(client, 'Object ID', 0, elements.MAX_OBJECTS, _elementId);
+	
+	if(!elements.isObject(elementId))
+		return chat.pm(client, 'Object ID ' + elementId + ' does not exist.');
+	
+	util.callClientMethod(client, 'elements.isElementOnScreen', elementId);
+};
+
+cmds.isvehicleonscreen = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_VEHICLES)
+		return chat.intBetween(client, 'Vehicle ID', 0, elements.MAX_VEHICLES, _elementId);
+	
+	if(!elements.isVehicle(elementId))
+		return chat.pm(client, 'Vehicle ID ' + elementId + ' does not exist.');
+	
+	util.callClientMethod(client, 'elements.isElementOnScreen', elementId);
+};
+
+cmds.ispickuponscreen = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an pickup ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_PICKUPS)
+		return chat.intBetween(client, 'Pickup ID', 0, elements.MAX_PICKUPS, _elementId);
+	
+	if(!elements.isPickup(elementId))
+		return chat.pm(client, 'Pickup ID ' + elementId + ' does not exist.');
+	
+	util.callClientMethod(client, 'elements.isElementOnScreen', elementId);
+};
+
+cmds.issphereonscreen = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an sphere ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_SPHERES)
+		return chat.intBetween(client, 'Sphere ID', 0, elements.MAX_SPHERES, _elementId);
+	
+	if(!elements.isSphere(elementId))
+		return chat.pm(client, 'Sphere ID ' + elementId + ' does not exist.');
+	
+	util.callClientMethod(client, 'elements.isElementOnScreen', elementId);
+};
+
+cmds.ispedonscreen = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an ped ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_PEDS)
+		return chat.intBetween(client, 'Ped ID', 0, elements.MAX_PEDS, _elementId);
+	
+	if(!elements.isPed(elementId))
+		return chat.pm(client, 'Ped ID ' + elementId + ' does not exist.');
+	
+	util.callClientMethod(client, 'elements.isElementOnScreen', elementId);
+};
+
+cmds.isbliponscreen = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v),
+	],
+	[
+	], _elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an blip ID.");
+	
+	var elementId = util.int(_elementId);
+	if(elementId < 0 || elementId > elements.MAX_BLIPS)
+		return chat.intBetween(client, 'Blip ID', 0, elements.MAX_BLIPS, _elementId);
+	
+	if(!elements.isBlip(elementId))
+		return chat.pm(client, 'Blip ID ' + elementId + ' does not exist.');
+	
+	util.callClientMethod(client, 'elements.isElementOnScreen', elementId);
+};
+
+
+
+
+
+
+
 // objects
 elements.addObject = (model, position, rotation) =>
 {

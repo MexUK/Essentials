@@ -52,6 +52,7 @@ mapper.cameraZoom = 10.0;
 mapper.objectStepUsingBB = true;
 mapper.objectPositionStep = new Vec3(1.0, 0.0, 0.0);
 mapper.objectRotationStep = new Vec3(0.0, 0.0, 0.0);
+mapper.joinIndex = 0;
 
 // window
 mapper.init = function()
@@ -105,6 +106,12 @@ mapper.init = function()
 		}
 	};
 	
+	bindKey(SDLK_F1, KEYSTATE_DOWN, function(e)
+	{
+		gui.showCursor(!gui.cursorEnabled, false);
+		mapper.window.shown = !mapper.window.shown;
+	});
+	
 	bindKey(SDLK_F2, KEYSTATE_DOWN, function(e)
 	{
 		mapper.toggleMapEditor('');
@@ -118,11 +125,6 @@ mapper.init = function()
 		mapper.window.shown = show;
 		gui.showCursor(show, false);
 		*/
-	});
-	
-	bindKey(SDLK_F3, KEYSTATE_DOWN, function(e)
-	{
-		gui.showCursor(!gui.cursorEnabled, false);
 	});
 	
 	var titleStep = 30;
@@ -642,7 +644,9 @@ mapper.addNextObject = function()
 	var bbd = bb.y;
 	var usew = true;
 	var bbl = usew ? bbw : bbd;
-	var newObjectPosition = mapper.object.position.addPolar(bbl, mapper.objectToCameraZRotation + util.radians(180.0));
+	var newObjectPosition = mapper.object.position.addPolar(bbl, mapper.object.heading + util.radians(90.0));
+	//var pos = mapper.object.position;
+	//var newObjectPosition = new Vec3(pos.x + bb.x, pos.y, pos.z);
 	
 	mapper.object = mapper.createObject(mapper.object.modelIndex, newObjectPosition);
 	mapper.object.setRotation(newObjectRotation);
@@ -1026,19 +1030,24 @@ mapper.checkToJoinObject = function()
 
 mapper.joinObject = function()
 {
-	var index = (isKeyDown(SDLK_UP) || isKeyDown(SDLK_w)) ? 0
-			: ((isKeyDown(SDLK_DOWN) || isKeyDown(SDLK_s)) ? 1
-			: ((isKeyDown(SDLK_LEFT) || isKeyDown(SDLK_a)) ? 2
-			: ((isKeyDown(SDLK_RIGHT || isKeyDown(SDLK_d)) ? 3
-			: 4))));
-	if(index > 3)
+	if(!isKeyDown(SDLK_LEFT) && !isKeyDown(SDLK_RIGHT))
 		return;
+	
+	var multiplier = isKeyDown(SDLK_LEFT) ? -1 : 1;
+	
+	mapper.setObjectJoinIndex(mapper.joinIndex);
+	
+	var max = 5;
+	mapper.joinIndex += multiplier;
+	if(mapper.joinIndex > max)
+		mapper.joinIndex = 0;
+	else if(mapper.joinIndex < 0)
+		mapper.joinIndex = max;
 	
 	//var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	//mapper.addJoinedObject(util.radians(anglesDeg[index]));
 	
-	mapper.storeActiveObject();
-	mapper.addJoinedObject(index);
+	//mapper.storeActiveObject();
 };
 
 // fill objects
@@ -1122,7 +1131,7 @@ mapper.getObjectCentrePosition = function()
 };
 
 // object joining
-mapper.addJoinedObject = function(index)
+mapper.setObjectJoinIndex = function(joinIndex)
 {
 	var pos = mapper.object.position;
 	var rot = mapper.object.getRotation();
@@ -1130,84 +1139,44 @@ mapper.addJoinedObject = function(index)
 	rot.x += mapper.objectRotationStep.x;
 	rot.y += mapper.objectRotationStep.y;
 	rot.z += mapper.objectRotationStep.z;
-		
-	if(mapper.ui.posStepType.selectedEntryIndex == 0)
-	{
-		pos.x += mapper.objectPositionStep.x;
-		pos.y += mapper.objectPositionStep.y;
-		pos.z += mapper.objectPositionStep.z;
-	}
-	else if(mapper.ui.posStepType.selectedEntryIndex == 1)
-	{
-		
-	}
-	else if(mapper.ui.posStepType.selectedEntryIndex == 2)
-	{
-		var bb = mapper.getColSize();
-		var anglesDeg = [180.0, 0.0, 270.0, 90.0];
-		var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[index]);
-		var zrotdeg = util.degrees(rot.z - camToObZRot) % 360.0;
-		while(zrotdeg < 0.0)
-			zrotdeg += 360.0;
-		var front = zrotdeg >= 315.0 || zrotdeg < 45.0;
-		var back = zrotdeg >= 135.0 && zrotdeg < 225.0;
-		var left = zrotdeg >= 45.0 && zrotdeg < 135.0;
-		var right = zrotdeg >= 225.0 && zrotdeg < 315.0;
-		//console.log('zrotdeg='+zrotdeg+', front='+front+', back='+back+', left='+left+', right='+right);
-		
-		
-		var lastObject = mapper.objects[mapper.objects.length - 1];
-		var lastPos = lastObject.position;
-		var lastRot = lastObject.getRotation();
-		
-		var halfbb = new Vec3(bb.x/2.0, bb.y/2.0, bb.z/2.0);
-		
-		var m = new Matrix4x4;
-		m.setIdentity();
-		m.setRotate(rot);
-		
-		var offset = new Vec3(0.0, 0.0, 0.0);
-		var axis = (front || back) ? 0 : 1;
-		offset[axis] = (back || left) ? -halfbb[axis] : halfbb[axis];
-		
-		var pos2 = translate(m, offset);
-		m.setRotate(lastRot);
-		
-		var vec = translate(m, offset);
-		pos2.x += lastPos.x + vec.x;
-		pos2.y += lastPos.y + vec.y;
-		pos2.z += lastPos.z + vec.z;
-		
-		pos = pos2;
-		
-		//var rot2 = rot;
-		
-		/*
-		rot2.x += mapper.objectRotationStep.x;
-		rot2.y += mapper.objectRotationStep.y;
-		rot2.z += mapper.objectRotationStep.z;
-		*/
-		
-		/*
-		var m = new Matrix4x4;
-		m.setIdentity();
-		m.setRotate(rot);
-		
-		var offset = new Vec3(0.0, 0.0, 0.0);
-		var axis = (front || back) ? 0 : 1;
-		offset[axis] = ((back || left) ? -bb[axis] : bb[axis]) * mapper.bbMultiplier[axis];
-		
-		var offset2 = translate(m, offset);
-		pos.x += offset2.x;
-		pos.y += offset2.y;
-		pos.z += offset2.z;
-		
-		//var lastObject = mapper.objects[mapper.objects.length - 1];
-		//var lastRot = lastObject.getRotation();
-		*/
-	}
 	
-	mapper.object = mapper.createObject(mapper.object.modelIndex, pos);
+	var bb = mapper.getColSize();
+	var anglesDeg = [180.0, 0.0, 270.0, 90.0];
+	var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[joinIndex]);
+	var zrotdeg = util.degrees(rot.z - camToObZRot) % 360.0;
+	while(zrotdeg < 0.0)
+		zrotdeg += 360.0;
+	var front = zrotdeg >= 315.0 || zrotdeg < 45.0;
+	var back = zrotdeg >= 135.0 && zrotdeg < 225.0;
+	var left = zrotdeg >= 45.0 && zrotdeg < 135.0;
+	var right = zrotdeg >= 225.0 && zrotdeg < 315.0;
+	//console.log('zrotdeg='+zrotdeg+', front='+front+', back='+back+', left='+left+', right='+right);
+	
+	var lastObject = mapper.objects[mapper.objects.length - 1];
+	var lastPos = lastObject.position;
+	var lastRot = lastObject.getRotation();
+	
+	var halfbb = new Vec3(bb.x/2.0, bb.y/2.0, bb.z/2.0);
+	
+	var m = new Matrix4x4;
+	m.setIdentity();
+	m.setRotate(rot);
+	
+	var offset = new Vec3(0.0, 0.0, 0.0);
+	var axis = (front || back) ? 0 : 1;
+	offset[axis] = (back || left) ? -halfbb[axis] : halfbb[axis];
+	
+	var pos2 = translate(m, offset);
+	m.setRotate(lastRot);
+	
+	var vec = translate(m, offset);
+	pos2.x += lastPos.x + vec.x;
+	pos2.y += lastPos.y + vec.y;
+	pos2.z += lastPos.z + vec.z;
+	
+	pos = pos2;
+	
+	mapper.object.position = pos;
 	mapper.object.setRotation(rot);
 	
 	mapper.updateCamera();

@@ -19,4 +19,6 @@
 	<Command name="removespawn" level="6" />
 	<Command name="killplayer" level="5" />
 	<Command name="mapper" level="8" />
+	<Command name="spawnhealth" level="6" />
+	<Command name="spawnarmour" level="6" />
 </Root>
