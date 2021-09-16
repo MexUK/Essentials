@@ -354,16 +354,15 @@ addEventHandler('onProcess', function(e,delta)
 	
 	//if(mapper.object.position.z < -50.0)
 	//	mapper.snapToGround();
-	
-	if(mapper.mode == mapper.modes.CHOOSE_OBJECT || (mapper.mode == mapper.modes.PLACE_OBJECT && mapper.placeObjectMode == mapper.placeObjectModes.POSITION))
-	{
-		mapper.moveObjectXY();
-		mapper.moveObjectZ();
-	}
-	
+
 	if(mapper.mode == mapper.modes.PLACE_OBJECT)
 	{
-		if(mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
+		if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION)
+		{
+			mapper.moveObjectXY();
+			mapper.moveObjectZ();
+		}
+		else if(mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
 		{
 			mapper.rotateObjectXY();
 			mapper.rotateObjectZ();
@@ -1056,7 +1055,6 @@ mapper.moveObjectXY = function()
 	var shift = lshift || rshift;
 	
 	var keysHeadingDeg = mapper.getKeysHeading(left, right, up, down);
-	var cameraHeadingRad = ((Math.floor((mapper.objectToCameraZRotation + (Math.PI / 4.0)) / (Math.PI / 2.0)) % 4) + 1) * (Math.PI / 2.0);
 	
 	var radius;
 	if(shift)
@@ -1066,7 +1064,11 @@ mapper.moveObjectXY = function()
 	
 	var heading;
 	if(mapper.axisMode == mapper.axisModes.OBJECT)
-		heading = mapper.object.heading + ((cameraHeadingRad + util.radians(keysHeadingDeg)) - (Math.PI / 2.0));
+	{
+		var halfPI = Math.PI / 2.0;
+		var cameraHeadingRad = ((Math.floor((mapper.objectToCameraZRotation + (Math.PI / 4.0)) / halfPI) % 4) + 1) * halfPI;
+		heading = (cameraHeadingRad + util.radians(keysHeadingDeg)) - (Math.PI / 2.0);
+	}
 	else if(mapper.axisMode == mapper.axisModes.CAMERA)
 		heading = mapper.objectToCameraZRotation + util.radians(keysHeadingDeg);
 	
