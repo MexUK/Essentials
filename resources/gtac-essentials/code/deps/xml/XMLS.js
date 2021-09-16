@@ -381,7 +381,15 @@ xml.save = (path, tag, data, attributes) =>
 		var element = new XmlElement2();
 		element.name = tag;
 		for(var i2 in attributes)
-			element.attributes[i2] = new XmlAttribute2(attributes[i2], util.toString(data[i][attributes[i2]]));
+		{
+			var value = data[i][attributes[i2]];
+			if(attributes[i2] == 'rotation')
+				value = util.rotArray(value, true);
+			else if(attributes[i2] == 'heading')
+				value = util.degrees(value);
+			value = util.toString(value);
+			element.attributes[i2] = new XmlAttribute2(attributes[i2], value);
+		}
 		root2.children[i] = element;
 	}
 	
