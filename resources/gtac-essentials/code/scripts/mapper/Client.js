@@ -10,6 +10,10 @@ mapper.placeObjectModes.ROTATION = 2;
 mapper.placeObjectModes.JOIN = 3;
 mapper.placeObjectModes.FILL = 4;
 
+mapper.axisModes = {}
+mapper.axisModes.OBJECT = 1;
+mapper.axisModes.CAMERA = 2;
+
 mapper.modeNames = ['', 'Choose Object', 'Place Object'];
 mapper.placeObjectModeNames = ['', 'Position', 'Rotation', 'Join', 'Fill'];
 
@@ -19,11 +23,12 @@ mapper.window = null;
 mapper.ui = {};
 
 mapper.mode = mapper.modes.PLACE_OBJECT;
+mapper.placeObjectMode = mapper.placeObjectModes.POSITION;
+mapper.axisMode = mapper.axisModes.OBJECT;
 mapper.object = null;
 mapper.objectToCameraZRotation = 0.0;
 mapper.objectToCameraXYInclination = 0.0;
 mapper.moveZRotation = 0.0;
-mapper.placeObjectMode = mapper.placeObjectModes.POSITION;
 mapper.modelId = 0;
 mapper.objectPosition = null;
 
@@ -423,11 +428,13 @@ addEventHandler('onBeforeDrawHUD', function(e)
 		return;
 	
 	var placeModeName = mapper.getPlaceModeName();
-	var globalKeys = '1 2 3 4 + - G Enter PageUD # F1';
+	var globalKeys = '1 2 3 4 + - G X Enter PageUD # F1';
 	var modeKeys = mapper.getPlaceModeKeys();
 	var placeModeOption;
 	
-	if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
+	if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION)
+		placeModeOption = mapper.axisMode == mapper.axisModes.OBJECT ? 'Object Axis' : 'Camera Axis';
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
 		placeModeOption = 'Option ' + (mapper.joinIndex + 1) + '/' + mapper.joinCount;
 	
 	var colour = 0xff0398fc;
@@ -437,8 +444,8 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	var y;
 	
 	y = 250;
-	yStep = 50;
-	fontSize = 25.0;
+	yStep = 35;
+	fontSize = 18.0;
 	mapper.drawTextRight(50, y, 'Mapper', fontSize + 7.0, colour);
 	y += yStep + 20;
 	mapper.drawTextRight(50, y, mapper.object.modelIndex+'', fontSize, colour);
@@ -491,38 +498,14 @@ addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 	
 	var increaseBy = coords.y > 0.0 ? 1 : -1;
 	mapper.changeObjectModel(increaseBy);
+});
+
+bindKey(SDLK_x, KEYSTATE_DOWN, () =>
+{
+	if(!mapper.shown)
+		return;
 	
-	/*
-	//if(mapper.mode == mapper.modes.CHOOSE_OBJECT)
-	//{
-		var increaseBy = coords.y > 0.0 ? 1 : -1;
-		var modelId = mapper.object.modelIndex + increaseBy;
-		
-		//gta.REQUEST_COLLISION(localPlayer.position.x, localPlayer.poition.y);
-		//gta.REQUEST_MODEL(7885 + modelId);
-		//gta.LOAD_ALL_MODELS_NOW();
-		//gta.SET_OBJECT_COLLISION(modelId, 1);
-		
-		//requestModel(modelId+7885, 8);
-		//gta.LOAD_ALL_MODELS_NOW();
-		
-		mapper.setNextObjectModel(modelId, increaseBy);
-	//}
-	*/
-	
-	/*
-	else if(mapper.mode == mapper.modes.PLACE_OBJECT)
-	{
-		var offset = 0.05;
-		
-		if(coords.y > 0.0)
-			mapper.cameraZoom *= 1.0 - offset;
-		else
-			mapper.cameraZoom *= 1.0 + offset;
-		
-		mapper.updateCamera();
-	}
-	*/
+	mapper.axisMode = mapper.axisMode == mapper.axisModes.OBJECT ? mapper.axisModes.CAMERA : mapper.axisModes.OBJECT;
 });
 
 bindKey(SDLK_HASH, KEYSTATE_DOWN, () =>
@@ -701,6 +684,7 @@ mapper.startChoosingObject = function(modelId)
 {
 	mapper.mode = mapper.modes.PLACE_OBJECT;
 	mapper.placeObjectMode = mapper.placeObjectModes.POSITION;
+	mapper.axisMode = mapper.axisModes.OBJECT;
 	mapper.modelId = modelId;
 	mapper.objectToCameraZRotation = 0.0;
 	mapper.objectToCameraXYInclination = 0.0;
@@ -989,6 +973,36 @@ mapper.setObjectModel = function(modelId)
 };
 
 // move object
+mapper.getKeysHeading = (left, right, up, down) =>
+{
+	if(up)
+	{
+		if(left)
+			return -135.0;
+		else if(right)
+			return 135.0;
+		else
+			return 180.0;
+	}
+	else if(down)
+	{
+		if(left)
+			return -45.0;
+		else if(right)
+			return 45.0;
+		else
+			return 0.0;
+	}
+	else
+	{
+		if(left)
+			return -90.0;
+		else if(right)
+			return 90.0;
+	}
+	return 0.0;
+};
+
 mapper.moveObjectXY = function()
 {
 	var lcontrol = isKeyDown(SDLK_LCTRL);
@@ -1003,38 +1017,15 @@ mapper.moveObjectXY = function()
 	var left = isKeyDown(SDLK_LEFT) || isKeyDown(SDLK_a);
 	var right = isKeyDown(SDLK_RIGHT) || isKeyDown(SDLK_d);
 	
-	var rot;
-	if(up)
-	{
-		if(left)
-			rot = -135.0;
-		else if(right)
-			rot = 135.0;
-		else
-			rot = 180.0;
-	}
-	else if(down)
-	{
-		if(left)
-			rot = -45.0;
-		else if(right)
-			rot = 45.0;
-		else
-			rot = 0.0;
-	}
-	else
-	{
-		if(left)
-			rot = -90.0;
-		else if(right)
-			rot = 90.0;
-		else
-			return;
-	}
+	if(!(left || right || up || down))
+		return;
 	
 	var lshift = isKeyDown(SDLK_LSHIFT);
 	var rshift = isKeyDown(SDLK_RSHIFT);
 	var shift = lshift || rshift;
+	
+	var keysHeadingDeg = mapper.getKeysHeading(left, right, up, down);
+	var cameraHeadingRad = ((Math.floor((mapper.objectToCameraZRotation + (Math.PI / 4.0)) / (Math.PI / 2.0)) % 4) + 1) * (Math.PI / 2.0);
 	
 	var radius;
 	if(shift)
@@ -1042,7 +1033,14 @@ mapper.moveObjectXY = function()
 	else
 		radius = 1.0;
 	
-	mapper.setObjectPosition(mapper.object.position.addPolar(radius, mapper.objectToCameraZRotation + util.radians(rot)));
+	var heading;
+	if(mapper.axisMode == mapper.axisModes.OBJECT)
+		heading = mapper.object.heading + ((cameraHeadingRad + util.radians(keysHeadingDeg)) - (Math.PI / 2.0));
+	else if(mapper.axisMode == mapper.axisModes.CAMERA)
+		heading = mapper.objectToCameraZRotation + util.radians(keysHeadingDeg);
+	
+	var position = mapper.object.position.addPolar(radius, heading);
+	mapper.setObjectPosition(position);
 };
 
 mapper.moveObjectZ = function()
