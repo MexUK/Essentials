@@ -442,11 +442,14 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	var fontSize;
 	var y;
 	
-	y = 250;
+	y = 200;
+	yStep = 35;
+	fontSize = 25.0;
+	mapper.drawTextRight(50, y, 'Mapper', fontSize, colour);
+	
+	y += 100;
 	yStep = 35;
 	fontSize = 18.0;
-	mapper.drawTextRight(50, y, 'Mapper', fontSize + 7.0, colour);
-	y += yStep + 20;
 	mapper.drawTextRight(50, y, mapper.object.modelIndex+'', fontSize, colour);
 	y += yStep;
 	mapper.drawTextRight(50, y, placeModeName, fontSize, colour);
