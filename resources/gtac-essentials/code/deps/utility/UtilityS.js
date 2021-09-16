@@ -1678,7 +1678,7 @@ util.rotArray = (rot, deg) =>
 {
 	rot = [rot.x, rot.y, rot.z];
 	if(deg)
-		return util.degArr(util.array(rot));
+		return util.degArr(util.array(rot, 3));
 	else
 		return util.array(rot);
 		

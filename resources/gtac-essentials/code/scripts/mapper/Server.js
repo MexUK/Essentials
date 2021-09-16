@@ -13,7 +13,10 @@ mapper.storeActiveObject = (client, objectId, modelId, position, rotation) =>
 	if(!mapper.isEnabled(client))
 		return;
 	
-	elements.addObject(modelId, position, rotation);
+	if(elements.isObject(objectId))
+		elements.setObjectData(objectId, modelId, position, rotation);
+	else
+		elements.addObject(modelId, position, rotation);
 	
 	/*
 	var object = getElementFromId(objectId);

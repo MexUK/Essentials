@@ -946,8 +946,8 @@ elements.setObjectData = (elementId, model, position, rotation) =>
 		id:			elementId
 	}, {
 		model:		model,
-		position:	position,
-		rotation:	rotation
+		position:	util.posArray(position).join(','),
+		rotation:	util.rotArray(rotation, true).join(',')
 	});
 };
 

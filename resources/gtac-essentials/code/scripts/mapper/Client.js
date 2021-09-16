@@ -738,6 +738,16 @@ mapper.addNextObject = function()
 	mapper.updatePlayer();
 };
 
+mapper.getSecondObjectPositionOffset = (usew) =>
+{
+	var bb = mapper.getColSize();
+	var bbw = bb.x;
+	var bbd = bb.y;
+	usew = usew || true;
+	var bbl = usew ? bbw : bbd;
+	return (new Vec3(0.0, 0.0, 0.0)).addPolar(bbl, mapper.object.heading + util.radians(90.0));
+};
+
 // object collision size
 mapper.getMinVec = function(a, b)
 {
@@ -889,11 +899,32 @@ mapper.placeObject = function()
 	
 	mapper.storeActiveObject();
 	
+	var offset;
+	if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION
+	|| mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
+	{
+		if(mapper.objects.length == 1)
+		{
+			offset = mapper.getSecondObjectPositionOffset();
+		}
+		else
+		{
+			var position1 = mapper.objects[mapper.objects.length - 2].position;
+			var position2 = mapper.objects[mapper.objects.length - 1].position;
+			offset = new Vec3(position2.x - position1.x, position2.y - position1.y, position2.z - position1.z);
+		}
+	}
+	
 	mapper.addNextObject();
 	
-	if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
+	if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION
+	|| mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
 	{
-		mapper.setObjectJoinIndex(mapper.joinIndex);
+		mapper.setObjectPositionRotationByPositionOffset(offset);
+	}
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)	
+	{
+		mapper.setObjectPositionRotationByJoinIndex(mapper.joinIndex);
 	}
 };
 
@@ -1124,7 +1155,7 @@ mapper.rotateObjectXY = function()
 	
 	mapper.object.setRotation(rot);
 	
-	if(mapper.joinOnRotate)
+	if(mapper.window.shown && mapper.joinOnRotate)
 	{
 		mapper.joinToLastObject();
 	}
@@ -1187,7 +1218,7 @@ mapper.joinObject = function()
 	if(!mapper.canChangeJoinIndex())
 		return;
 	
-	mapper.setObjectJoinIndex(mapper.joinIndex);
+	mapper.setObjectPositionRotationByJoinIndex(mapper.joinIndex);
 	
 	//var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	//mapper.addJoinedObject(util.radians(anglesDeg[index]));
@@ -1327,10 +1358,26 @@ mapper.getJoinedObjectPosition = function(position, rotation, axis)
 	return point;
 };
 
-mapper.setObjectJoinIndex = function(joinIndex)
+mapper.setObjectPositionRotationByPositionOffset = function(offset)
 {
-	var lastObject = mapper.objects[mapper.objects.length - 1];
+	var object = mapper.objects[mapper.objects.length - 1];
+	var position = object.position;
+	var newObjectPosition = new Vec3(position.x + offset.x, position.y + offset.y, position.z + offset.z);
+	var newObjectRotation = object.getRotation();
 	
+	mapper.object.position = newObjectPosition;
+	mapper.object.setRotation(newObjectRotation);
+	
+	mapper.updateCamera();
+	mapper.updatePlayer();
+};
+
+mapper.setObjectPositionRotationByJoinIndex = function(joinIndex)
+{
+	if(mapper.objects.length == 0)
+		return;
+	
+	var lastObject = mapper.objects[mapper.objects.length - 1];
 	//var axis = mapper.joinObjectOptions[joinIndex];
 	
 	var newObjectPosition = mapper.getJoinedObjectPosition(lastObject.position, lastObject.getRotation(), joinIndex);
