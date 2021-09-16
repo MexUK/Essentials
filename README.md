@@ -22,5 +22,5 @@ To get started:
 
 5) Change the username to the name that you registered, then save the XML file.
 6) Start the server.
-7) To change a player's level, now use this command in-game: /level name level
-8) e.g. /level Mex 10
+7) To change a player's level, now use this command in-game: /setlevel name level
+8) e.g. /setlevel Mex 10
