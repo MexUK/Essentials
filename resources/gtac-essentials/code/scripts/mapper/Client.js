@@ -81,6 +81,15 @@ mapper.joinObjectOptions = [
 mapper.joinIndex = 0;
 mapper.joinCount = mapper.joinObjectOptions.length;
 
+mapper.colours =
+{
+	bb:			0xCF0000FF,
+	lines:		0xCFFF0000,
+	boxes:		0xCF00FF00,
+	spheres:	0xCFFFFF00,
+	vertices:	0xCFFF00FF
+};
+
 // window
 mapper.init = function()
 {
@@ -394,9 +403,9 @@ mapper.getPlaceModeName = () =>
 mapper.getPlaceModeKeys = () =>
 {
 	if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION)
-		return 'LR UD Ctrl+UD Shift+LRUD Ctrl+Shift+UD';
+		return 'LRUD Ctrl+UD Shift+LRUD Ctrl+Shift+UD';
 	else if(mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
-		return 'LR UD Ctrl+LRUD Shift+LRUD Ctrl+Shift+LRUD';
+		return 'LRUD Ctrl+LRUD Shift+LRUD Ctrl+Shift+LRUD';
 	else if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
 		return 'LR';
 	else if(mapper.placeObjectMode == mapper.placeObjectModes.FILL)
@@ -413,71 +422,47 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	if(!mapper.object)
 		return;
 	
-	/*
-	if(mapper.mode == mapper.modes.CHOOSE_OBJECT)
-	{
-		var colour = 0xffe00202;
-		mapper.drawTextRight(50, 250, 'Choose Object', 35.0, colour);
-		mapper.drawTextRight(50, 320, mapper.object.modelIndex+'', 28.0, colour);
-	}
-	else
-	{
-		*/
-		var placeModeName = mapper.getPlaceModeName();
-		var globalKeys = '1 2 3 4 G Enter PageUD # F1';
-		var modeKeys = mapper.getPlaceModeKeys();
-		var placeModeOption;
-		
-		if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
-			placeModeOption = 'Option ' + (mapper.joinIndex + 1) + '/' + mapper.joinCount;
-		
-		var colour = 0xff0398fc;
-		var colourUnusable = 0xffd11111;
-		var yStep;
-		var fontSize;
-		var y;
-		
-		y = 250;
-		yStep = 50;
-		fontSize = 25.0;
-		mapper.drawTextRight(50, y, 'Mapper', fontSize + 7.0, colour);
-		y += yStep + 20;
-		mapper.drawTextRight(50, y, mapper.object.modelIndex+'', fontSize, colour);
-		y += yStep;
-		mapper.drawTextRight(50, y, placeModeName, fontSize, colour);
-		y += yStep;
-		if(placeModeOption)
-			mapper.drawTextRight(50, y, placeModeOption, fontSize, colour);
-		y += yStep;
-		
-		// keys
-		y += 100;
-		yStep = 35;
-		fontSize = 18.0;
-		mapper.drawTextRight(50, y, globalKeys, fontSize, colour);
-		y += yStep;
-		mapper.drawTextRight(50, y, modeKeys, fontSize, mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.objects.length == 0 ? colourUnusable : colour);
-		y += yStep;
-	//}
+	var placeModeName = mapper.getPlaceModeName();
+	var globalKeys = '1 2 3 4 + - G Enter PageUD # F1';
+	var modeKeys = mapper.getPlaceModeKeys();
+	var placeModeOption;
 	
-	//var bbpos = mapper.getRotatedBB();
-	//console.log(bbpos);
+	if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
+		placeModeOption = 'Option ' + (mapper.joinIndex + 1) + '/' + mapper.joinCount;
 	
-	var colours =
-	{
-		bb:			0xCF0000FF,
-		lines:		0xCFFF0000,
-		boxes:		0xCF00FF00,
-		spheres:	0xCFFFFF00,
-		vertices:	0xCFFF00FF
-	};
+	var colour = 0xff0398fc;
+	var colourUnusable = 0xffd11111;
+	var yStep;
+	var fontSize;
+	var y;
 	
-	mapper.drawBB(colours.bb);
+	y = 250;
+	yStep = 50;
+	fontSize = 25.0;
+	mapper.drawTextRight(50, y, 'Mapper', fontSize + 7.0, colour);
+	y += yStep + 20;
+	mapper.drawTextRight(50, y, mapper.object.modelIndex+'', fontSize, colour);
+	y += yStep;
+	mapper.drawTextRight(50, y, placeModeName, fontSize, colour);
+	y += yStep;
+	if(placeModeOption)
+		mapper.drawTextRight(50, y, placeModeOption, fontSize, colour);
+	y += yStep;
 	
-	mapper.drawColLines(colours.lines);
-	mapper.drawColBoxes(colours.boxes);
-	//mapper.drawColSpheres(colours.spheres);
-	mapper.drawColTriangles(colours.vertices);
+	// keys
+	y += 100;
+	yStep = 35;
+	fontSize = 18.0;
+	mapper.drawTextRight(50, y, globalKeys, fontSize, colour);
+	y += yStep;
+	mapper.drawTextRight(50, y, modeKeys, fontSize, mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.objects.length == 0 ? colourUnusable : colour);
+	y += yStep;
+	
+	mapper.drawBB(mapper.colours.bb);
+	mapper.drawColLines(mapper.colours.lines);
+	mapper.drawColBoxes(mapper.colours.boxes);
+	//mapper.drawColSpheres(mapper.colours.spheres);
+	mapper.drawColTriangles(mapper.colours.vertices);
 });
 
 addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
@@ -504,14 +489,13 @@ addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 	if(!mapper.shown)
 		return;
 	
+	var increaseBy = coords.y > 0.0 ? 1 : -1;
+	mapper.changeObjectModel(increaseBy);
+	
+	/*
 	//if(mapper.mode == mapper.modes.CHOOSE_OBJECT)
 	//{
-		var absoluteIncreaseBy;
-		if(isKeyDown(SDLK_LCTRL) || isKeyDown(SDLK_RCTRL))
-			absoluteIncreaseBy = 50.0;
-		else
-			absoluteIncreaseBy = 1.0;
-		var increaseBy = coords.y > 0.0 ? absoluteIncreaseBy : -absoluteIncreaseBy;
+		var increaseBy = coords.y > 0.0 ? 1 : -1;
 		var modelId = mapper.object.modelIndex + increaseBy;
 		
 		//gta.REQUEST_COLLISION(localPlayer.position.x, localPlayer.poition.y);
@@ -524,6 +508,8 @@ addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 		
 		mapper.setNextObjectModel(modelId, increaseBy);
 	//}
+	*/
+	
 	/*
 	else if(mapper.mode == mapper.modes.PLACE_OBJECT)
 	{
@@ -608,6 +594,26 @@ bindKey(SDLK_SPACE, KEYSTATE_DOWN, () =>
 	}
 	*/
 });
+
+var increaseModelIdCB = () =>
+{
+	if(!mapper.shown)
+		return;
+	
+	mapper.changeObjectModel(1);
+};
+bindKey(SDLK_PLUS, KEYSTATE_DOWN, increaseModelIdCB);
+bindKey(SDLK_KP_PLUS, KEYSTATE_DOWN, increaseModelIdCB);
+
+var decreaseModelIdCB = () =>
+{
+	if(!mapper.shown)
+		return;
+	
+	mapper.changeObjectModel(-1);
+};
+bindKey(SDLK_MINUS, KEYSTATE_DOWN, decreaseModelIdCB);
+bindKey(SDLK_KP_MINUS, KEYSTATE_DOWN, decreaseModelIdCB);
 
 mapper.checkToSetPlaceObjectMode = function(placeObjectMode)
 {
@@ -937,9 +943,20 @@ mapper.setNextObjectModel = function(modelId, increaseBy)
 		}
 		catch(e)
 		{
-			modelId += increaseBy;
+			if(increaseBy >= 0.0)
+				modelId++;
+			else
+				modelId--;
 		}
 	}
+};
+
+mapper.changeObjectModel = function(increaseBy)
+{
+	if(isKeyDown(SDLK_LCTRL) || isKeyDown(SDLK_RCTRL))
+		increaseBy = increaseBy >= 0.0 ? 50.0 : -50.0;
+	
+	mapper.setNextObjectModel(mapper.modelId + increaseBy, increaseBy);
 };
 
 mapper.setObjectModel = function(modelId)
@@ -1838,13 +1855,6 @@ mapper.updateCamera = function()
 
 mapper.updatePlayer = function()
 {
-	/*
-	var position = mapper.object.position;
-	//position.z -= mapper.getColSize().z + 0.2;
-	position.z = gta.findGroundZForCoord(position.x, position.y);
-	position.z -= 5.0;
-	*/
-	
 	var position = util.getObjectGroundPosition(mapper.object);
 	position.z -= 5.0;
 	
