@@ -274,7 +274,7 @@ util.getGroundZ = function(x, y, entities)
 	for(var i=0,j=entities.length; i<j; i++)
 	{
 		positions[i] = entities[i].position;
-		entities[i].position = new Vec3(0.0, 0.0, 2000.0);
+		entities[i].position = new Vec3(3.0, 3.0, 2000.0);
 	}
 	
 	/*

@@ -1838,7 +1838,20 @@ mapper.updateCamera = function()
 
 mapper.updatePlayer = function()
 {
-	localPlayer.position = new Vec3(1.0, 1.0, 350.0);//mapper.object.position;
+	/*
+	var position = mapper.object.position;
+	//position.z -= mapper.getColSize().z + 0.2;
+	position.z = gta.findGroundZForCoord(position.x, position.y);
+	position.z -= 5.0;
+	*/
+	
+	var position = util.getObjectGroundPosition(mapper.object);
+	position.z -= 5.0;
+	
+	localPlayer.position = position;
+	localPlayer.health = 100.0;
+	if(localPlayer.vehicle)
+		localPlayer.vehicle.health = 1000.0;
 };
 
 mapper.getRotatedBB = function()
