@@ -18,7 +18,7 @@ mapper.font1 = lucasFont.createDefaultFont(50.0, "Arial");
 mapper.window = null;
 mapper.ui = {};
 
-mapper.mode = mapper.modes.CHOOSE_OBJECT;
+mapper.mode = mapper.modes.PLACE_OBJECT;
 mapper.object = null;
 mapper.objectToCameraZRotation = 0.0;
 mapper.objectToCameraXYInclination = 0.0;
@@ -52,7 +52,34 @@ mapper.cameraZoom = 10.0;
 mapper.objectStepUsingBB = true;
 mapper.objectPositionStep = new Vec3(1.0, 0.0, 0.0);
 mapper.objectRotationStep = new Vec3(0.0, 0.0, 0.0);
+
+/*
+mapper.joinObjectOptions = [
+	[0, 1, 0],
+	[0, 1, 1],
+	[0, 1, 2],
+	
+	[0, 2, 0],
+	[0, 2, 1],
+	[0, 2, 2],
+	
+	[1, 0, 0],
+	[1, 0, 1],
+	[1, 0, 2],
+	
+	[2, 0, 0],
+	[2, 0, 1],
+	[2, 0, 2]
+];
+*/
+mapper.joinObjectOptions = [
+	[1, 0, 0],
+	[0, 2, 0],
+	[2, 0, 0],
+	[0, 1, 0]
+];
 mapper.joinIndex = 0;
+mapper.joinCount = mapper.joinObjectOptions.length;
 
 // window
 mapper.init = function()
@@ -108,7 +135,7 @@ mapper.init = function()
 	
 	bindKey(SDLK_F1, KEYSTATE_DOWN, function(e)
 	{
-		gui.showCursor(!gui.cursorEnabled, false);
+		gui.showCursor(false, false);
 		mapper.window.shown = !mapper.window.shown;
 	});
 	
@@ -326,7 +353,7 @@ addEventHandler('onProcess', function(e,delta)
 		}
 		else if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
 		{
-			mapper.checkToJoinObject();
+			//mapper.checkToJoinObject();
 		}
 		else if(mapper.placeObjectMode == mapper.placeObjectModes.FILL)
 		{
@@ -347,6 +374,34 @@ addEventHandler('onProcess', function(e,delta)
 	//console.log(mapper.object.boundingMax.x - mapper.object.boundingMin.x);
 });
 
+mapper.getPlaceModeName = () =>
+{
+	if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION)
+		return 'Position';
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
+		return 'Rotation';
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
+		return 'Join';
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.FILL)
+		return 'Fill';
+	else
+		return 'Unknown Mode';
+};
+
+mapper.getPlaceModeKeys = () =>
+{
+	if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION)
+		return 'LR UD Ctrl+UD Shift+LRUD Ctrl+Shift+UD';
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
+		return 'LR UD Ctrl+LRUD Shift+LRUD Ctrl+Shift+LRUD';
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
+		return 'LR';
+	else if(mapper.placeObjectMode == mapper.placeObjectModes.FILL)
+		return '';
+	else
+		return '';
+};
+
 addEventHandler('onBeforeDrawHUD', function(e)
 {
 	if(!mapper.shown)
@@ -361,32 +416,47 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	}
 	else
 	{
-		var mode2;
-		if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION)
-			mode2 = 'Position';
-		else if(mapper.placeObjectMode == mapper.placeObjectModes.ROTATION)
-			mode2 = 'Rotation';
-		else if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
-			mode2 = 'Join';
-		else if(mapper.placeObjectMode == mapper.placeObjectModes.FILL)
-			mode2 = 'Fill';
-		else
-			mode2 = 'Unknown Mode';
+		*/
+		var placeModeName = mapper.getPlaceModeName();
+		var globalKeys = '1 2 3 4 G Enter PageUD # F1';
+		var modeKeys = mapper.getPlaceModeKeys();
 		
 		var colour = 0xff0398fc;
-		mapper.drawTextRight(50, 250, 'Place Object', 35.0, colour);
-		mapper.drawTextRight(50, 320, mapper.object.modelIndex+'', 28.0, colour);
-		mapper.drawTextRight(50, 390, mode2, 28.0, colour);
-	}
-	*/
+		var colourUnusable = 0xffd11111;
+		var yStep;
+		var fontSize;
+		var y;
+		
+		y = 250;
+		yStep = 50;
+		fontSize = 25.0;
+		mapper.drawTextRight(50, y, 'Mapper', fontSize + 7.0, colour);
+		y += yStep + 20;
+		mapper.drawTextRight(50, y, mapper.object.modelIndex+'', fontSize, colour);
+		y += yStep;
+		mapper.drawTextRight(50, y, placeModeName, fontSize, colour);
+		y += yStep;
+		
+		// keys
+		y += 100;
+		yStep = 35;
+		fontSize = 18.0;
+		mapper.drawTextRight(50, y, globalKeys, fontSize, colour);
+		y += yStep;
+		mapper.drawTextRight(50, y, modeKeys, fontSize, mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.objects.length == 0 ? colourUnusable : colour);
+		y += yStep;
+	//}
 	
 	//var bbpos = mapper.getRotatedBB();
 	//console.log(bbpos);
 	
-	//mapper.drawBB();
-	//mapper.drawColTriangles();
-	//mapper.drawColBoxes();
 	mapper.drawBB();
+	mapper.drawColLines();
+	mapper.drawColTriangles();
+	mapper.drawColBoxes();
+	//mapper.drawBB2();
+	
+	
 });
 
 addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
@@ -413,8 +483,8 @@ addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 	if(!mapper.shown)
 		return;
 	
-	if(mapper.mode == mapper.modes.CHOOSE_OBJECT)
-	{
+	//if(mapper.mode == mapper.modes.CHOOSE_OBJECT)
+	//{
 		var absoluteIncreaseBy;
 		if(isKeyDown(SDLK_LCTRL) || isKeyDown(SDLK_RCTRL))
 			absoluteIncreaseBy = 50.0;
@@ -432,7 +502,8 @@ addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 		//gta.LOAD_ALL_MODELS_NOW();
 		
 		mapper.setNextObjectModel(modelId, increaseBy);
-	}
+	//}
+	/*
 	else if(mapper.mode == mapper.modes.PLACE_OBJECT)
 	{
 		var offset = 0.05;
@@ -444,6 +515,7 @@ addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 		
 		mapper.updateCamera();
 	}
+	*/
 });
 
 bindKey(SDLK_HASH, KEYSTATE_DOWN, () =>
@@ -470,6 +542,7 @@ var returnKeyCB = () =>
 	{
 		if(mapper.placeObjectMode == mapper.placeObjectModes.POSITION
 		|| mapper.placeObjectMode == mapper.placeObjectModes.ROTATION
+		|| mapper.placeObjectMode == mapper.placeObjectModes.JOIN
 		|| mapper.placeObjectMode == mapper.placeObjectModes.FILL)
 		{
 			mapper.placeObject();
@@ -490,11 +563,13 @@ bindKey(SDLK_BACKSPACE, KEYSTATE_DOWN, () =>
 	if(!mapper.shown)
 		return;
 	
+	/*
 	if(mapper.mode != mapper.modes.CHOOSE_OBJECT)
 	{
 		mapper.mode = mapper.modes.CHOOSE_OBJECT;
 		mapper.updateUI()
 	}
+	*/
 });
 
 bindKey(SDLK_SPACE, KEYSTATE_DOWN, () =>
@@ -502,6 +577,7 @@ bindKey(SDLK_SPACE, KEYSTATE_DOWN, () =>
 	if(!mapper.shown)
 		return;
 	
+	/*
 	if(mapper.mode == mapper.modes.PLACE_OBJECT)
 	{
 		if(mapper.placeObjectMode == mapper.placeObjectModes.FILL)
@@ -509,6 +585,7 @@ bindKey(SDLK_SPACE, KEYSTATE_DOWN, () =>
 			mapper.placeFillObject();
 		}
 	}
+	*/
 });
 
 mapper.checkToSetPlaceObjectMode = function(placeObjectMode)
@@ -528,6 +605,9 @@ bindKey(SDLK_1, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.pla
 bindKey(SDLK_2, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.ROTATION));
 bindKey(SDLK_3, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.JOIN));
 bindKey(SDLK_4, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.FILL));
+
+bindKey(SDLK_LEFT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.changeJoinIndex(true));
+bindKey(SDLK_RIGHT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.changeJoinIndex(false));
 
 /*
 mapper.resetProcessAlpha = function()
@@ -572,8 +652,8 @@ mapper.toggleMapEditor = function(arg)
 			}
 		}
 		
-		mapper.window.shown = true;
-		gui.showCursor(true, false);
+		mapper.window.shown = false;
+		gui.showCursor(false, false);
 		
 		mapper.startChoosingObject(modelId);
 	}
@@ -598,7 +678,7 @@ mapper.closeMapper = function()
 // choose object
 mapper.startChoosingObject = function(modelId)
 {
-	mapper.mode = mapper.modes.CHOOSE_OBJECT;
+	mapper.mode = mapper.modes.PLACE_OBJECT;
 	mapper.modelId = modelId;
 	mapper.objectToCameraZRotation = 0.0;
 	mapper.objectToCameraXYInclination = 0.0;
@@ -745,6 +825,32 @@ mapper.getColMinMax = function()
 	}
 };
 
+mapper.getColVerticesMinMax = function()
+{
+	var vertices = mapper.object.collisionVertices;
+	
+	if(vertices.length > 0)
+	{
+		var min = new Vec3(99999,99999,99999);
+		var max = new Vec3(-99999,-99999,-99999);
+		
+		if(vertices.length > 0)
+		{
+			for(var i=0,j=vertices.length; i<j; i++)
+			{
+				min = mapper.getMinVec(min, vertices[i]);
+				max = mapper.getMaxVec(max, vertices[i]);
+			}
+		}
+		
+		return [min, max];
+	}
+	else
+	{
+		return [mapper.object.boundingMax, mapper.object.boundingMin];
+	}
+};
+
 mapper.getColSize = function()
 {
 	var bbmm = mapper.getColMinMax();
@@ -778,7 +884,13 @@ mapper.placeObject = function()
 	//	return;
 	
 	mapper.storeActiveObject();
+	
 	mapper.addNextObject();
+	
+	if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
+	{
+		mapper.setObjectJoinIndex(mapper.joinIndex);
+	}
 };
 
 mapper.storeActiveObject = function()
@@ -821,7 +933,7 @@ mapper.setObjectModel = function(modelId)
 	mapper.modelId = modelId;
 	mapper.object.modelIndex = modelId;
 	
-	
+	//mapper.joinCount = 12;//mapper.object.collisionVertices.length / 3;
 	
 	
 	//requestModel(7885 + modelId, 8);
@@ -1023,26 +1135,28 @@ mapper.checkToJoinObject = function()
 	if(mapper.processAlpha1 >= mapper.joinObjectInterval)
 	{
 		mapper.processAlpha1 = 0.0;
-		
-		mapper.joinObject();
 	}
+};
+
+mapper.changeJoinIndex = (left) =>
+{
+	var step = left ? -1 : 1;
+	mapper.joinIndex += step;
+	
+	if(mapper.joinIndex >= mapper.joinCount)
+		mapper.joinIndex = 0;
+	else if(mapper.joinIndex < 0)
+		mapper.joinIndex = mapper.joinCount - 1;
+	
+	mapper.joinObject();
 };
 
 mapper.joinObject = function()
 {
-	if(!isKeyDown(SDLK_LEFT) && !isKeyDown(SDLK_RIGHT))
+	if(mapper.objects.length == 0)
 		return;
 	
-	var multiplier = isKeyDown(SDLK_LEFT) ? -1 : 1;
-	
 	mapper.setObjectJoinIndex(mapper.joinIndex);
-	
-	var max = 5;
-	mapper.joinIndex += multiplier;
-	if(mapper.joinIndex > max)
-		mapper.joinIndex = 0;
-	else if(mapper.joinIndex < 0)
-		mapper.joinIndex = max;
 	
 	//var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	//mapper.addJoinedObject(util.radians(anglesDeg[index]));
@@ -1131,8 +1245,97 @@ mapper.getObjectCentrePosition = function()
 };
 
 // object joining
+mapper.getJoinedObjectPosition = function(position, rotation, axis)
+{
+	var [min, max] = mapper.getColMinMax();
+	var bb = new Vec3(max.x - min.x, max.y - min.y, max.z - min.z);
+	
+	//rotation.z += (Math.PI/2.0) * axis;
+	
+	var point2 = new Vec3(0.0, 0.0, 0.0);
+	switch(axis)
+	{
+		case 0:
+			point2[0] = bb[0];
+			break;
+		case 1:
+			point2[1] = -bb[1];
+			break;
+		case 2:
+			point2[0] = -bb[0];
+			break;
+		case 3:
+			point2[1] = bb[1];
+			break;
+	}
+	bb = util.getRotatedPoint2(rotation, point2);
+	
+	var point = new Vec3();
+	for(var i2=0; i2<3; i2++)
+	{
+		/*if(i2 == 2)
+			point[i2] = position[i2];
+		else*/
+			point[i2] = position[i2] + bb[i2];
+		/*
+		switch(axis[i2])
+		{
+			case 0:
+				point[i2] = position[i2];
+			break;
+			case 1:
+				point[i2] = position[i2] + bb[i2];
+			break;
+			case 2:
+				point[i2] = position[i2] - bb[i2];
+			break;
+		}
+		*/
+	}
+	
+	return point;
+};
+
 mapper.setObjectJoinIndex = function(joinIndex)
 {
+	var lastObject = mapper.objects[mapper.objects.length - 1];
+	
+	//var axis = mapper.joinObjectOptions[joinIndex];
+	
+	var newObjectPosition = mapper.getJoinedObjectPosition(lastObject.position, lastObject.getRotation(), joinIndex);
+	var newObjectRotation = mapper.object.getRotation();
+	
+	mapper.object.position = newObjectPosition;
+	mapper.object.setRotation(newObjectRotation);
+	
+	mapper.updateCamera();
+	mapper.updatePlayer();
+	
+	if(true)
+		return;
+	
+	
+	
+	
+	
+	
+	/*
+	var points = [
+		mapper.object.collisionVertices[joinIndex],
+		mapper.object.collisionVertices[joinIndex + 1],
+		mapper.object.collisionVertices[joinIndex + 2]
+	];
+	
+	var bb = a;
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
 	var pos = mapper.object.position;
 	var rot = mapper.object.getRotation();
 	
@@ -1541,6 +1744,25 @@ mapper.drawBB2 = function()
 	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
 	{
 		graphics.drawLine3D(lines[i2], lines[i2 + 1], 0xff0000ff, 0xff0000ff);
+	}
+};
+
+mapper.drawColLines = function()
+{
+	var points = mapper.object.collisionLines;
+	for(var i=0, j=points.length; i<j; i += 2)
+	{
+		for(var i2=0; i2<2; i2++)
+		{
+			var p1 = points[i + i2];
+			var p2 = points[i + i2 + 1];
+			//var p2 = points[i2 == 1 ? i : (i + i2 + 1)];
+			
+			p1 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p1);
+			p2 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p2);
+			
+			graphics.drawLine3D(p1, p2, 0xffff0000, 0xffff0000);
+		}
 	}
 };
 

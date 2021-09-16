@@ -408,6 +408,15 @@ util.getRotatedPoint = function(pos, rot, point)
 	return point2;
 };
 
+util.getRotatedPoint2 = function(rot, point)
+{
+	var matCuboidModel = new Matrix4x4;
+	matCuboidModel.setIdentity();
+	matCuboidModel.setRotate(rot);
+	
+	return translate(matCuboidModel, point);
+};
+
 util.getBoxPointLines = function(pos, rot, min, max)
 {
 	var matCuboidModel = new Matrix4x4;
