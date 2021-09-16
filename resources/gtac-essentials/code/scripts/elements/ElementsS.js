@@ -931,7 +931,7 @@ elements.createObject = (model, position, rotation) =>
 	return element;
 };
 
-elements.setObjectPositionRotation = (elementId, position, rotation) =>
+elements.setObjectData = (elementId, model, position, rotation) =>
 {
 	elements.data.forEach(v =>
 	{
@@ -939,11 +939,13 @@ elements.setObjectPositionRotation = (elementId, position, rotation) =>
 		{
 			v.position = position;
 			v.rotation = rotation;
+			v.model = model;
 		}
 	});
 	xml.setAttr2(elements.gamePath(elements.paths.objects), 'Object', {
 		id:			elementId
 	}, {
+		model:		model,
 		position:	position,
 		rotation:	rotation
 	});

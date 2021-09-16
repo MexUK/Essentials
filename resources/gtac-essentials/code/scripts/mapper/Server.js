@@ -10,19 +10,23 @@ bindEventHandler('onResourceStart', thisResource, function()
 
 mapper.storeActiveObject = (client, objectId, modelId, position, rotation) =>
 {
-	if(!clientData.get(client, 'mapper'))
+	if(!mapper.isEnabled(client))
 		return;
 	
+	elements.addObject(modelId, position, rotation);
+	
+	/*
 	var object = getElementFromId(objectId);
 	if(object)
 	{
 		object.syncer = client.id;
-		elements.setObjectPositionRotation(objectId, position, rotation);
+		elements.setObjectData(objectId, modelId, position, rotation);
 	}
 	else
 	{
 		elements.addObject(modelId, position, rotation);
 	}
+	*/
 };
 
 // commands
@@ -31,16 +35,14 @@ cmds.mapper = (client, _model) =>
 	if(!client.player)
 		return chat.notSpawned(client, client);
 	
-	if(clientData.get(client, 'mapper'))
+	if(mapper.isEnabled(client))
 	{
-		clientData.set(client, 'mapper', 0);
-		mapper.toggleMapEditor(client, 0);
+		mapper.setDisabled(client);
 	}
 	else
 	{
-		clientData.set(client, 'mapper', 1);
-		var model = _model ? util.int(model) : 583; 
-		mapper.toggleMapEditor(client, model + '');
+		var model = _model ? util.int(_model) : 583/*util.getMinObjectModel()*/;
+		mapper.setEnabled(client, model);
 	}
 };
 
@@ -54,9 +56,25 @@ cmds.mapper = (client, _model) =>
 
 
 // map editor
-mapper.toggleMapEditor = (client, model) =>
+mapper.isEnabled = (client) =>
 {
-	util.callClientFunction(client, 'mapper.toggleMapEditor', model);
+	return clientData.get(client, 'mapper') == 1;
+};
+
+mapper.setEnabled = (client, model) =>
+{
+	clientData.set(client, 'mapper', 1);
+	util.callClientFunction(client, 'mapper.setEnabled', model);
+};
+
+mapper.setDisabled = (client) =>
+{
+	clientData.set(client, 'mapper', 0);
+	util.callClientFunction(client, 'mapper.setDisabled');
+};
+
+mapper.toggleEnabled = (client) =>
+{
 };
 
 // map existence

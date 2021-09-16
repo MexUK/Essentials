@@ -135,13 +135,16 @@ mapper.init = function()
 	
 	bindKey(SDLK_F1, KEYSTATE_DOWN, function(e)
 	{
+		if(!mapper.shown)
+			return;
+		
 		gui.showCursor(false, false);
 		mapper.window.shown = !mapper.window.shown;
 	});
 	
 	bindKey(SDLK_F2, KEYSTATE_DOWN, function(e)
 	{
-		mapper.toggleMapEditor('');
+		//mapper.toggleEnabled('583');
 		
 		/*
 		var show = !mapper.window.shown;
@@ -407,6 +410,9 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	if(!mapper.shown)
 		return;
 	
+	if(!mapper.object)
+		return;
+	
 	/*
 	if(mapper.mode == mapper.modes.CHOOSE_OBJECT)
 	{
@@ -420,6 +426,10 @@ addEventHandler('onBeforeDrawHUD', function(e)
 		var placeModeName = mapper.getPlaceModeName();
 		var globalKeys = '1 2 3 4 G Enter PageUD # F1';
 		var modeKeys = mapper.getPlaceModeKeys();
+		var placeModeOption;
+		
+		if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN)
+			placeModeOption = 'Option ' + (mapper.joinIndex + 1) + '/' + mapper.joinCount;
 		
 		var colour = 0xff0398fc;
 		var colourUnusable = 0xffd11111;
@@ -436,6 +446,9 @@ addEventHandler('onBeforeDrawHUD', function(e)
 		y += yStep;
 		mapper.drawTextRight(50, y, placeModeName, fontSize, colour);
 		y += yStep;
+		if(placeModeOption)
+			mapper.drawTextRight(50, y, placeModeOption, fontSize, colour);
+		y += yStep;
 		
 		// keys
 		y += 100;
@@ -450,13 +463,21 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	//var bbpos = mapper.getRotatedBB();
 	//console.log(bbpos);
 	
-	mapper.drawBB();
-	mapper.drawColLines();
-	mapper.drawColTriangles();
-	mapper.drawColBoxes();
-	//mapper.drawBB2();
+	var colours =
+	{
+		bb:			0xCF0000FF,
+		lines:		0xCFFF0000,
+		boxes:		0xCF00FF00,
+		spheres:	0xCFFFFF00,
+		vertices:	0xCFFF00FF
+	};
 	
+	mapper.drawBB(colours.bb);
 	
+	mapper.drawColLines(colours.lines);
+	mapper.drawColBoxes(colours.boxes);
+	//mapper.drawColSpheres(colours.spheres);
+	mapper.drawColTriangles(colours.vertices);
 });
 
 addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
@@ -606,8 +627,8 @@ bindKey(SDLK_2, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.pla
 bindKey(SDLK_3, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.JOIN));
 bindKey(SDLK_4, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.FILL));
 
-bindKey(SDLK_LEFT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.changeJoinIndex(true));
-bindKey(SDLK_RIGHT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.changeJoinIndex(false));
+bindKey(SDLK_LEFT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.canChangeJoinIndex() && mapper.changeJoinIndex(true));
+bindKey(SDLK_RIGHT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.canChangeJoinIndex() && mapper.changeJoinIndex(false));
 
 /*
 mapper.resetProcessAlpha = function()
@@ -629,34 +650,28 @@ bindKey(SDLK_g, KEYSTATE_DOWN, () =>
 });
 
 // toggle map editor
-mapper.toggleMapEditor = function(arg)
+mapper.setEnabled = function(modelId)
 {
-	if(mapper.shown)
-	{
-		mapper.window.shown = false;
-		gui.showCursor(false, false);
-		
-		mapper.closeMapper();
-	}
-	else
-	{
-		arg = arg.trim();
-		
-		var modelId = mapper.modelId > 0 ? mapper.modelId : 709;//mapper.object == null ? mapper.getRandomObjectId() : mapper.modelId;
-		if(arg.length > 0)
-		{
-			var modelIdInt = parseInt(arg);
-			if(!isNaN(modelIdInt))
-			{
-				modelId = modelIdInt;
-			}
-		}
-		
-		mapper.window.shown = false;
-		gui.showCursor(false, false);
-		
-		mapper.startChoosingObject(modelId);
-	}
+	mapper.shown = true;
+	
+	mapper.window.shown = false;
+	gui.showCursor(false, false);
+	
+	mapper.startChoosingObject(modelId);
+};
+
+mapper.setDisabled = function()
+{
+	mapper.shown = false;
+	
+	mapper.window.shown = false;
+	gui.showCursor(false, false);
+	
+	mapper.closeMapper();
+};
+
+mapper.toggleEnabled = function()
+{
 };
 
 // close mapper
@@ -679,6 +694,7 @@ mapper.closeMapper = function()
 mapper.startChoosingObject = function(modelId)
 {
 	mapper.mode = mapper.modes.PLACE_OBJECT;
+	mapper.placeObjectMode = mapper.placeObjectModes.POSITION;
 	mapper.modelId = modelId;
 	mapper.objectToCameraZRotation = 0.0;
 	mapper.objectToCameraXYInclination = 0.0;
@@ -698,8 +714,6 @@ mapper.startChoosingObject = function(modelId)
 	mapper.objectToCameraZRotation = localPlayer.heading - util.radians(90.0);
 	mapper.objectToCameraXYInclination = util.radians(45.0);
 	mapper.updateCamera();
-	
-	mapper.shown = !mapper.shown;
 	
 	mapper.updateUI();
 };
@@ -1138,6 +1152,8 @@ mapper.checkToJoinObject = function()
 	}
 };
 
+mapper.canChangeJoinIndex = (left) => mapper.objects.length > 0;
+
 mapper.changeJoinIndex = (left) =>
 {
 	var step = left ? -1 : 1;
@@ -1153,7 +1169,7 @@ mapper.changeJoinIndex = (left) =>
 
 mapper.joinObject = function()
 {
-	if(mapper.objects.length == 0)
+	if(!mapper.canChangeJoinIndex())
 		return;
 	
 	mapper.setObjectJoinIndex(mapper.joinIndex);
@@ -1208,7 +1224,7 @@ mapper.getFilledObjectsData = function(object1, object2)
 	
 	var bb = mapper.getColSize();
 	var steps = posDiff.length / bb.length;
-	console.log('steps = '+steps);
+	
 	steps = Math.ceil(steps);
 	
 	var posStep = new Vec3(posDiff.x/steps, posDiff.y/steps, posDiff.z/steps);
@@ -1724,7 +1740,7 @@ function translate(b, v) {
 	return new Vec3(out[12], out[13], out[14]);
 }
 
-mapper.drawBB = function()
+mapper.drawBB = function(colour)
 {
 	var bbmm = mapper.getColMinMax();
 	var lines = util.getBoxPointLines(mapper.object.position, mapper.object.getRotation(), bbmm[0], bbmm[1]);
@@ -1733,21 +1749,21 @@ mapper.drawBB = function()
 	
 	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
 	{
-		graphics.drawLine3D(lines[i2], lines[i2 + 1], 0xff0000ff, 0xff0000ff);
+		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
 	}
 };
 
-mapper.drawBB2 = function()
+mapper.drawBB2 = function(colour)
 {
 	var lines = util.getBoxPointLines(mapper.object.position, mapper.object.getRotation(), mapper.object.boundingMin, mapper.object.boundingMax);
 	
 	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
 	{
-		graphics.drawLine3D(lines[i2], lines[i2 + 1], 0xff0000ff, 0xff0000ff);
+		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
 	}
 };
 
-mapper.drawColLines = function()
+mapper.drawColLines = function(colour)
 {
 	var points = mapper.object.collisionLines;
 	for(var i=0, j=points.length; i<j; i += 2)
@@ -1761,12 +1777,33 @@ mapper.drawColLines = function()
 			p1 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p1);
 			p2 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p2);
 			
-			graphics.drawLine3D(p1, p2, 0xffff0000, 0xffff0000);
+			graphics.drawLine3D(p1, p2, colour, colour);
 		}
 	}
 };
 
-mapper.drawColTriangles = function()
+mapper.drawColBoxes = function(colour)
+{
+	var points = mapper.object.collisionBoxes;
+	for(var i=0, j=points.length; i<j; i += 2)
+	{
+		var min = points[i];
+		var max = points[i + 1];
+		
+		var lines = util.getBoxPointLines(mapper.object.position, mapper.object.getRotation(), min, max);
+		
+		for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
+		{
+			graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
+		}
+	}
+};
+
+mapper.drawColSpheres = function(colour)
+{
+};
+
+mapper.drawColTriangles = function(colour)
 {
 	var points = mapper.object.collisionVertices;
 	for(var i=0, j=points.length; i<j; i += 3)
@@ -1779,24 +1816,7 @@ mapper.drawColTriangles = function()
 			p1 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p1);
 			p2 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p2);
 			
-			graphics.drawLine3D(p1, p2, 0xffff0000, 0xffff0000);
-		}
-	}
-};
-
-mapper.drawColBoxes = function()
-{
-	var points = mapper.object.collisionBoxes;
-	for(var i=0, j=points.length; i<j; i += 2)
-	{
-		var min = points[i];
-		var max = points[i + 1];
-		
-		var lines = util.getBoxPointLines(mapper.object.position, mapper.object.getRotation(), min, max);
-		
-		for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
-		{
-			graphics.drawLine3D(lines[i2], lines[i2 + 1], 0xffff0000, 0xffff0000);
+			graphics.drawLine3D(p1, p2, colour, colour);
 		}
 	}
 };
