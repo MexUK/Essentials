@@ -428,7 +428,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 		return;
 	
 	var placeModeName = mapper.getPlaceModeName();
-	var globalKeys = '1 2 3 4 + - G X Enter PageUD # F1';
+	var globalKeys = '1 2 3 + - G X Enter PageUD # F1';
 	var modeKeys = mapper.getPlaceModeKeys();
 	var placeModeOption;
 	
@@ -617,7 +617,7 @@ bindKey(SDLK_f, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.pla
 bindKey(SDLK_1, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.POSITION));
 bindKey(SDLK_2, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.ROTATION));
 bindKey(SDLK_3, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.JOIN));
-bindKey(SDLK_4, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.FILL));
+//bindKey(SDLK_4, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.FILL));
 
 bindKey(SDLK_LEFT, KEYSTATE_DOWN, () => mapper.checkToSetJoinIndex(true));
 bindKey(SDLK_RIGHT, KEYSTATE_DOWN, () => mapper.checkToSetJoinIndex(false));
