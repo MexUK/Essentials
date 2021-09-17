@@ -596,8 +596,6 @@ cmds.nearblips = (client, _distanceAway) =>
 
 
 
-
-
 cmds.removeobject = (client, _elementId) =>
 {
 	[_elementId] = util.grabArgs(client,
@@ -608,7 +606,15 @@ cmds.removeobject = (client, _elementId) =>
 	], _elementId);
 	
 	if(_elementId === undefined)
-		return chat.pm(client, "You didn't type a object ID.");
+	{
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove object mode.");
+		if(newEnabledState)
+			removeMode.enableRemoveMode(client, 'objects');
+		else
+			removeMode.disableRemoveMode(client);
+		return;
+	}
 	
 	var elementId = util.int(_elementId);
 	if(elementId < 0 || elementId > elements.MAX_OBJECTS)

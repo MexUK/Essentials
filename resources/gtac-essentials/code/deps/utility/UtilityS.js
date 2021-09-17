@@ -2011,7 +2011,8 @@ util.clientFunctionCalls =
 [
 	'keyBinds.onClientKeyDown',
 	'mapper.storeActiveObject',
-	'elements.isElementOnScreen'
+	'elements.isElementOnScreen',
+	'removeMode.removeElement'
 ];
 
 addNetworkHandler('callServerFunction', (client, functionName, ...args) =>

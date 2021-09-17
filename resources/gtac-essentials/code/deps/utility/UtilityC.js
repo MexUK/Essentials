@@ -543,3 +543,174 @@ util.callServerFunction = (functionName, ...args) =>
 	triggerNetworkEvent('callServerFunction', functionName, ...args);
 };
 
+
+
+
+util.getMinVec = function(a, b)
+{
+	if(b.x < a.x)
+		a.x = b.x;
+	if(b.y < a.y)
+		a.y = b.y;
+	if(b.z < a.z)
+		a.z = b.z;
+	return a;
+};
+
+util.getMaxVec = function(a, b)
+{
+	if(b.x > a.x)
+		a.x = b.x;
+	if(b.y > a.y)
+		a.y = b.y;
+	if(b.z > a.z)
+		a.z = b.z;
+	return a;
+};
+
+util.getColMinMax = function(object)
+{
+	var vertices = object.collisionVertices;
+	var boxes = object.collisionBoxes;
+	var spheres = object.collisionSpheres;
+	var lines = object.collisionLines;
+	
+	if(vertices.length > 0 || boxes.length > 0 || spheres.length > 0 || lines.length > 0)
+	{
+		var min = new Vec3(99999,99999,99999);
+		var max = new Vec3(-99999,-99999,-99999);
+		
+		if(vertices.length > 0)
+		{
+			for(var i=0,j=vertices.length; i<j; i++)
+			{
+				min = util.getMinVec(min, vertices[i]);
+				max = util.getMaxVec(max, vertices[i]);
+			}
+		}
+		
+		if(boxes.length > 0)
+		{
+			for(var i=0,j=boxes.length; i<j; i += 2)
+			{
+				min = util.getMinVec(min, boxes[i]);
+				max = util.getMaxVec(max, boxes[i + 1]);
+			}
+		}
+		
+		if(spheres.length > 0)
+		{
+			for(var i=0,j=spheres.length; i<j; i += 2)
+			{
+				min = util.getMinVec(min, spheres[i] - spheres[i + 1]);
+				max = util.getMaxVec(max, spheres[i] + spheres[i + 1]);
+			}
+		}
+		
+		if(lines.length > 0)
+		{
+			for(var i=0,j=lines.length; i<j; i += 2)
+			{
+				min = lines[i];
+				max = lines[i + 1];
+			}
+		}
+		
+		return [min, max];
+	}
+	else
+	{
+		return [object.boundingMax, object.boundingMin];
+	}
+};
+
+util.getColSize = function(object)
+{
+	var bbmm = util.getColMinMaxForObject(object);
+	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
+};
+
+
+
+util.drawBB = function(object, colour)
+{
+	var bbmm = util.getColMinMax(object);
+	var lines = util.getBoxPointLines(object.position, object.getRotation(), bbmm[0], bbmm[1]);
+	if(!lines)
+		return;
+	
+	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
+	{
+		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
+	}
+};
+
+util.drawBB2 = function(object, colour)
+{
+	var lines = util.getBoxPointLines(object.position, object.getRotation(), object.boundingMin, object.boundingMax);
+	
+	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
+	{
+		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
+	}
+};
+
+util.drawColLines = function(object, colour)
+{
+	var points = object.collisionLines;
+	for(var i=0, j=points.length; i<j; i += 2)
+	{
+		for(var i2=0; i2<2; i2++)
+		{
+			var p1 = points[i + i2];
+			var p2 = points[i + i2 + 1];
+			//var p2 = points[i2 == 1 ? i : (i + i2 + 1)];
+			
+			p1 = util.getRotatedPoint(object.position, object.getRotation(), p1);
+			p2 = util.getRotatedPoint(object.position, object.getRotation(), p2);
+			
+			graphics.drawLine3D(p1, p2, colour, colour);
+		}
+	}
+};
+
+util.drawColBoxes = function(object, colour)
+{
+	var points = object.collisionBoxes;
+	for(var i=0, j=points.length; i<j; i += 2)
+	{
+		var min = points[i];
+		var max = points[i + 1];
+		
+		var lines = util.getBoxPointLines(object.position, object.getRotation(), min, max);
+		
+		for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
+		{
+			graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
+		}
+	}
+};
+
+util.drawColSpheres = function(object, colour)
+{
+};
+
+util.drawColTriangles = function(object, colour)
+{
+	var points = object.collisionVertices;
+	for(var i=0, j=points.length; i<j; i += 3)
+	{
+		for(var i2=0; i2<3; i2++)
+		{
+			var p1 = points[i + i2];
+			var p2 = points[i2 == 2 ? i : (i + i2 + 1)];
+			
+			p1 = util.getRotatedPoint(object.position, object.getRotation(), p1);
+			p2 = util.getRotatedPoint(object.position, object.getRotation(), p2);
+			
+			graphics.drawLine3D(p1, p2, colour, colour);
+		}
+	}
+};
+
+

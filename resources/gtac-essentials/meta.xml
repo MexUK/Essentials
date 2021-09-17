@@ -122,6 +122,8 @@
 	
 	<script src="code/scripts/elements/ElementsS.js" type="server" language="javascript" />
 	<script src="code/scripts/elements/ElementsC.js" type="client" language="javascript" />
+	<script src="code/scripts/elements/RemoveModeS.js" type="server" language="javascript" />
+	<script src="code/scripts/elements/RemoveModeC.js" type="client" language="javascript" />
 	
 	<script src="code/scripts/generic/GenericS.js" type="server" language="javascript" />
 	<script src="code/scripts/generic/GenericC.js" type="client" language="javascript" />

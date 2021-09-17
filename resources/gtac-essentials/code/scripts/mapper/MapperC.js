@@ -468,11 +468,11 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	mapper.drawTextRight(50, y, modeKeys, fontSize, mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.objects.length == 0 ? colourUnusable : colour);
 	y += yStep;
 	
-	mapper.drawBB(mapper.colours.bb);
-	mapper.drawColLines(mapper.colours.lines);
-	mapper.drawColBoxes(mapper.colours.boxes);
-	//mapper.drawColSpheres(mapper.colours.spheres);
-	mapper.drawColTriangles(mapper.colours.vertices);
+	util.drawBB(mapper.object, mapper.colours.bb);
+	util.drawColLines(mapper.object, mapper.colours.lines);
+	util.drawColBoxes(mapper.object, mapper.colours.boxes);
+	//util.drawColSpheres(mapper.object, mapper.colours.spheres);
+	util.drawColTriangles(mapper.object, mapper.colours.vertices);
 });
 
 addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
@@ -785,102 +785,7 @@ mapper.getObjectPositionOffset = (usew) =>
 };
 
 // object collision size
-mapper.getMinVec = function(a, b)
-{
-	if(b.x < a.x)
-		a.x = b.x;
-	if(b.y < a.y)
-		a.y = b.y;
-	if(b.z < a.z)
-		a.z = b.z;
-	return a;
-};
-
-mapper.getMaxVec = function(a, b)
-{
-	if(b.x > a.x)
-		a.x = b.x;
-	if(b.y > a.y)
-		a.y = b.y;
-	if(b.z > a.z)
-		a.z = b.z;
-	return a;
-};
-
-mapper.getColMinMax = function()
-{
-	return mapper.getColMinMaxForObject(mapper.object);
-};
-
-mapper.getColMinMaxForObject = function(object)
-{
-	var vertices = object.collisionVertices;
-	var boxes = object.collisionBoxes;
-	var spheres = object.collisionSpheres;
-	var lines = object.collisionLines;
-	
-	if(vertices.length > 0 || boxes.length > 0 || spheres.length > 0 || lines.length > 0)
-	{
-		var min = new Vec3(99999,99999,99999);
-		var max = new Vec3(-99999,-99999,-99999);
-		
-		if(vertices.length > 0)
-		{
-			for(var i=0,j=vertices.length; i<j; i++)
-			{
-				min = mapper.getMinVec(min, vertices[i]);
-				max = mapper.getMaxVec(max, vertices[i]);
-			}
-		}
-		
-		if(boxes.length > 0)
-		{
-			for(var i=0,j=boxes.length; i<j; i += 2)
-			{
-				min = mapper.getMinVec(min, boxes[i]);
-				max = mapper.getMaxVec(max, boxes[i + 1]);
-			}
-		}
-		
-		if(spheres.length > 0)
-		{
-			for(var i=0,j=spheres.length; i<j; i += 2)
-			{
-				min = mapper.getMinVec(min, spheres[i] - spheres[i + 1]);
-				max = mapper.getMaxVec(max, spheres[i] + spheres[i + 1]);
-			}
-		}
-		
-		if(lines.length > 0)
-		{
-			for(var i=0,j=lines.length; i<j; i += 2)
-			{
-				min = lines[i];
-				max = lines[i + 1];
-			}
-		}
-		
-		//var bbw = mapper.object.collisionBoxes[1].x - mapper.object.collisionBoxes[0].x;
-		//var bbd = mapper.object.collisionBoxes[1].y - mapper.object.collisionBoxes[0].y;
-		//var bbh = mapper.object.collisionBoxes[1].z - mapper.object.collisionBoxes[0].z;
-		//return new Vec3(bbw, bbd, bbh);
-		//return max - min;
-		/*
-		return new Vec3(
-			max.x - min.x,
-			max.y - min.y,
-			max.z - min.z
-		);
-		*/
-		return [min, max];
-	}
-	else
-	{
-		return [object.boundingMax, object.boundingMin];
-	}
-};
-
-mapper.getColVerticesMinMax = function()
+util.getColVerticesMinMax = function()
 {
 	var vertices = mapper.object.collisionVertices;
 	
@@ -893,8 +798,8 @@ mapper.getColVerticesMinMax = function()
 		{
 			for(var i=0,j=vertices.length; i<j; i++)
 			{
-				min = mapper.getMinVec(min, vertices[i]);
-				max = mapper.getMaxVec(max, vertices[i]);
+				min = util.getMinVec(min, vertices[i]);
+				max = util.getMaxVec(max, vertices[i]);
 			}
 		}
 		
@@ -906,15 +811,9 @@ mapper.getColVerticesMinMax = function()
 	}
 };
 
-mapper.getColSize = function()
+util.getColSize = function()
 {
-	var bbmm = mapper.getColMinMax();
-	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
-};
-
-mapper.getColSizeForObject = function(object)
-{
-	var bbmm = mapper.getColMinMaxForObject(object);
+	var bbmm = util.getColMinMax(mapper.object);
 	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
 };
 
@@ -1374,7 +1273,7 @@ mapper.getObjectCentrePosition = function()
 // object joining
 mapper.getJoinedObjectPosition = function(position, rotation, axis)
 {
-	var [min, max] = mapper.getColMinMax();
+	var [min, max] = util.getColMinMax(mapper.object);
 	var bb = new Vec3(max.x - min.x, max.y - min.y, max.z - min.z);
 	
 	//rotation.z += (Math.PI/2.0) * axis;
@@ -1868,87 +1767,6 @@ function translate(b, v) {
 	//return out;
 	return new Vec3(out[12], out[13], out[14]);
 }
-
-mapper.drawBB = function(colour)
-{
-	var bbmm = mapper.getColMinMax();
-	var lines = util.getBoxPointLines(mapper.object.position, mapper.object.getRotation(), bbmm[0], bbmm[1]);
-	if(!lines)
-		return;
-	
-	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
-	{
-		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
-	}
-};
-
-mapper.drawBB2 = function(colour)
-{
-	var lines = util.getBoxPointLines(mapper.object.position, mapper.object.getRotation(), mapper.object.boundingMin, mapper.object.boundingMax);
-	
-	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
-	{
-		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
-	}
-};
-
-mapper.drawColLines = function(colour)
-{
-	var points = mapper.object.collisionLines;
-	for(var i=0, j=points.length; i<j; i += 2)
-	{
-		for(var i2=0; i2<2; i2++)
-		{
-			var p1 = points[i + i2];
-			var p2 = points[i + i2 + 1];
-			//var p2 = points[i2 == 1 ? i : (i + i2 + 1)];
-			
-			p1 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p1);
-			p2 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p2);
-			
-			graphics.drawLine3D(p1, p2, colour, colour);
-		}
-	}
-};
-
-mapper.drawColBoxes = function(colour)
-{
-	var points = mapper.object.collisionBoxes;
-	for(var i=0, j=points.length; i<j; i += 2)
-	{
-		var min = points[i];
-		var max = points[i + 1];
-		
-		var lines = util.getBoxPointLines(mapper.object.position, mapper.object.getRotation(), min, max);
-		
-		for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
-		{
-			graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
-		}
-	}
-};
-
-mapper.drawColSpheres = function(colour)
-{
-};
-
-mapper.drawColTriangles = function(colour)
-{
-	var points = mapper.object.collisionVertices;
-	for(var i=0, j=points.length; i<j; i += 3)
-	{
-		for(var i2=0; i2<3; i2++)
-		{
-			var p1 = points[i + i2];
-			var p2 = points[i2 == 2 ? i : (i + i2 + 1)];
-			
-			p1 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p1);
-			p2 = util.getRotatedPoint(mapper.object.position, mapper.object.getRotation(), p2);
-			
-			graphics.drawLine3D(p1, p2, colour, colour);
-		}
-	}
-};
 
 // utility
 mapper.drawTextRight = function(x, y, text, size, colour)

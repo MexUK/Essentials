@@ -1,4 +1,4 @@
-global.elements = {};
+global.elements = global.elements || {};
 
 elements.isElementOnScreen = (elementId) =>
 {
