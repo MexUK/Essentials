@@ -1125,6 +1125,31 @@ cmds.lights = (client, _state) =>
 	util.setClientVariable(client, 'localPlayer.vehicle.lightStatus', status);
 };
 
+cmds.pointgunat = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isBool(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	chat.all(client.name + " pointed a gun at " + target.name + ".");
+	util.callClientFunction(target, 'localPlayer.pointGunAt', target.player);
+};
+
 
 
 

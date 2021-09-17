@@ -231,6 +231,9 @@ removeMode.setPreviousElement = () =>
 
 removeMode.updateElement = () =>
 {
+	if(removeMode.getElementIds().length == 0)
+		return;
+	
 	var elementId = removeMode.getElementIds()[removeMode.elementIndex];
 	removeMode.element = getElementFromId(elementId);
 	removeMode.cameraZoom = removeMode.element.boundingRadius * 5.0;
