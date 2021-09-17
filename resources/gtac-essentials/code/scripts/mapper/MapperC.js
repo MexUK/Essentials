@@ -57,6 +57,7 @@ mapper.cameraZoom = mapper.minCameraZoom;
 mapper.objectStepUsingBB = true;
 mapper.objectPositionStep = new Vec3(1.0, 0.0, 0.0);
 mapper.objectRotationStep = new Vec3(0.0, 0.0, 0.0);
+mapper.maxObjectOffsetLength = 50.0;
 
 /*
 mapper.joinObjectOptions = [
@@ -756,12 +757,31 @@ mapper.addNextObject = function()
 
 mapper.getSecondObjectPositionOffset = (usew) =>
 {
-	var bb = mapper.getColSize();
+	var object = mapper.objects[mapper.objects.length - 1];
+	var bb = mapper.getColSize(object);
 	var bbw = bb.x;
 	var bbd = bb.y;
 	usew = usew || true;
 	var bbl = usew ? bbw : bbd;
-	return (new Vec3(0.0, 0.0, 0.0)).addPolar(bbl, mapper.object.heading + util.radians(90.0));
+	return (new Vec3(0.0, 0.0, 0.0)).addPolar(bbl, object.heading + util.radians(90.0));
+};
+
+mapper.getObjectPositionOffset = (usew) =>
+{
+	var object1 = mapper.objects[mapper.objects.length - 2];
+	var object2 = mapper.objects[mapper.objects.length - 1];
+	
+	var position1 = object1.position;
+	var position2 = object2.position;
+	
+	var offset = new Vec3(position2.x - position1.x, position2.y - position1.y, position2.z - position1.z);
+	
+	if(offset.length > mapper.maxObjectOffsetLength)
+	{
+		offset = mapper.getSecondObjectPositionOffset(usew);
+	}
+	
+	return offset;
 };
 
 // object collision size
@@ -789,10 +809,15 @@ mapper.getMaxVec = function(a, b)
 
 mapper.getColMinMax = function()
 {
-	var vertices = mapper.object.collisionVertices;
-	var boxes = mapper.object.collisionBoxes;
-	var spheres = mapper.object.collisionSpheres;
-	var lines = mapper.object.collisionLines;
+	return mapper.getColMinMaxForObject(mapper.object);
+};
+
+mapper.getColMinMaxForObject = function(object)
+{
+	var vertices = object.collisionVertices;
+	var boxes = object.collisionBoxes;
+	var spheres = object.collisionSpheres;
+	var lines = object.collisionLines;
 	
 	if(vertices.length > 0 || boxes.length > 0 || spheres.length > 0 || lines.length > 0)
 	{
@@ -851,7 +876,7 @@ mapper.getColMinMax = function()
 	}
 	else
 	{
-		return [mapper.object.boundingMax, mapper.object.boundingMin];
+		return [object.boundingMax, object.boundingMin];
 	}
 };
 
@@ -884,6 +909,12 @@ mapper.getColVerticesMinMax = function()
 mapper.getColSize = function()
 {
 	var bbmm = mapper.getColMinMax();
+	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
+};
+
+mapper.getColSizeForObject = function(object)
+{
+	var bbmm = mapper.getColMinMaxForObject(object);
 	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
 };
 
@@ -925,9 +956,7 @@ mapper.placeObject = function()
 		}
 		else
 		{
-			var position1 = mapper.objects[mapper.objects.length - 2].position;
-			var position2 = mapper.objects[mapper.objects.length - 1].position;
-			offset = new Vec3(position2.x - position1.x, position2.y - position1.y, position2.z - position1.z);
+			offset = mapper.getObjectPositionOffset();
 		}
 	}
 	
