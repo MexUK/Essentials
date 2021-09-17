@@ -12,7 +12,7 @@ removeMode.isRemoveModeEnabled = (client) =>
 removeMode.enableRemoveMode = (client, elementName) =>
 {
 	clientData.set(client, 'removeMode', elementName);
-	util.callClientFunction(client, 'removeMode.enable', elementName);
+	util.callClientFunction(client, 'removeMode.enable', elementName, removeMode.getElementIds(elementName));
 };
 
 removeMode.disableRemoveMode = (client) =>
@@ -21,13 +21,40 @@ removeMode.disableRemoveMode = (client) =>
 	util.callClientFunction(client, 'removeMode.disable');
 };
 
+removeMode.getElementName = (elementName) =>
+{
+	switch(elementName)
+	{
+		case 'objects':		return 'Object';
+		case 'vehicles':	return 'Vehicle';
+		case 'pickups':		return 'Pickup';
+		case 'spheres':		return 'Marker';
+		case 'peds':		return 'Ped';
+		case 'blips':		return 'Blip';
+		default:			return 'Unknown';
+	}
+};
 
-
+removeMode.getElementIds = (elementName) =>
+{
+	switch(elementName)
+	{
+		case 'objects':		return elements.data.objects.map(v => v.id);
+		case 'vehicles':	return elements.data.vehicles.map(v => v.id);
+		case 'pickups':		return elements.data.pickups.map(v => v.id);
+		case 'spheres':		return elements.data.spheres.map(v => v.id);
+		case 'peds':		return elements.data.peds.map(v => v.id);
+		case 'blips':		return elements.data.blips.map(v => v.id);
+		default:			return [];
+	}
+};
 
 removeMode.removeElement = (client, elementName, elementId) =>
 {
 	if(!removeMode.isRemoveModeEnabled(client))
 		return;
+	
+	chat.all(client.name + ' removed ' + removeMode.getElementName(elementName).toLowerCase() + ' with ID ' + elementId + '.');
 	
 	switch(elementName)
 	{
@@ -63,5 +90,5 @@ removeMode.removeElement = (client, elementName, elementId) =>
 			break;
 	}
 	
-	util.callClientFunction(client, 'removeMode.onElementRemoved');
+	util.callClientFunction(client, 'removeMode.onElementRemoved', removeMode.getElementIds(elementName));
 };

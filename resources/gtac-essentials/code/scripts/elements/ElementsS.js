@@ -637,7 +637,15 @@ cmds.removevehicle = (client, _elementId) =>
 	], _elementId);
 	
 	if(_elementId === undefined)
-		return chat.pm(client, "You didn't type a vehicle ID.");
+	{
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove vehicle mode.");
+		if(newEnabledState)
+			removeMode.enableRemoveMode(client, 'vehicles');
+		else
+			removeMode.disableRemoveMode(client);
+		return;
+	}
 	
 	var elementId = util.int(_elementId);
 	if(elementId < 0 || elementId > elements.MAX_VEHICLES)
@@ -660,7 +668,15 @@ cmds.removepickup = (client, _elementId) =>
 	], _elementId);
 	
 	if(_elementId === undefined)
-		return chat.pm(client, "You didn't type a pickup ID.");
+	{
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove pickup mode.");
+		if(newEnabledState)
+			removeMode.enableRemoveMode(client, 'pickups');
+		else
+			removeMode.disableRemoveMode(client);
+		return;
+	}
 	
 	var elementId = util.int(_elementId);
 	if(elementId < 0 || elementId > elements.MAX_PICKUPS)
@@ -683,7 +699,15 @@ cmds.removesphere = (client, _elementId) =>
 	], _elementId);
 	
 	if(_elementId === undefined)
-		return chat.pm(client, "You didn't type a sphere ID.");
+	{
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove sphere mode.");
+		if(newEnabledState)
+			removeMode.enableRemoveMode(client, 'spheres');
+		else
+			removeMode.disableRemoveMode(client);
+		return;
+	}
 	
 	var elementId = util.int(_elementId);
 	if(elementId < 0 || elementId > elements.MAX_SPHERES)
@@ -706,7 +730,15 @@ cmds.removeblip = (client, _elementId) =>
 	], _elementId);
 	
 	if(_elementId === undefined)
-		return chat.pm(client, "You didn't type a blip ID.");
+	{
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove blip mode.");
+		if(newEnabledState)
+			removeMode.enableRemoveMode(client, 'blips');
+		else
+			removeMode.disableRemoveMode(client);
+		return;
+	}
 	
 	var elementId = util.int(_elementId);
 	if(elementId < 0 || elementId > elements.MAX_BLIPS)
@@ -729,7 +761,15 @@ cmds.removeped = (client, _elementId) =>
 	], _elementId);
 	
 	if(_elementId === undefined)
-		return chat.pm(client, "You didn't type a ped ID.");
+	{
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove ped mode.");
+		if(newEnabledState)
+			removeMode.enableRemoveMode(client, 'peds');
+		else
+			removeMode.disableRemoveMode(client);
+		return;
+	}
 	
 	var elementId = util.int(_elementId);
 	if(elementId < 0 || elementId > elements.MAX_PEDS)

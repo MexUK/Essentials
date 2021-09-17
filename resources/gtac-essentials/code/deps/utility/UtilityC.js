@@ -636,9 +636,8 @@ util.drawBB = function(object, colour)
 {
 	var bbmm = util.getColMinMax(object);
 	var lines = util.getBoxPointLines(object.position, object.getRotation(), bbmm[0], bbmm[1]);
-	if(!lines)
+	if(!lines || lines.length == 0)
 		return;
-	
 	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
 	{
 		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
@@ -648,7 +647,8 @@ util.drawBB = function(object, colour)
 util.drawBB2 = function(object, colour)
 {
 	var lines = util.getBoxPointLines(object.position, object.getRotation(), object.boundingMin, object.boundingMax);
-	
+	if(!lines || lines.length == 0)
+		return;
 	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
 	{
 		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
@@ -658,25 +658,25 @@ util.drawBB2 = function(object, colour)
 util.drawColLines = function(object, colour)
 {
 	var points = object.collisionLines;
+	if(!points || points.length == 0)
+		return;
 	for(var i=0, j=points.length; i<j; i += 2)
 	{
-		for(var i2=0; i2<2; i2++)
-		{
-			var p1 = points[i + i2];
-			var p2 = points[i + i2 + 1];
-			//var p2 = points[i2 == 1 ? i : (i + i2 + 1)];
-			
-			p1 = util.getRotatedPoint(object.position, object.getRotation(), p1);
-			p2 = util.getRotatedPoint(object.position, object.getRotation(), p2);
-			
-			graphics.drawLine3D(p1, p2, colour, colour);
-		}
+		var p1 = points[i];
+		var p2 = points[i + 1];
+		
+		p1 = util.getRotatedPoint(object.position, object.getRotation(), p1);
+		p2 = util.getRotatedPoint(object.position, object.getRotation(), p2);
+		
+		graphics.drawLine3D(p1, p2, colour, colour);
 	}
 };
 
 util.drawColBoxes = function(object, colour)
 {
 	var points = object.collisionBoxes;
+	if(!points || points.length == 0)
+		return;
 	for(var i=0, j=points.length; i<j; i += 2)
 	{
 		var min = points[i];
@@ -693,11 +693,16 @@ util.drawColBoxes = function(object, colour)
 
 util.drawColSpheres = function(object, colour)
 {
+	var points = object.collisionSpheres;
+	if(!points || points.length == 0)
+		return;
 };
 
 util.drawColTriangles = function(object, colour)
 {
 	var points = object.collisionVertices;
+	if(!points || points.length == 0)
+		return;
 	for(var i=0, j=points.length; i<j; i += 3)
 	{
 		for(var i2=0; i2<3; i2++)

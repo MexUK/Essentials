@@ -17,6 +17,8 @@ removeMode.colours =
 	vertices:	0xCFFF00FF
 };
 removeMode.removeConfirm = 0;
+removeMode.elementIds = [];
+removeMode.drawBB = true;
 
 addEventHandler('onBeforeDrawHUD', function(e)
 {
@@ -37,13 +39,13 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	y += 100;
 	yStep = 35;
 	fontSize = 18.0;
-	if(removeMode.getElements().length == 0)
+	if(removeMode.getElementIds().length == 0)
 		removeMode.drawTextRight(50, y, '0/0', fontSize, colour);
 	else
-		removeMode.drawTextRight(50, y, (removeMode.elementIndex + 1) + '/' + removeMode.getElements().length, fontSize, colour);
+		removeMode.drawTextRight(50, y, (removeMode.elementIndex + 1) + '/' + removeMode.getElementIds().length, fontSize, colour);
 	y += yStep;
 	if(removeMode.element != null)
-		removeMode.drawTextRight(50, y, removeMode.elementName + ' ID: ' + removeMode.element.id, fontSize, colour);
+		removeMode.drawTextRight(50, y, removeMode.getElementName() + ' ID: ' + removeMode.element.id, fontSize, colour);
 	y += yStep;
 	if(removeMode.element != null)
 		removeMode.drawTextRight(50, y, 'Model ID: ' + removeMode.element.modelIndex, fontSize, colour);
@@ -58,11 +60,16 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	}
 	y += yStep;
 	
-	util.drawBB(removeMode.element, removeMode.colours.bb);
-	util.drawColLines(removeMode.element, removeMode.colours.lines);
-	util.drawColBoxes(removeMode.element, removeMode.colours.boxes);
-	//util.drawColSpheres(removeMode.element, removeMode.colours.spheres);
-	util.drawColTriangles(removeMode.element, removeMode.colours.vertices);
+	if(removeMode.drawBB && removeMode.element != null)
+	{
+		util.drawBB(removeMode.element, removeMode.colours.bb);
+		util.drawColLines(removeMode.element, removeMode.colours.lines);
+		util.drawColBoxes(removeMode.element, removeMode.colours.boxes);
+		//util.drawColSpheres(removeMode.element, removeMode.colours.spheres);
+		util.drawColTriangles(removeMode.element, removeMode.colours.vertices);
+	}
+	
+	removeMode.updateCamera();
 });
 
 addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
@@ -133,31 +140,37 @@ removeMode.drawTextRight = function(x, y, text, size, colour)
 	removeMode.font1.render(text, new Vec2(gta.width - x, y), 0, 1.0, 0.0, size, colour);
 };
 
-removeMode.updateCamera = function()
+removeMode.getElementName = () =>
 {
-	var objectCentrePosition = removeMode.element.position;
-	var cameraPosition = objectCentrePosition.addSpherical(removeMode.cameraZoom, removeMode.objectToCameraXYInclination, removeMode.objectToCameraZRotation);
-	
-	var cameraLookAtPosition = objectCentrePosition;
-	gta.setCameraLookAt(cameraPosition, cameraLookAtPosition, true);
+	switch(removeMode.elementName)
+	{
+		case 'objects':		return 'Object';
+		case 'vehicles':	return 'Vehicle';
+		case 'pickups':		return 'Pickup';
+		case 'spheres':		return 'Marker';
+		case 'peds':		return 'Ped';
+		case 'blips':		return 'Blip';
+		default:			return 'Unknown';
+	}
 };
 
-removeMode.enable = (elementName) =>
+removeMode.enable = (elementName, elementIds) =>
 {
 	if(removeMode.isEnabled())
 		removeMode.disable();
 	
 	removeMode.enabled = true;
 	removeMode.elementName = elementName;
-	removeMode.elementIndex = 0;
+	removeMode.elementIds = elementIds;
 	
-	var elements = removeMode.getElements();
-	if(elements.length == 0)
+	if(elementIds.length == 0)
 	{
+		removeMode.elementIndex = -1;
 		removeMode.element = null;
 		return;
 	}
 	
+	removeMode.elementIndex = 0;
 	removeMode.removeConfirm = 0;
 	
 	removeMode.objectToCameraZRotation = localPlayer.heading - util.radians(90.0);
@@ -179,8 +192,9 @@ removeMode.isEnabled = () =>
 	return removeMode.enabled;
 };
 
-removeMode.getElements = () =>
+removeMode.getElementIds = () =>
 {
+	/*
 	switch(removeMode.elementName)
 	{
 		case 'objects':		return getObjects();
@@ -191,11 +205,13 @@ removeMode.getElements = () =>
 		case 'blips':		return getBlips();
 		default:			return [];
 	}
+	*/
+	return removeMode.elementIds;
 };
 
 removeMode.setNextElement = () =>
 {
-	if(removeMode.elementIndex == (removeMode.getElements().length - 1))
+	if(removeMode.elementIndex == (removeMode.getElementIds().length - 1))
 		removeMode.elementIndex = 0;
 	else
 		removeMode.elementIndex++;
@@ -206,7 +222,7 @@ removeMode.setNextElement = () =>
 removeMode.setPreviousElement = () =>
 {
 	if(removeMode.elementIndex == 0)
-		removeMode.elementIndex = removeMode.getElements().length - 1;
+		removeMode.elementIndex = removeMode.getElementIds().length - 1;
 	else
 		removeMode.elementIndex--;
 	
@@ -215,26 +231,40 @@ removeMode.setPreviousElement = () =>
 
 removeMode.updateElement = () =>
 {
-	if(removeMode.elementIndex == -1)
-		return;
-	
-	removeMode.element = removeMode.getElements()[removeMode.elementIndex];
+	var elementId = removeMode.getElementIds()[removeMode.elementIndex];
+	removeMode.element = getElementFromId(elementId);
 	removeMode.cameraZoom = removeMode.element.boundingRadius * 5.0;
 	
 	removeMode.updateCamera();
 };
 
+removeMode.updateCamera = function()
+{
+	if(removeMode.element == null)
+		return;
+	
+	var objectCentrePosition = removeMode.element.position;
+	var cameraPosition = objectCentrePosition.addSpherical(removeMode.cameraZoom, removeMode.objectToCameraXYInclination, removeMode.objectToCameraZRotation);
+	
+	var cameraLookAtPosition = objectCentrePosition;
+	gta.setCameraLookAt(cameraPosition, cameraLookAtPosition, true);
+};
+
 removeMode.removeElement = () =>
 {
 	util.callServerFunction('removeMode.removeElement', removeMode.elementName, removeMode.element.id);
+	
+	removeMode.element = null;
 };
 
-removeMode.onElementRemoved = () =>
+removeMode.onElementRemoved = (elementIds) =>
 {
-	if(removeMode.getElements().length == 0)
+	removeMode.elementIds = elementIds;
+	
+	if(elementIds.length == 0)
 		removeMode.elementIndex = -1;
-	else if(removeMode.elementIndex >= removeMode.getElements().length)
-		removeMode.elementIndex = removeMode.getElements().length - 1;
+	else if(removeMode.elementIndex >= elementIds.length)
+		removeMode.elementIndex = elementIds.length - 1;
 	
 	removeMode.updateElement();
 };
