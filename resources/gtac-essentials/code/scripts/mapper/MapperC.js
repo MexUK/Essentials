@@ -684,6 +684,9 @@ mapper.closeMapper = function()
 	destroyElement(mapper.object);
 	mapper.object = null;
 	
+	mapper.objects.map(v => destroyElement(v));
+	mapper.objects = [];
+	
 	gta.restoreCamera(false);
 	
 	pos.z = util.getGroundZ(pos.x, pos.y);
