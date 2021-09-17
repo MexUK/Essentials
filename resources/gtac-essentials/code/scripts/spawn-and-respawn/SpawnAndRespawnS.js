@@ -38,6 +38,36 @@ events.onPedWasted.push((e,p,a,w,pp) => {
 });
 
 // commands
+/*
+cmds.spawn = (client) =>
+{
+	if(client.player)
+		return chat.pm(client, 'You are already spawned.');
+	
+	chat.all(client.name + " spawned themself.");
+	spawn.spawnPlayer(client);
+};
+
+cmds.despawn = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	chat.all(client.name + " despawned themself.");
+	util.callClientFunction(client, 'spawn.despawnLocalPlayer');
+};
+
+cmds.respawn = (client) =>
+{
+	chat.all(client.name + " respawned themself.");
+	
+	if(client.player)
+		util.callClientFunction(client, 'spawn.despawnLocalPlayer');
+	if(!client.player)
+		spawn.spawnPlayer(client);
+};
+*/
+
 cmds.addspawn = (client) =>
 {
 	if(!client.player)

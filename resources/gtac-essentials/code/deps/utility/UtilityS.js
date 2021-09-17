@@ -4,6 +4,8 @@ util.timers = {};
 util.messages = {};
 
 // data
+util.gameNames = ['', 'GTA III', 'GTA VC', 'GTA SA', 'GTA IV'];
+
 util.modelRanges = [];
 
 util.modelRanges[GAME_GTA_III] = {};
@@ -2083,5 +2085,10 @@ util.setClientsVariable = (variableName, variableValue) =>
 util.setClientsProperty = (variableName, variableValue) =>
 {
 	triggerNetworkEvent('setClientVariable', null, variableName, variableValue);
+};
+
+util.getGameName = (gameId) =>
+{
+	return util.gameNames[gameId] ? util.gameNames[gameId] : 'Unknown Game';
 };
 

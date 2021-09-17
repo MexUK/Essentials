@@ -1129,8 +1129,7 @@ cmds.pointgunat = (client, _target) =>
 {
 	[_target] = util.grabArgs(client,
 	[
-		(v) => util.isClient(v),
-		(v) => util.isBool(v)
+		(v) => util.isClient(v)
 	],
 	[
 		client.name
@@ -1148,6 +1147,57 @@ cmds.pointgunat = (client, _target) =>
 	
 	chat.all(client.name + " pointed a gun at " + target.name + ".");
 	util.callClientFunction(target, 'localPlayer.pointGunAt', target.player);
+};
+
+cmds.ping = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	chat.all(target.name + " has ping " + target.ping + ".");
+};
+
+cmds.game = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	chat.all(target.name + " is playing game " + util.getGameName(server.game) + ".");
+};
+
+cmds.gameversion = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	chat.all(target.name + " is using game version index " + target.gameVersion + " for " + util.getGameName(server.game) + ".");
 };
 
 

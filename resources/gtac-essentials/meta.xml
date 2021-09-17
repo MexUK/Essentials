@@ -129,6 +129,7 @@
 	<script src="code/scripts/generic/GenericC.js" type="client" language="javascript" />
 	
 	<script src="code/scripts/spawn-and-respawn/SpawnAndRespawnS.js" type="server" language="javascript" />
+	<script src="code/scripts/spawn-and-respawn/SpawnAndRespawnC.js" type="client" language="javascript" />
 	
 	<script src="code/scripts/command-aliases/CommandAliasesS.js" type="server" language="javascript" />
 	
