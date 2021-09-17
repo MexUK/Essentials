@@ -17,7 +17,7 @@ mapper.axisModes.CAMERA = 2;
 mapper.modeNames = ['', 'Choose Object', 'Place Object'];
 mapper.placeObjectModeNames = ['', 'Position', 'Rotation', 'Join', 'Fill'];
 
-mapper.shown = false;
+mapper.enabled = false;
 mapper.font1 = lucasFont.createDefaultFont(50.0, "Arial");
 mapper.window = null;
 mapper.ui = {};
@@ -149,7 +149,7 @@ mapper.init = function()
 	
 	bindKey(SDLK_F1, KEYSTATE_DOWN, function(e)
 	{
-		if(!mapper.shown)
+		if(!mapper.enabled)
 			return;
 		
 		gui.showCursor(false, false);
@@ -163,7 +163,7 @@ mapper.init = function()
 		/*
 		var show = !mapper.window.shown;
 		
-		if(show && !mapper.shown)
+		if(show && !mapper.enabled)
 			return;
 		
 		mapper.window.shown = show;
@@ -343,7 +343,7 @@ mapper.init();
 var b = true;
 addEventHandler('onProcess', function(e,delta)
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	mapper.processAlpha1 += delta;
@@ -420,7 +420,7 @@ mapper.getPlaceModeKeys = () =>
 
 addEventHandler('onBeforeDrawHUD', function(e)
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	if(!mapper.object)
@@ -476,7 +476,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 
 addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	if(gui.cursorEnabled)
@@ -495,7 +495,7 @@ addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
 
 addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	var increaseBy = coords.y > 0.0 ? 1 : -1;
@@ -504,7 +504,7 @@ addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
 
 bindKey(SDLK_x, KEYSTATE_DOWN, () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	mapper.axisMode = mapper.axisMode == mapper.axisModes.OBJECT ? mapper.axisModes.CAMERA : mapper.axisModes.OBJECT;
@@ -512,7 +512,7 @@ bindKey(SDLK_x, KEYSTATE_DOWN, () =>
 
 bindKey(SDLK_HASH, KEYSTATE_DOWN, () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	mapper.toggleObjectSpin();
@@ -520,7 +520,7 @@ bindKey(SDLK_HASH, KEYSTATE_DOWN, () =>
 
 var returnKeyCB = () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	//if(gui.cursorEnabled)
@@ -552,7 +552,7 @@ bindKey(SDLK_KP_ENTER, KEYSTATE_DOWN, returnKeyCB);
 
 bindKey(SDLK_BACKSPACE, KEYSTATE_DOWN, () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	/*
@@ -566,7 +566,7 @@ bindKey(SDLK_BACKSPACE, KEYSTATE_DOWN, () =>
 
 bindKey(SDLK_SPACE, KEYSTATE_DOWN, () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	/*
@@ -582,7 +582,7 @@ bindKey(SDLK_SPACE, KEYSTATE_DOWN, () =>
 
 var increaseModelIdCB = () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	mapper.changeObjectModel(1);
@@ -592,7 +592,7 @@ bindKey(SDLK_KP_PLUS, KEYSTATE_DOWN, increaseModelIdCB);
 
 var decreaseModelIdCB = () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	mapper.changeObjectModel(-1);
@@ -602,7 +602,7 @@ bindKey(SDLK_KP_MINUS, KEYSTATE_DOWN, decreaseModelIdCB);
 
 mapper.checkToSetPlaceObjectMode = function(placeObjectMode)
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	mapper.placeObjectMode = placeObjectMode;
@@ -618,8 +618,17 @@ bindKey(SDLK_2, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.pla
 bindKey(SDLK_3, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.JOIN));
 bindKey(SDLK_4, KEYSTATE_DOWN, () => mapper.checkToSetPlaceObjectMode(mapper.placeObjectModes.FILL));
 
-bindKey(SDLK_LEFT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.canChangeJoinIndex() && mapper.changeJoinIndex(true));
-bindKey(SDLK_RIGHT, KEYSTATE_DOWN, () => mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.canChangeJoinIndex() && mapper.changeJoinIndex(false));
+bindKey(SDLK_LEFT, KEYSTATE_DOWN, () => mapper.checkToSetJoinIndex(true));
+bindKey(SDLK_RIGHT, KEYSTATE_DOWN, () => mapper.checkToSetJoinIndex(false));
+
+mapper.checkToSetJoinIndex = (state) =>
+{
+	if(!mapper.enabled)
+		return;
+	
+	if(mapper.placeObjectMode == mapper.placeObjectModes.JOIN && mapper.canChangeJoinIndex())
+		mapper.changeJoinIndex(state);
+};
 
 /*
 mapper.resetProcessAlpha = function()
@@ -634,7 +643,7 @@ bindKey(SDLK_DOWN, KEYSTATE_UP, () => resetProcessAlpha);
 
 bindKey(SDLK_g, KEYSTATE_DOWN, () =>
 {
-	if(!mapper.shown)
+	if(!mapper.enabled)
 		return;
 	
 	mapper.snapToGround();
@@ -643,7 +652,7 @@ bindKey(SDLK_g, KEYSTATE_DOWN, () =>
 // toggle map editor
 mapper.setEnabled = function(modelId)
 {
-	mapper.shown = true;
+	mapper.enabled = true;
 	
 	mapper.window.shown = false;
 	gui.showCursor(false, false);
@@ -653,7 +662,7 @@ mapper.setEnabled = function(modelId)
 
 mapper.setDisabled = function()
 {
-	mapper.shown = false;
+	mapper.enabled = false;
 	
 	mapper.window.shown = false;
 	gui.showCursor(false, false);
@@ -670,7 +679,7 @@ mapper.closeMapper = function()
 {
 	var pos = mapper.object.position;
 	
-	mapper.shown = false;
+	mapper.enabled = false;
 	
 	destroyElement(mapper.object);
 	mapper.object = null;

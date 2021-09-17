@@ -1098,6 +1098,33 @@ cmds.bounds = (client, _target, _state) =>
 	util.callClientFunction(target, 'generic.setLocalPlayerDrawBounds', state);
 };
 
+cmds.lights = (client, _state) =>
+{
+	[_state] = util.grabArgs(client,
+	[
+		(v) => v !== undefined && (util.isBool(v) || v.toLowerCase() == 'auto')
+	],
+	[
+	], _state);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(!client.player.vehicle)
+		return chat.notInVehicle(client, client);
+	
+	if(_state === undefined)
+		return util.requestClientVariable(client, 'localPlayer.vehicle.lightStatus', (status) => chat.all(client.name + " has their vehicle lights set to " + (status == 0 ? 'automatic' : (status == 1 ? 'on' : 'off')) + '.'));
+	
+	var auto = _state.toLowerCase() == 'auto';
+	var status = auto ? 0 : (util.bool(_state, null) === true ? 1 : (util.bool(_state, null) === false ? 2 : null));
+	if(status === null)
+		return chat.bool(client, 'Light Status (auto,bool)', _state);
+	
+	chat.all(client.name + " set their vehicle lights to " + (status == 0 ? 'automatic' : (status == 1 ? 'on' : 'off')) + '.');
+	util.setClientVariable(client, 'localPlayer.vehicle.lightStatus', status);
+};
+
 
 
 
