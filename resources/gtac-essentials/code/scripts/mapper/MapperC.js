@@ -33,7 +33,7 @@ mapper.modelId = 0;
 mapper.objectPosition = null;
 
 mapper.defaultModelId = 709;
-mapper.minCameraZoom = 0.001;
+mapper.minCameraZoom = 2.0;
 mapper.maxCameraZoom = 2500.0;
 
 //mapper.nextJoinObjectAt = 0;
@@ -53,7 +53,7 @@ mapper.spinObjectSpeed = new Vec3(0.0, 0.0, 1.0);
 mapper.bbMultiplier = new Vec3(1.0, 1.0, 1.0);
 mapper.joinOnRotate = true;
 mapper.autoZoom = true;
-mapper.cameraZoom = 10.0;
+mapper.cameraZoom = mapper.minCameraZoom;
 mapper.objectStepUsingBB = true;
 mapper.objectPositionStep = new Vec3(1.0, 0.0, 0.0);
 mapper.objectRotationStep = new Vec3(0.0, 0.0, 0.0);
@@ -714,7 +714,9 @@ mapper.startChoosingObject = function(modelId)
 	mapper.object.collisionsEnabled = true;
 	
 	if(mapper.autoZoom)
-		mapper.cameraZoom = mapper.object.boundingRadius * 3.0;
+	{
+		mapper.setCameraZoom(mapper.object.boundingRadius * 3.0);
+	}
 	mapper.objectToCameraZRotation = localPlayer.heading - util.radians(90.0);
 	mapper.objectToCameraXYInclination = util.radians(45.0);
 	mapper.updateCamera();
@@ -1011,10 +1013,27 @@ mapper.setObjectModel = function(modelId)
 	
 	
 	if(mapper.autoZoom)
-		mapper.cameraZoom = mapper.object.boundingRadius * 3.0;
+	{
+		mapper.setCameraZoom(mapper.object.boundingRadius * 3.0);
+	}
 	
 	mapper.updateCamera();
 	mapper.updatePlayer();
+};
+
+// camera zoom
+mapper.setCameraZoom = (zoom) =>
+{
+	if(zoom < mapper.minCameraZoom)
+	{
+		zoom = mapper.minCameraZoom;
+	}
+	else if(zoom > mapper.maxCameraZoom)
+	{
+		zoom = mapper.maxCameraZoom;
+	}
+	mapper.cameraZoom = zoom;
+	mapper.updateCamera();
 };
 
 // move object
@@ -1554,7 +1573,9 @@ mapper.toggleAutoZoom = function()
 	mapper.autoZoom = !mapper.autoZoom;
 	
 	if(mapper.autoZoom)
-		mapper.cameraZoom = mapper.object.boundingRadius * 3.0;
+	{
+		mapper.setCameraZoom(mapper.object.boundingRadius * 3.0);
+	}
 	
 	mapper.updateCamera();
 };
