@@ -157,7 +157,7 @@ xml.setAttr2 = (path, tag, matchAttributes, newAttributes) =>
 		var matchCount = 0;
 		for(var k in matchAttributes)
 		{
-			if(attr[k.toLowerCase()] == matchAttributes[k].toLowerCase())
+			if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
 			{
 				matchCount++;
 			}
@@ -169,9 +169,9 @@ xml.setAttr2 = (path, tag, matchAttributes, newAttributes) =>
 		for(var i2 in tag2.attributes)
 		{
 			var nameLower = tag2.attributes[i2].name.toLowerCase();
-			if(newAttributes[nameLower])
+			if(newAttributes[nameLower] !== undefined)
 			{
-				tag2.attributes[i2].value = newAttributes[nameLower];
+				tag2.attributes[i2].value = newAttributes[nameLower].toString();
 				attributesSet[nameLower] = true;
 			}
 		}

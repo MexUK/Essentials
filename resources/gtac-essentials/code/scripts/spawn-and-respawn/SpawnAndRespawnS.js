@@ -146,6 +146,23 @@ cmds.gotospawn = (client, _spawnId) =>
 	spawn.teleportClientToSpawn(client, spawnId);
 };
 
+cmds.savespawn = (client, _spawnId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var spawnId = util.int(_spawnId);
+	
+	if(_spawnId === undefined)
+		return chat.pm(client, "You didn't type a spawn ID.");
+	
+	if(!spawn.isSpawnId(spawnId))
+		return chat.pm(client, 'Invalid spawn ID.');
+	
+	chat.all(client.name + ' updated the spawn position for spawn ID ' + spawnId + '.');
+	spawn.setSpawnData(spawnId, client.player.position, client.player.heading);
+};
+
 
 
 
@@ -193,6 +210,22 @@ spawn.removeSpawn = (spawnId) =>
 		}
 	}
 	xml.remove(spawn.getSpawnsPath(), 'Spawn', 'id', spawnId);
+};
+
+spawn.setSpawnData = (spawnId, position, heading) =>
+{
+	var spawnData = spawn.getSpawn(spawnId);
+	if(spawnData)
+	{
+		spawnData.position = position;
+		spawnData.heading = heading;
+	}
+	xml.setAttr2(spawn.getSpawnsPath(), 'Spawn', {
+		id:			spawnId
+	}, {
+		position:	util.posArray(position).join(','),
+		rotation:	util.degrees(heading)
+	});
 };
 
 spawn.createSpawn = (position, heading) =>
