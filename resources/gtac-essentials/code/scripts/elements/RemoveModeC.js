@@ -19,6 +19,7 @@ removeMode.colours =
 removeMode.removeConfirm = 0;
 removeMode.elementsData = [];
 removeMode.drawBB = true;
+removeMode.localPlayerPosition = null;
 
 addEventHandler('onBeforeDrawHUD', function(e)
 {
@@ -172,6 +173,7 @@ removeMode.enable = (elementName, elementsData) =>
 	
 	removeMode.elementIndex = 0;
 	removeMode.removeConfirm = 0;
+	removeMode.localPlayerPosition = localPlayer.position;
 	
 	removeMode.objectToCameraZRotation = localPlayer.heading - util.radians(90.0);
 	removeMode.objectToCameraXYInclination = util.radians(45.0);
@@ -181,10 +183,14 @@ removeMode.enable = (elementName, elementsData) =>
 
 removeMode.disable = () =>
 {
+	if(localClient.player)
+		localPlayer.position = removeMode.localPlayerPosition;
+	
 	gta.restoreCamera(false);
 	
 	removeMode.enabled = false;
 	removeMode.elementIndex = -1;
+	removeMode.localPlayerPosition = null;
 };
 
 removeMode.isEnabled = () =>
