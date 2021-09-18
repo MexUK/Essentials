@@ -1478,6 +1478,29 @@ cmds.turnvelocity = (client, _target) =>
 	});
 };
 
+cmds.ground = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	util.requestClientFunctionCall(target, 'generic.getGroundZ', (z) =>
+	{
+		chat.all(target.name + "'s ground Z coordinate is " + z + ".");
+	});
+};
+
 
 
 

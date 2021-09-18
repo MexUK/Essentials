@@ -87,6 +87,17 @@ generic.flipLocalPlayerVehicle = function()
 	localPlayer.vehicle.setRotation(new Vec3(0.0, 0.0, localPlayer.vehicle.heading));
 };
 
+generic.getGroundZ = () =>
+{
+	if(!localClient.player)
+		return;
+	
+	var ignore = [localPlayer];
+	if(localPlayer.vehicle)
+		ignore.push(localPlayer.vehicle);
+	return util.getGroundZ(localPlayer.position.x, localPlayer.position.y, ignore);
+};
+
 // events
 addEventHandler('onPedSpawn', (event,ped) =>
 {
