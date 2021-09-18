@@ -1,7 +1,9 @@
 global.spawn = {};
 
-spawn.path = 'data/scripts/spawn-and-respawn/{0}/SpawnAndRespawn.xml';
+spawn.spawnsPath = 'data/scripts/spawn-and-respawn/{0}/Spawns.xml';
+spawn.dataPath = 'data/scripts/spawn-and-respawn/{0}/SpawnData.xml';
 
+spawn.spawns = [];
 spawn.gameFolderNames =
 [
 	'unknown',
@@ -73,40 +75,42 @@ cmds.addspawn = (client) =>
 	if(!client.player)
 		return chat.notSpawned(client, client);
 	
-	spawn.addSpawn(client.player.position);
-	chat.all(client.name + ' added a spawn position.');
+	var spawnId = spawn.addSpawn(client.player.position, client.player.heading);
+	chat.all(client.name + ' added a spawn position. (Spawn ID ' + spawnId + ')');
 };
 
-cmds.removespawn = (client) =>
+cmds.removespawn = (client, _spawnId) =>
 {
 	if(!client.player)
 		return chat.notSpawned(client, client);
 	
-	var positions = spawn.spawns.map((position,i) => [position, i, client.player.position.distance(position)]);
+	var spawnId = util.int(_spawnId);
 	
-	if(positions.length == 0)
-		return chat.pm(client, 'There are no spawn positions.');
-	
-	if(positions.length == 1)
-		return chat.pm(client, 'There has to be at least 1 spawn position.');
-	
-	var maxDistanceAway = 5.0;
-	positions.sort((a,b) => a[2] > b[2]);
-	
-	var position = positions[0][0];
-	var distanceAway = positions[0][2];
-	if(distanceAway > maxDistanceAway)
-		return chat.pm(client, 'There are no spawn positions near you.');
-	
-	chat.all(client.name + ' removed a spawn position.');
-	
-	spawn.spawns.splice(positions[0][1], 1);
-	xml.removeAttr2(spawn.getPath(), 'Spawn',
+	if(_spawnId === undefined)
 	{
-		x: position.x,
-		y: position.y,
-		z: position.z,
-	});
+		var positions = spawn.spawns.map((position,i) => [position, i, client.player.position.distance(position)]);
+		
+		if(positions.length == 0)
+			return chat.pm(client, 'There are no spawn positions.');
+		
+		var maxDistanceAway = 5.0;
+		positions.sort((a,b) => a[2] > b[2]);
+		
+		var position = positions[0][0];
+		var distanceAway = positions[0][2];
+		if(distanceAway > maxDistanceAway)
+			return chat.pm(client, 'There are no spawn positions near you.');
+		
+		chat.all(client.name + ' removed spawn position with ID ' + positions[0][1] + '.');
+		spawn.removeSpawn(positions[0][1]);
+		return;
+	}
+	
+	if(!spawn.isSpawnId(spawnId))
+		return chat.pm(client, 'Invalid spawn ID.');
+	
+	chat.all(client.name + ' removed spawn position with ID ' + spawnId + '.');
+	spawn.removeSpawn(spawnId);
 };
 
 cmds.spawns = (client) =>
@@ -117,33 +121,106 @@ cmds.spawns = (client) =>
 		chat.all('There ' + util.isAre(spawn.spawns.length) + ' ' + spawn.spawns.length + ' spawn ' + util.plural('position', spawn.spawns.length) + '.');
 };
 
-
-
-
-
-
-spawn.getPath = () =>
+cmds.spawnids = (client) =>
 {
-	return util.format(spawn.path, spawn.gameFolderNames[server.game]);
+	if(spawn.spawns.length == 0)
+		chat.all('There are no spawn positions.');
+	else
+		chat.all('Spawn position IDs: ' + spawn.spawns.map(spawn => spawn.id).join(' ') + '.');
 };
 
-spawn.spawnPlayer = function(c)
+
+
+
+
+
+spawn.getSpawnsPath = () =>
 {
-	var model = clientData.get(c, 'playerModel');
-	var position = spawn.spawns[util.randLen(spawn.spawns.length)];
-	spawnPlayer(c, position, 0.0, model);
-	fadeCamera(c, true);
+	return util.format(spawn.spawnsPath, spawn.gameFolderNames[server.game]);
 };
 
-spawn.addSpawn = function(position)
+spawn.getDataPath = () =>
 {
-	spawn.spawns.push(position);
-	xml.add(spawn.getPath(), 'spawn', {
-		x: position.x,
-		y: position.y,
-		z: position.z
+	return util.format(spawn.dataPath, spawn.gameFolderNames[server.game]);
+};
+
+spawn.spawnPlayer = (client) =>
+{
+	var model = clientData.get(client, 'playerModel');
+	var position = spawn.spawns.length == 0 ? spawn.getDefaultSpawnPosition() : spawn.spawns[util.randLen(spawn.spawns.length)].position;
+	var heading = spawn.spawns.length == 0 ? spawn.getDefaultSpawnHeading() : spawn.spawns[util.randLen(spawn.spawns.length)].heading;
+	spawnPlayer(client, position, heading, model);
+	fadeCamera(client, true);
+};
+
+spawn.addSpawn = (position, heading) =>
+{
+	var spawnId = spawn.createSpawn(position, heading);
+	xml.add(spawn.getSpawnsPath(), 'Spawn', {
+		id:			spawnId,
+		position:	util.posArray(position).join(','),
+		heading: 	util.degrees(heading)
 	});
+	return spawnId;
 };
+
+spawn.removeSpawn = (spawnId) =>
+{
+	for(var i in spawn.spawns)
+	{
+		if(spawnId == spawn.spawns[i].id)
+		{
+			spawn.spawns.splice(i, 1);
+			break;
+		}
+	}
+	xml.remove(spawn.getSpawnsPath(), 'Spawn', 'id', spawnId);
+};
+
+spawn.createSpawn = (position, heading) =>
+{
+	var spawnId = spawn.getNextSpawnId();
+	spawn.spawns.push({
+		id:			spawnId,
+		position:	position,
+		heading:	heading
+	});
+	return spawnId;
+};
+
+spawn.isSpawnId = (id) =>
+{
+	for(var i in spawn.spawns)
+	{
+		if(id == spawn.spawns[i].id)
+		{
+			return true;
+		}
+	}
+	return false;
+};
+
+spawn.getNextSpawnId = () =>
+{
+	var id = 0;
+	while(spawn.isSpawnId(id))
+		id++;
+	return id;
+};
+
+spawn.getDefaultSpawnPosition = () =>
+{
+	switch(server.game)
+	{
+		case GAME_GTA_III:		return new Vec3(-24.618, -523.453, 19.37191);
+		case GAME_GTA_VC:		return new Vec3(-247.6060333251953, -491.5196838378906, 11.201558113098145);
+		case GAME_GTA_SA:		return new Vec3(-204.209, -356.726, 6.22967);
+		case GAME_GTA_IV:		return new Vec3(0.0, 0.0, 30.0);
+		default:				return new Vec3(0.0, 0.0, 0.0);
+	}
+};
+
+spawn.getDefaultSpawnHeading = () => 0.0;
 
 
 
@@ -151,9 +228,10 @@ spawn.addSpawn = function(position)
 
 (() =>
 {
-	var root = util.loadXMLRoot(spawn.getPath());
+	xml.load(spawn.getSpawnsPath(), 'Spawn', (data) => spawn.createSpawn(util.vec3(data.position), util.radians(util.float(data.heading))));
+	xml.save(spawn.getSpawnsPath(), 'Spawn', spawn.spawns, ['id', 'position', 'heading']);
 	
-	spawn.spawns = util.getXMLArray(root, 'spawn', (pos) => new Vec3(parseFloat(pos.x), parseFloat(pos.y), parseFloat(pos.z)));
-	spawn.respawnDuration = parseInt(util.getXMLTag(root, 'respawn').duration);
+	var root = util.loadXMLRoot(spawn.getDataPath());
+	spawn.respawnDuration = parseInt(util.getXMLTag(root, 'Respawn').duration);
 })();
 
