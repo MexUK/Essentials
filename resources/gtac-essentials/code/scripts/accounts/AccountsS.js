@@ -55,6 +55,12 @@ cmds.logout = (client) =>
 	chat.all(client.name + " has logged out.");
 };
 
+cmds.accounts = (client) =>
+{
+	var count = accounts.getAccountCount();
+	chat.all('There ' + util.isAre(count) + ' ' + count + ' accounts.');
+};
+
 
 
 
@@ -97,5 +103,12 @@ accounts.isPasswordCorrect = (name, password) =>
 accounts.encodePassword = (password, salt) =>
 {
 	return SHA512(salt + password + accounts.pepper);
+};
+
+accounts.getAccountCount = () =>
+{
+	var count = 0;
+	xml.load(accounts.path, 'Account', (v) => count++);
+	return count;
 };
 

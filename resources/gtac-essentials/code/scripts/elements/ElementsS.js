@@ -406,6 +406,16 @@ cmds.spheres = (client) => chat.all('Spheres: ' + elements.data.spheres.length +
 cmds.peds = (client) => chat.all('Peds: ' + elements.data.peds.length + '/' + elements.MAX_PEDS + ' (excluding ' + getClients().length + '/' + server.maxClients + ' player peds)');
 cmds.blips = (client) => chat.all('Blips: ' + elements.data.blips.length + '/' + elements.MAX_BLIPS);
 
+cmds.elements = (client) => chat.all([
+	'Players: ' + getClients().length + '/' + server.maxClients,
+	'Objects: ' + elements.data.objects.length + '/' + elements.MAX_OBJECTS,
+	'Vehicles: ' + elements.data.vehicles.length + '/' + elements.MAX_VEHICLES,
+	'Pickups: ' + elements.data.pickups.length + '/' + elements.MAX_PICKUPS,
+	'Spheres: ' + elements.data.spheres.length + '/' + elements.MAX_SPHERES,
+	'Peds: ' + elements.data.peds.length + '/' + elements.MAX_PEDS,
+	'Blips: ' + elements.data.blips.length + '/' + elements.MAX_BLIPS
+].join(', '));
+
 
 
 
@@ -607,7 +617,7 @@ cmds.removeobject = (client, _elementId) =>
 	
 	if(_elementId === undefined)
 	{
-		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client, 'objects');
 		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove object mode.");
 		if(newEnabledState)
 			removeMode.enableRemoveMode(client, 'objects');
@@ -638,7 +648,7 @@ cmds.removevehicle = (client, _elementId) =>
 	
 	if(_elementId === undefined)
 	{
-		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client, 'vehicles');
 		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove vehicle mode.");
 		if(newEnabledState)
 			removeMode.enableRemoveMode(client, 'vehicles');
@@ -669,7 +679,7 @@ cmds.removepickup = (client, _elementId) =>
 	
 	if(_elementId === undefined)
 	{
-		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client, 'pickups');
 		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove pickup mode.");
 		if(newEnabledState)
 			removeMode.enableRemoveMode(client, 'pickups');
@@ -700,7 +710,7 @@ cmds.removesphere = (client, _elementId) =>
 	
 	if(_elementId === undefined)
 	{
-		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client, 'spheres');
 		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove sphere mode.");
 		if(newEnabledState)
 			removeMode.enableRemoveMode(client, 'spheres');
@@ -731,7 +741,7 @@ cmds.removeblip = (client, _elementId) =>
 	
 	if(_elementId === undefined)
 	{
-		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client, 'blips');
 		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove blip mode.");
 		if(newEnabledState)
 			removeMode.enableRemoveMode(client, 'blips');
@@ -762,7 +772,7 @@ cmds.removeped = (client, _elementId) =>
 	
 	if(_elementId === undefined)
 	{
-		var newEnabledState = !removeMode.isRemoveModeEnabled(client);
+		var newEnabledState = !removeMode.isRemoveModeEnabled(client, 'peds');
 		chat.all(client.name + " " + (newEnabledState ? "enabled" : "disabled") + " remove ped mode.");
 		if(newEnabledState)
 			removeMode.enableRemoveMode(client, 'peds');

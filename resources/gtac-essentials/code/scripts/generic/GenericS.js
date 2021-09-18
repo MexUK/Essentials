@@ -1200,6 +1200,140 @@ cmds.gameversion = (client, _target) =>
 	chat.all(target.name + " is using game version index " + target.gameVersion + " for " + util.getGameName(server.game) + ".");
 };
 
+cmds.bigmessage = (client, _target, _int1, _int2, _text) =>
+{
+	[_target, _int1, _int2, _text] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isInt(v),
+		(v) => util.isInt(v),
+		(v) => v !== undefined
+	],
+	[
+		client.name,
+		0,
+		0
+	], _target, _int1, _int2, _text);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(_text === undefined)
+		return chat.pm(client, "You didn't type any text.");
+	
+	var int1 = util.int(_int1);
+	var int2 = util.int(_int2);
+	var text = _text;
+	
+	chat.all(client.name + " drew a big message on " + target.name + "'s screen with text '" + text + "'.");
+	util.callClientFunction(target, 'gta.bigMessage', text, int1, int2);
+};
+
+cmds.smallmessage = (client, _target, _int1, _int2, _text) =>
+{
+	[_target, _int1, _int2, _text] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isInt(v),
+		(v) => util.isInt(v),
+		(v) => v !== undefined
+	],
+	[
+		client.name,
+		0,
+		0
+	], _target, _int1, _int2, _text);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(_text === undefined)
+		return chat.pm(client, "You didn't type any text.");
+	
+	var int1 = util.int(_int1);
+	var int2 = util.int(_int2);
+	var text = _text;
+	
+	chat.all(client.name + " drew a small message on " + target.name + "'s screen with text '" + text + "'.");
+	util.callClientFunction(target, 'gta.smallMessage', text, int1, int2);
+};
+
+cmds.pagermessage = (client, _target, _int1, _int2, _int3, _text) =>
+{
+	[_target, _int1, _int2, _int3, _text] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isInt(v),
+		(v) => util.isInt(v),
+		(v) => util.isInt(v),
+		(v) => v !== undefined
+	],
+	[
+		client.name,
+		0,
+		0,
+		0
+	], _target, _int1, _int2, _int3, _text);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(_text === undefined)
+		return chat.pm(client, "You didn't type any text.");
+	
+	var int1 = util.int(_int1);
+	var int2 = util.int(_int2);
+	var int3 = util.int(_int3);
+	var text = _text;
+	
+	chat.all(client.name + " drew a pager message on " + target.name + "'s screen with text '" + text + "'.");
+	util.callClientFunction(target, 'gta.pagerMessage', text, int1, int2, int3);
+};
+
+cmds.clearmessages = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name,
+		0,
+		0,
+		0
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	chat.all(client.name + " cleared all messages on " + target.name + "'s screen.");
+	util.callClientFunction(target, 'gta.clearMessages');
+};
+
+cmds.weather = (client, _weather) =>
+{
+	[_weather] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _weather);
+	
+	if(_weather === undefined)
+		return util.requestClientVariable(client, 'gta.currentWeather', (weather) => chat.all('Weather: ' + weather));
+	
+	var weather = util.int(_weather, -1);
+	if(weather < 0 || weather > 20)
+		return chat.pm(client, 'Invalid weather.');
+	
+	chat.all(client.name + " changed the weather to " + weather + ".");
+	gta.forceWeather(weather);
+};
+
 
 
 

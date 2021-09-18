@@ -4,9 +4,9 @@ global.removeMode = global.removeMode || {};
 
 
 
-removeMode.isRemoveModeEnabled = (client) =>
+removeMode.isRemoveModeEnabled = (client, elementName) =>
 {
-	return clientData.get(client, 'removeMode') != null;
+	return clientData.get(client, 'removeMode') == elementName;
 };
 
 removeMode.enableRemoveMode = (client, elementName) =>
@@ -51,7 +51,7 @@ removeMode.getElementIds = (elementName) =>
 
 removeMode.removeElement = (client, elementName, elementId) =>
 {
-	if(!removeMode.isRemoveModeEnabled(client))
+	if(!removeMode.isRemoveModeEnabled(client, elementName))
 		return;
 	
 	chat.all(client.name + ' removed ' + removeMode.getElementName(elementName).toLowerCase() + ' with ID ' + elementId + '.');
