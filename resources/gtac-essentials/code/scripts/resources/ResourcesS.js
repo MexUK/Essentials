@@ -64,3 +64,62 @@ cmds.resourcesstarting = (client) =>
 		chat.all('Resources Starting: ' + resources.map(resource => resource.name).join(', '));
 };
 
+cmds.startresource = (client, _resource) =>
+{
+	if(_resource === undefined)
+		return chat.pm(client, "You didn't type a resource name.");
+	
+	var resource = findResourceByName(_resource);
+	if(!resource)
+		return chat.pm(client, "Invalid resource name.");
+	
+	if(resource.isStarting)
+		return chat.pm(client, 'Resource is already starting.');
+	
+	if(resource.isStarted)
+		return chat.pm(client, 'Resource has already started.');
+	
+	chat.all(client.name + ' started resource ' + resource.name + '.');
+	resource.start();
+};
+
+cmds.stopresource = (client, _resource) =>
+{
+	if(_resource === undefined)
+		return chat.pm(client, "You didn't type a resource name.");
+	
+	var resource = findResourceByName(_resource);
+	if(!resource)
+		return chat.pm(client, "Invalid resource name.");
+	
+	if(resource.isStarting)
+		return chat.pm(client, 'Resource is already starting.');
+	
+	if(!resource.isStarted)
+		return chat.pm(client, 'Resource is already stopped.');
+	
+	chat.all(client.name + ' stopped resource ' + resource.name + '.');
+	resource.stop();
+};
+
+cmds.restartresource = (client, _resource) =>
+{
+	if(_resource === undefined)
+		return chat.pm(client, "You didn't type a resource name.");
+	
+	var resource = findResourceByName(_resource);
+	if(!resource)
+		return chat.pm(client, "Invalid resource name.");
+	
+	if(resource.isStarting)
+		return chat.pm(client, 'Resource is already starting.');
+	
+	chat.all(client.name + ' restarted resource ' + resource.name + '.');
+	
+	if(resource.isStarted)
+		resource.stop();
+	
+	if(!resource.isStarted)
+		resource.start();
+};
+

@@ -2,11 +2,15 @@ global.clientData = {};
 
 clientData.clients = new Map();
 
-// events
-events.onPlayerJoined.push((event,client) =>
+var addPlayerCB = (event,client) =>
 {
 	clientData.clients[client.index] = {};
-});
+};
+
+(() => getClients().forEach(client => addPlayerCB(null, client)))();
+
+// events
+events.onPlayerJoined.push(addPlayerCB);
 
 events.onPlayerQuit.push((event,client,type) =>
 {
