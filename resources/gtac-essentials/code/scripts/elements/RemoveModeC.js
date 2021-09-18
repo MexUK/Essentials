@@ -35,7 +35,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	y = 200;
 	yStep = 35;
 	fontSize = 25.0;
-	removeMode.drawTextRight(50, y, 'Remove ' + removeMode.elementName, fontSize, colour);
+	removeMode.drawTextRight(50, y, 'Remove ' + removeMode.getElementName(), fontSize, colour);
 	
 	y += 100;
 	yStep = 35;
