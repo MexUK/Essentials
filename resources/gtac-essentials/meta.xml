@@ -54,6 +54,9 @@
 	<script src="code/scripts/generic/GenericS.js" type="server" language="javascript" />
 	<script src="code/scripts/generic/GenericC.js" type="client" language="javascript" />
 	
+	<script src="code/scripts/mapper/MapperS.js" type="server" language="javascript" />	
+	<script src="code/scripts/mapper/MapperC.js" type="client" language="javascript" />
+	
 	<script src="code/scripts/spawn-and-respawn/SpawnAndRespawnS.js" type="server" language="javascript" />
 	<script src="code/scripts/spawn-and-respawn/SpawnAndRespawnC.js" type="client" language="javascript" />
 	
@@ -62,15 +65,15 @@
 	<script src="code/scripts/key-binds/KeyBindsS.js" type="server" language="javascript" />
 	<script src="code/scripts/key-binds/KeyBindsC.js" type="client" language="javascript" />
 	
+	<script src="code/scripts/resources/ResourcesS.js" type="server" language="javascript" />
+	<script src="code/scripts/resources/ResourcesC.js" type="client" language="javascript" />
+	
 	<script src="code/scripts/temp-vehicles/TempVehiclesS.js" type="server" language="javascript" />
 	
 	<script src="code/scripts/teleports/TeleportsS.js" type="server" language="javascript" />
 	
 	<script src="code/scripts/weapons/WeaponsS.js" type="server" language="javascript" />
 	<script src="code/scripts/weapons/WeaponsC.js" type="client" language="javascript" />
-	
-	<script src="code/scripts/mapper/MapperS.js" type="server" language="javascript" />	
-	<script src="code/scripts/mapper/MapperC.js" type="client" language="javascript" />
 	
 	
 	

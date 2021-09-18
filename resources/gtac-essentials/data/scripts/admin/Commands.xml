@@ -21,4 +21,5 @@
 	<Command name="mapper" level="8" />
 	<Command name="spawnhealth" level="6" />
 	<Command name="spawnarmour" level="6" />
+	<Command name="savespawn" level="6" />
 </Root>
