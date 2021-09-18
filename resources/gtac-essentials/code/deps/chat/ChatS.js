@@ -35,7 +35,7 @@ chat.pm = function(client, text, ...args)
 // command error functions
 chat.invalidClient = function(client, inputText)
 {
-	chat.pm(client, chat.messages.PM_ELEMENT_NOT_FOUND, util.getElementTypeName(ELEMENT_PLAYER), inputText);
+	chat.pm(client, chat.messages.PM_ELEMENT_NOT_FOUND, 'Player', inputText);
 };
 
 chat.invalidOption = function(client, options, inputText)
