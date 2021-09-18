@@ -75,6 +75,18 @@ generic.setLocalPlayerDrawBounds = function(enabled)
 	generic.drawBounds = !generic.drawBounds;
 };
 
+generic.flipLocalPlayerVehicle = function()
+{
+	if(!localClient.player)
+		return
+	
+	if(!localPlayer.vehicle)
+		return;
+	
+	localPlayer.vehicle.turnVelocity = new Vec3(0.0, 0.0, 0.0);
+	localPlayer.vehicle.setRotation(new Vec3(0.0, 0.0, localPlayer.vehicle.heading));
+};
+
 // events
 addEventHandler('onPedSpawn', (event,ped) =>
 {

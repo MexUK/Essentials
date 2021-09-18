@@ -1700,6 +1700,11 @@ util.rot = (client, deg) =>
 	return rot;
 };
 
+util.vec3ToArray = (vec) =>
+{
+	return [vec.x, vec.y, vec.z];
+};
+
 util.vehPos = (client) =>
 {
 	return util.array(client.player.vehicle.position);

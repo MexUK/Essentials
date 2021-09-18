@@ -1300,10 +1300,7 @@ cmds.clearmessages = (client, _target) =>
 		(v) => util.isClient(v)
 	],
 	[
-		client.name,
-		0,
-		0,
-		0
+		client.name
 	], _target);
 	
 	var target = util.findClient(_target, client);
@@ -1334,10 +1331,152 @@ cmds.weather = (client, _weather) =>
 	gta.forceWeather(weather);
 };
 
+cmds.flip = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(!client.player.vehicle)
+		return chat.notInVehicle(client, client);
+	
+	chat.all(client.name + " flipped their vehicle.");
+	util.callClientFunction(client, 'generic.flipLocalPlayerVehicle');
+};
 
+cmds.fix = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(!target.player.vehicle)
+		return chat.notInVehicle(client, target);
+	
+	chat.all(client.name + " fixed " + target.name + "'s vehicle.");
+	target.player.vehicle.fix();
+};
 
+cmds.gotoposition = (client, _x, _y, _z) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_z === undefined)
+		_z = client.player.position.z + '';
+	
+	var x = util.float(_x);
+	var y = util.float(_y);
+	var z = util.float(_z);
+	
+	if(_x === undefined)
+		return chat.pm(client, "You didn't type an X coordinate.");
+	
+	if(!util.isFloat(_x))
+		return chat.pm(client, "Invalid X coordinate.");
+	
+	if(_y === undefined)
+		return chat.pm(client, "You didn't type a Y coordinate.");
+	
+	if(!util.isFloat(_y))
+		return chat.pm(client, "Invalid Y coordinate.");
+	
+	if(!util.isFloat(_z))
+		return chat.pm(client, "Invalid Z coordinate.");
+	
+	chat.all(client.name + " teleported to position "  + [x, y, z].join(', ') + '.');
+	
+	var position = new Vec3(x, y, z);
+	var rotation = client.player.getRotation();
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', position, rotation);
+};
 
+cmds.heading = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var heading = target.player.heading;
+	chat.all(target.name + "'s heading is " + util.degrees(target.player.heading) + " degrees.");
+	if(target.player.vehicle)
+		chat.all(target.name + "'s vehicle heading is " + util.degrees(target.player.vehicle.heading) + " degrees.");
+};
 
+cmds.velocity = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	util.requestClientVariable(target, 'localPlayer.velocity', (velocity) =>
+	{
+		chat.all(target.name + "'s velocity is " + util.vec3ToArray(velocity).join(', ') + ".");
+		if(target.player.vehicle)
+		{
+			util.requestClientVariable(target, 'localPlayer.vehicle.velocity', (velocity) => chat.all(target.name + "'s vehicle velocity is " + util.vec3ToArray(velocity).join(', ') + "."));
+		}
+	});
+};
+
+cmds.turnvelocity = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	util.requestClientVariable(target, 'localPlayer.turnVelocity', (velocity) =>
+	{
+		chat.all(target.name + "'s turn velocity is " + util.vec3ToArray(velocity).join(', ') + ".");
+		if(target.player.vehicle)
+		{
+			util.requestClientVariable(target, 'localPlayer.vehicle.turnVelocity', (velocity) => chat.all(target.name + "'s vehicle turn velocity is " + util.vec3ToArray(velocity).join(', ') + "."));
+		}
+	});
+};
 
 
 
