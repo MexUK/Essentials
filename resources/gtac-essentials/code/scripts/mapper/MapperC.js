@@ -19,7 +19,6 @@ mapper.placeObjectModeNames = ['', 'Position', 'Rotation', 'Join', 'Fill'];
 
 mapper.enabled = false;
 mapper.font1 = lucasFont.createDefaultFont(50.0, "Arial");
-mapper.window = null;
 mapper.ui = {};
 
 mapper.mode = mapper.modes.PLACE_OBJECT;
@@ -99,194 +98,6 @@ mapper.colours =
 // window
 mapper.init = function()
 {
-	mapper.window = mexui.window(10, 10, 500, 700, 'Map Editor');
-	mapper.window.shown = false;
-	
-	var titleStyles = {
-		main:
-		{
-			textColour: 		toColour(0, 88, 215, 255),
-			textFont:			'Arial',
-			textSize:			14.0,
-			
-			hover:
-			{
-				textColour: 	toColour(255, 0, 0, 255),
-				transitionTime:	500
-			}
-		}
-	};
-	var textStyles = {
-		main:
-		{
-			textColour: 		toColour(0, 148, 215, 255),
-			textFont:			'Arial',
-			textSize:			12.0,
-			
-			hover:
-			{
-				textColour:		toColour(255, 0, 0, 255),
-				transitionTime:	500
-			}
-		}
-	};
-	var checkBoxStyles = {
-		main:
-		{
-			textColour: 		toColour(0, 148, 215, 255),
-			textFont:			'Arial',
-			textSize:			12.0,
-			fillColour:			toColour(0, 148, 215, 255)
-		}
-	};
-	var textInputStyles = {
-		main:
-		{
-			fillColour:			toColour(0, 148, 215, 255),
-			textFont:			'Arial',
-			textSize:			10.0
-		}
-	};
-	
-	bindKey(SDLK_F1, KEYSTATE_DOWN, function(e)
-	{
-		if(!mapper.enabled)
-			return;
-		
-		gui.showCursor(false, false);
-		mapper.window.shown = !mapper.window.shown;
-	});
-	
-	bindKey(SDLK_F2, KEYSTATE_DOWN, function(e)
-	{
-		//mapper.toggleEnabled('583');
-		
-		/*
-		var show = !mapper.window.shown;
-		
-		if(show && !mapper.enabled)
-			return;
-		
-		mapper.window.shown = show;
-		gui.showCursor(show, false);
-		*/
-	});
-	
-	var titleStep = 30;
-	var step = 28;
-	var step2 = step + 15;
-	var gapStep = 50;
-	
-	var checkBoxSize = new Vec2(17, 17);
-	var vecTextInputSize = new Vec2(60, 24);
-	
-	var x1 = 0
-	var x2 = 140
-	var y = 40;
-	var control;
-	
-	
-	
-	
-	mapper.ui.map = mapper.window.text(0, y, 300, 20, 'Map', titleStyles);
-	y += titleStep;
-	
-	mapper.ui.objects = mapper.window.text(0, y, 110, 20, '', textStyles);
-	mapper.ui.objectCount = mapper.window.text(x2, y, 110, 20, '', textStyles);
-	y += step;
-	
-	mapper.ui.mode = mapper.window.text(0, y, 110, 20, '', textStyles);
-	mapper.ui.modeName = mapper.window.text(x2, y, 110, 20, '', textStyles);
-	y += gapStep;
-	
-	
-	
-	
-	mapper.ui.object = mapper.window.text(0, y, 300, 20, 'Model', titleStyles);
-	y += titleStep;
-	
-	mapper.ui.model = mapper.window.text(0, y, 110, 20, '', textStyles);
-	mapper.ui.modelTextInput = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyModel());
-	y += step;
-	
-	mapper.ui.colDataSize = mapper.window.text(0, y, 300, 20, '', textStyles);
-	y += gapStep;
-	
-	
-	
-	
-	
-	mapper.ui.placeObject = mapper.window.text(0, y, 300, 20, 'Object', titleStyles);
-	y += titleStep;
-	
-	mapper.ui.pos = mapper.window.text(0, y, 50, 20, '', textStyles);
-	mapper.ui.posX = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectPosition());
-	mapper.ui.posY = mapper.window.textInput(x2+65, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectPosition());
-	mapper.ui.posZ = mapper.window.textInput(x2+65*2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectPosition());
-	y += step;
-	
-	mapper.ui.rot = mapper.window.text(0, y, 50, 20, '', textStyles);
-	mapper.ui.rotX = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectRotation());
-	mapper.ui.rotY = mapper.window.textInput(x2+65, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectRotation());
-	mapper.ui.rotZ = mapper.window.textInput(x2+65*2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectRotation());
-	y += step2;
-	
-	mapper.ui.spin = mapper.window.text(0, y, 50, 20, '', textStyles);
-	mapper.ui.spinX = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectSpinSpeed());
-	mapper.ui.spinY = mapper.window.textInput(x2+65, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectSpinSpeed());
-	mapper.ui.spinZ = mapper.window.textInput(x2+65*2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectSpinSpeed());
-	mapper.ui.spinCheckBox = mapper.window.checkBox(x2+65*3+20, y+2, checkBoxSize.x, checkBoxSize.y, 'Toggle', checkBoxStyles, () => mapper.toggleObjectSpin());
-	y += step2;
-	
-	mapper.ui.posStepTypeTitle = mapper.window.text(0, y, 50, 20, '', textStyles);
-	mapper.ui.posStepType = mapper.window.dropDown(x2, y, 195, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectPositionStep());
-	mapper.ui.posStepType.item('Input');
-	mapper.ui.posStepType.item('Directional BB');
-	mapper.ui.posStepType.item('Directional BB Lock 90');
-	mapper.ui.posStepType.selectedEntryIndex = 2;
-	y += step;
-	
-	mapper.ui.posStep = mapper.window.text(0, y, 50, 20, '', textStyles);
-	mapper.ui.posStepX = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectPositionStep());
-	mapper.ui.posStepY = mapper.window.textInput(x2+65, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectPositionStep());
-	mapper.ui.posStepZ = mapper.window.textInput(x2+65*2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectPositionStep());
-	//mapper.ui.cartesianPosStep = mapper.window.radioButton(x2+65*3+20, y+2, checkBoxSize.x, checkBoxSize.y, 1, 'Cart.', checkBoxStyles, () => mapper.toggleObjectStepUsingBB());
-	//mapper.ui.polarPosStep = mapper.window.radioButton(x2+65*3+20+80, y+2, checkBoxSize.x, checkBoxSize.y, 1, 'Polar', checkBoxStyles, () => mapper.toggleObjectStepUsingBB());
-	y += step;
-	
-	mapper.ui.bbMultiplier = mapper.window.text(0, y, 110, 20, '', textStyles);
-	mapper.ui.bbMultiplierX = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyBBMultiplier());
-	mapper.ui.bbMultiplierY = mapper.window.textInput(x2+65, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyBBMultiplier());
-	mapper.ui.bbMultiplierZ = mapper.window.textInput(x2+65*2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyBBMultiplier());
-	//mapper.ui.stepUsingBB = mapper.window.checkBox(x2+65*3+20, y+2, checkBoxSize.x, checkBoxSize.y, 'Use BB Step', checkBoxStyles, () => mapper.toggleObjectStepUsingBB());
-	y += step2;
-	
-	mapper.ui.rotStep = mapper.window.text(0, y, 50, 20, '', textStyles);
-	mapper.ui.rotStepX = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectRotationStep());
-	mapper.ui.rotStepY = mapper.window.textInput(x2+65, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectRotationStep());
-	mapper.ui.rotStepZ = mapper.window.textInput(x2+65*2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyObjectRotationStep());
-	y += step2;
-	
-	mapper.ui.joinOnRotate = mapper.window.text(0, y, 110, 20, '', textStyles);
-	mapper.ui.joinOnRotateCheckBox = mapper.window.checkBox(x2, y+2, checkBoxSize.x, checkBoxSize.y, 'Toggle', checkBoxStyles, () => mapper.toggleJoinOnRotate());
-	y += gapStep;
-	
-	
-	
-	
-	mapper.ui.camera = mapper.window.text(0, y, 300, 20, 'Camera', titleStyles);
-	y += titleStep;
-	
-	mapper.ui.zoom = mapper.window.text(0, y, 55, 20, '', textStyles);
-	mapper.ui.zoomTextInput = mapper.window.textInput(x2, y, vecTextInputSize.x, vecTextInputSize.y, '', textInputStyles, () => mapper.applyZoom());
-	mapper.ui.autoZoom = mapper.window.checkBox(x2+vecTextInputSize.x+20, y+2, checkBoxSize.x, checkBoxSize.y, 'Auto', checkBoxStyles, () => mapper.toggleAutoZoom());
-	y += gapStep;
-	
-	
-	
-	
-	
-	mapper.updateUI();
 };
 
 mapper.updateTextInput = function(name, value)
@@ -306,36 +117,6 @@ mapper.updateVec3TextInputs = function(name, vec)
 
 mapper.updateUI = function()
 {
-	mapper.ui.objects.text = 'Objects:';
-	mapper.ui.objectCount.text = mapper.objects.length + "";
-	mapper.ui.mode.text = 'Mode:';
-	mapper.ui.modeName.text = mapper.modeNames[mapper.mode] + (mapper.mode == mapper.modes.PLACE_OBJECT ? ' - '+mapper.placeObjectModeNames[mapper.placeObjectMode] : '');
-	
-	mapper.ui.model.text = 'Model:';
-	mapper.updateTextInput('modelTextInput', mapper.modelId);
-	mapper.ui.colDataSize.text = 'Col Data:';
-	mapper.ui.pos.text = 'Position:';
-	mapper.updateVec3TextInputs('pos', mapper.object == null ? new Vec3(0.0,0.0,0.0) : mapper.object.position);
-	mapper.ui.rot.text = 'Rotation:';
-	mapper.updateVec3TextInputs('rot', mapper.object == null ? new Vec3(0.0,0.0,0.0) : mapper.object.getRotation());
-	mapper.ui.spin.text = 'Spin:';
-	mapper.updateVec3TextInputs('spin', mapper.spinObjectSpeed);	
-	mapper.ui.spinCheckBox.checked = mapper.spinObject;
-	
-	mapper.ui.posStepTypeTitle.text = 'Pos. Step Type:';
-	mapper.ui.posStep.text = 'Pos. Step:';
-	mapper.updateVec3TextInputs('posStep', mapper.objectPositionStep);
-	//mapper.ui.stepUsingBB.checked = mapper.objectStepUsingBB;
-	mapper.ui.rotStep.text = 'Rot. Step:';
-	mapper.updateVec3TextInputs('rotStep', mapper.objectRotationStep);
-	mapper.ui.bbMultiplier.text = 'BB Multiplier:';
-	mapper.updateVec3TextInputs('bbMultiplier', mapper.bbMultiplier);
-	mapper.ui.joinOnRotate.text = 'Join on Rotate:';
-	mapper.ui.joinOnRotateCheckBox.checked = mapper.joinOnRotate;
-	
-	mapper.ui.zoom.text = 'Zoom:';
-	mapper.ui.autoZoom.checked = mapper.autoZoom;
-	mapper.updateTextInput('zoomTextInput', mapper.cameraZoom);
 };
 
 mapper.init();
@@ -428,7 +209,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 		return;
 	
 	var placeModeName = mapper.getPlaceModeName();
-	var globalKeys = '1 2 3 + - G X Enter PageUD # F1';
+	var globalKeys = '1 2 3 + - G X # Enter PageUD';
 	var modeKeys = mapper.getPlaceModeKeys();
 	var placeModeOption;
 	
@@ -655,7 +436,6 @@ mapper.setEnabled = function(modelId)
 {
 	mapper.enabled = true;
 	
-	mapper.window.shown = false;
 	gui.showCursor(false, false);
 	
 	mapper.startChoosingObject(modelId);
@@ -665,7 +445,6 @@ mapper.setDisabled = function()
 {
 	mapper.enabled = false;
 	
-	mapper.window.shown = false;
 	gui.showCursor(false, false);
 	
 	mapper.closeMapper();
@@ -740,7 +519,7 @@ mapper.addNextObject = function()
 	//var newObjectPosition = mapper.object.position.addPolar(1.0, mapper.objectToCameraZRotation + util.radians(180.0));
 	//var bbw = mapper.object.boundingMax.x - mapper.object.boundingMin.x;
 	//var bbd = mapper.object.boundingMax.y - mapper.object.boundingMin.y;
-	var bb = mapper.getColSize();
+	var bb = util.getColSize();
 	var bbw = bb.x;
 	var bbd = bb.y;
 	var usew = true;
@@ -758,7 +537,7 @@ mapper.addNextObject = function()
 mapper.getSecondObjectPositionOffset = (usew) =>
 {
 	var object = mapper.objects[mapper.objects.length - 1];
-	var bb = mapper.getColSize(object);
+	var bb = util.getColSize(object);
 	var bbw = bb.x;
 	var bbd = bb.y;
 	usew = usew || true;
@@ -1098,7 +877,7 @@ mapper.rotateObjectXY = function()
 		radius = util.radians(1.0);
 	
 	var rot = mapper.object.getRotation();
-	var bb = mapper.getColSize();
+	var bb = util.getColSize();
 	var index = up ? 0 : (down ? 1 : (left ? 2 : (right ? 3 : 4)));
 	var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[index]);
@@ -1119,7 +898,7 @@ mapper.rotateObjectXY = function()
 	
 	mapper.object.setRotation(rot);
 	
-	if(mapper.window.shown && mapper.joinOnRotate)
+	if(false && mapper.joinOnRotate)
 	{
 		mapper.joinToLastObject();
 	}
@@ -1232,7 +1011,7 @@ mapper.getFilledObjectsData = function(object1, object2)
 	var rot1 = object1.getRotation();
 	var rot2 = object2.getRotation();
 	
-	var bb = mapper.getColSize();
+	var bb = util.getColSize();
 	var steps = posDiff.length / bb.length;
 	
 	steps = Math.ceil(steps);
@@ -1385,7 +1164,7 @@ mapper.setObjectPositionRotationByJoinIndex = function(joinIndex)
 	rot.y += mapper.objectRotationStep.y;
 	rot.z += mapper.objectRotationStep.z;
 	
-	var bb = mapper.getColSize();
+	var bb = util.getColSize();
 	var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[joinIndex]);
 	var zrotdeg = util.degrees(rot.z - camToObZRot) % 360.0;
@@ -1439,7 +1218,7 @@ mapper.joinToLastObject = function()
 	var lastRot = lastObject.getRotation();
 	var newObjectRotation = mapper.object.getRotation();
 	
-	var bb = mapper.getColSize();
+	var bb = util.getColSize();
 	var halfbb = new Vec3(bb.x/2.0, bb.y/2.0, bb.z/2.0);
 	var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[index]);

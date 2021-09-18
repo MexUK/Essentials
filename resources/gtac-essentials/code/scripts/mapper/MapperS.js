@@ -66,6 +66,9 @@ mapper.isEnabled = (client) =>
 
 mapper.setEnabled = (client, model) =>
 {
+	if(removeMode.isAnyRemoveModeEnabled(client))
+		removeMode.disableRemoveMode(client);
+	
 	clientData.set(client, 'mapper', 1);
 	util.callClientFunction(client, 'mapper.setEnabled', model);
 };

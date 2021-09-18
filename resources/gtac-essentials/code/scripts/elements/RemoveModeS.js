@@ -4,6 +4,11 @@ global.removeMode = global.removeMode || {};
 
 
 
+removeMode.isAnyRemoveModeEnabled = (client) =>
+{
+	return clientData.get(client, 'removeMode') != null;
+};
+
 removeMode.isRemoveModeEnabled = (client, elementName) =>
 {
 	return clientData.get(client, 'removeMode') == elementName;
@@ -11,6 +16,9 @@ removeMode.isRemoveModeEnabled = (client, elementName) =>
 
 removeMode.enableRemoveMode = (client, elementName) =>
 {
+	if(mapper.isEnabled(client))
+		mapper.setDisabled(client);
+	
 	clientData.set(client, 'removeMode', elementName);
 	util.callClientFunction(client, 'removeMode.enable', elementName, removeMode.getElementIds(elementName));
 };
