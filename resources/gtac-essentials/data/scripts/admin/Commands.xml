@@ -22,4 +22,7 @@
 	<Command name="spawnhealth" level="6" />
 	<Command name="spawnarmour" level="6" />
 	<Command name="savespawn" level="6" />
+	<Command name="startresource" level="9" />
+	<Command name="stopresource" level="9" />
+	<Command name="restartresource" level="9" />
 </Root>
