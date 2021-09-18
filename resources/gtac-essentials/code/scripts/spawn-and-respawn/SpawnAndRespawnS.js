@@ -129,6 +129,24 @@ cmds.spawnids = (client) =>
 		chat.all('Spawn position IDs: ' + spawn.spawns.map(spawn => spawn.id).join(' ') + '.');
 };
 
+cmds.gotospawn = (client, _spawnId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var spawnId = util.int(_spawnId);
+	
+	if(_spawnId === undefined)
+		return chat.pm(client, "You didn't type a spawn ID.");
+	
+	if(!spawn.isSpawnId(spawnId))
+		return chat.pm(client, 'Invalid spawn ID.');
+	
+	chat.all(client.name + ' teleported to spawn ID ' + spawnId + '.');
+	spawn.teleportClientToSpawn(client, spawnId);
+};
+
+
 
 
 
@@ -188,16 +206,21 @@ spawn.createSpawn = (position, heading) =>
 	return spawnId;
 };
 
-spawn.isSpawnId = (id) =>
+spawn.getSpawn = (spawnId) =>
 {
 	for(var i in spawn.spawns)
 	{
-		if(id == spawn.spawns[i].id)
+		if(spawnId == spawn.spawns[i].id)
 		{
-			return true;
+			return spawn.spawns[i];
 		}
 	}
-	return false;
+	return null;
+};
+
+spawn.isSpawnId = (id) =>
+{
+	return spawn.getSpawn(id) != null;
 };
 
 spawn.getNextSpawnId = () =>
@@ -221,6 +244,20 @@ spawn.getDefaultSpawnPosition = () =>
 };
 
 spawn.getDefaultSpawnHeading = () => 0.0;
+
+spawn.teleportClientToSpawn = (client, spawnId) =>
+{
+	if(!client.player)
+		return;
+	
+	var spawnData = spawn.getSpawn(spawnId);
+	if(!spawnData)
+		return;
+	
+	var position = spawnData.position;
+	var rotation = new Vec3(0.0, 0.0, spawnData.heading);
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', position, rotation);
+};
 
 
 

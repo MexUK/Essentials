@@ -1501,6 +1501,26 @@ cmds.ground = (client, _target) =>
 	});
 };
 
+cmds.damage = (client, _state) =>
+{
+	[_state] = util.grabArgs(client,
+	[
+		(v) => util.isBool(v)
+	],
+	[
+	], _state);
+	
+	if(_state === undefined)
+		return util.requestClientVariable(client, 'generic.damage', (state) => chat.all(client.name + "'s damage is " + (state ? 'enabled' : 'disabled') + "."));
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.pm(client, "You didnt't specify a boolean option. e.g. 1 or 0");
+	
+	util.setClientVariable(client, 'generic.damage', state);
+	chat.all(client.name + " " + (state ? 'enabled' : 'disabled') + " damage.");
+};
+
 
 
 

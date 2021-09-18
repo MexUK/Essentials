@@ -633,6 +633,30 @@ cmds.blipdistance = (client, _elementId) =>
 	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from blip ID " + elementId + ".");
 };
 
+cmds.playerdistance = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(client == target)
+		return chat.pm(client, "You can't check the distance to yourself.");
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	var distance = target.player.position.distance(client.player.position);
+	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from player " + target.name + ".");
+};
+
 
 
 

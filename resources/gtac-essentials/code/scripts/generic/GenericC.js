@@ -3,6 +3,7 @@ global.generic = {};
 generic.spawnArmour = null;
 generic.spawnHealth = null;
 generic.drawBounds = false;
+generic.damage = true;
 
 generic.setLocalPlayerPositionRotation = function(position, rotation)
 {
@@ -125,11 +126,25 @@ addEventHandler('onBeforeDrawHUD', (event) =>
 	}
 });
 
-
-
-
-
-
-
-
+addEventHandler('onProcess', (event, delta) =>
+{
+	if(!generic.damage)
+	{
+		if(localClient.player)
+		{
+			if(localClient.player.health < 100.0)
+			{
+				localClient.player.health = 100.0;
+			}
+			
+			if(localPlayer.vehicle)
+			{
+				if(localPlayer.vehicle.health < 1000.0)
+				{
+					localPlayer.vehicle.fix();
+				}
+			}
+		}
+	}
+});
 
