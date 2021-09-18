@@ -88,6 +88,25 @@ elements.removeElement = (elementName, elementId) =>
 	}
 };
 
+elements.getElementTypeName = (elementId) =>
+{
+	switch(getElementFromId(elementId).type)
+	{
+		case ELEMENT_OBJECT:	return 'Object';
+		case ELEMENT_VEHICLE:	return 'Vehicle';
+		case ELEMENT_PICKUP:	return 'Pickup';
+		case ELEMENT_MARKER:	return 'Sphere';
+		case ELEMENT_PED:		return 'Peds';
+		case ELEMENT_BLIP:		return 'Blips';
+	}
+	return 'Unknown';
+};
+
+elements.isElementOnScreen = (client, elementId, onScreen) =>
+{
+	chat.all(elements.getElementTypeName(elementId) + " ID " + elementId + " is " + (onScreen ? '' : 'not ') + 'on ' + client.name + "'s screen.");
+};
+
 // commands
 cmds.object = (client, _model, _distanceAway) =>
 {
@@ -415,6 +434,47 @@ cmds.elements = (client) => chat.all([
 	'Peds: ' + elements.data.peds.length + '/' + elements.MAX_PEDS,
 	'Blips: ' + elements.data.blips.length + '/' + elements.MAX_BLIPS
 ].join(', '));
+
+cmds.objectids = (client) => elements.data.objects.length == 0 ? chat.all('There are no objects.') : chat.all('Object IDs: ' + elements.data.objects.map(data => data.id).join(' '));
+cmds.vehicleids = (client) => elements.data.vehicles.length == 0 ? chat.all('There are no vehicles.') : chat.all('Vehicle IDs: ' + elements.data.vehicles.map(data => data.id).join(' '));
+cmds.pickupids = (client) => elements.data.pickups.length == 0 ? chat.all('There are no pickups.') : chat.all('Pickup IDs: ' + elements.data.pickups.map(data => data.id).join(' '));
+cmds.sphereids = (client) => elements.data.spheres.length == 0 ? chat.all('There are no spheres.') : chat.all('Sphere IDs: ' + elements.data.spheres.map(data => data.id).join(' '));
+cmds.pedids = (client) => elements.data.peds.length == 0 ? chat.all('There are no peds.') : chat.all('Ped IDs: ' + elements.data.peds.map(data => data.id).join(' '));
+cmds.blipids = (client) => elements.data.blips.length == 0 ? chat.all('There are no blips.') : chat.all('Blip IDs: ' + elements.data.blips.map(data => data.id).join(' '));
+
+cmds.clientids = (client) => chat.all('Client IDs: ' + getClients().map(client => client.index).join(' '));
+
+cmds.playerids = (client) =>
+{
+	var ids = [];
+	getClients().map(client =>
+	{
+		if(client.player)
+		{
+			ids.push(client.player.id);
+		}
+	});
+	if(ids.length == 0)
+		chat.all('There are no spawned players.');
+	else
+		chat.all('Player IDs: ' + ids.join(' '));
+};
+
+cmds.playervehicleids = (client) =>
+{
+	var ids = [];
+	getClients().map(client =>
+	{
+		if(client.player && client.player.vehicle)
+		{
+			ids.push(client.player.vehicle.id);
+		}
+	});
+	if(ids.length == 0)
+		chat.all('There are no players in a vehicle.');
+	else
+		chat.all('Player Vehicle IDs: ' + ids.join(' '));
+};
 
 
 
@@ -798,24 +858,7 @@ cmds.removeped = (client, _elementId) =>
 
 
 
-elements.getElementTypeName = (elementId) =>
-{
-	switch(getElementFromId(elementId).type)
-	{
-		case ELEMENT_OBJECT:	return 'Object';
-		case ELEMENT_VEHICLE:	return 'Vehicle';
-		case ELEMENT_PICKUP:	return 'Pickup';
-		case ELEMENT_MARKER:	return 'Sphere';
-		case ELEMENT_PED:		return 'Peds';
-		case ELEMENT_BLIP:		return 'Blips';
-	}
-	return 'Unknown';
-};
 
-elements.isElementOnScreen = (client, elementId, onScreen) =>
-{
-	chat.all(elements.getElementTypeName(elementId) + " ID " + elementId + " is " + (onScreen ? '' : 'not ') + 'on ' + client.name + "'s screen.");
-};
 
 cmds.isobjectonscreen = (client, _elementId) =>
 {

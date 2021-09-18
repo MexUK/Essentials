@@ -109,7 +109,7 @@ cmds.vehicleinfo = (client, _target) =>
 		return chat.notSpawned(client, target);
 	
 	if(target.player.vehicle)
-		chat.all(target.name + "'s vehicle: " + target.player.vehicle.name + ' (Model ID ' + target.player.vehicle.modelIndex + ')');
+		chat.all(target.name + "'s vehicle: (ID " + target.player.vehicle.id + ") " + util.getVehicleModelName(target.player.vehicle.modelIndex) + ' (Model ID ' + target.player.vehicle.modelIndex + ')');
 	else
 		chat.all(target.name + " isn't in a vehicle.");
 };
