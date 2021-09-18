@@ -88,6 +88,18 @@ elements.removeElement = (elementName, elementId) =>
 	}
 };
 
+elements.getElement = (elementName, elementId) =>
+{
+	for(var i in elements.data[elementName])
+	{
+		if(elements.data[elementName][i].id == elementId)
+		{
+			return elements.data[elementName][i];
+		}
+	}
+	return null;
+};
+
 elements.getElementTypeName = (elementId) =>
 {
 	switch(getElementFromId(elementId).type)
@@ -477,6 +489,149 @@ cmds.playervehicleids = (client) =>
 };
 
 
+
+
+
+
+
+
+cmds.objectdistance = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _elementId);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an object ID.");
+	
+	var elementId = util.int(_elementId, -1);
+	if(elementId < 0 || !elements.isObject(elementId))
+		return chat.pm(client, 'Invalid object ID.');
+	
+	var distance = elements.getElement('objects', elementId).position.distance(client.player.position);
+	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from object ID " + elementId + ".");
+};
+
+cmds.vehicledistance = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _elementId);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	var elementId = util.int(_elementId, -1);
+	if(elementId < 0 || !elements.isVehicle(elementId))
+		return chat.pm(client, 'Invalid vehicle ID.');
+	
+	var distance = elements.getElement('vehicles', elementId).position.distance(client.player.position);
+	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from vehicle ID " + elementId + ".");
+};
+
+cmds.pickupdistance = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _elementId);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a pickup ID.");
+	
+	var elementId = util.int(_elementId, -1);
+	if(elementId < 0 || !elements.isPickup(elementId))
+		return chat.pm(client, 'Invalid pickup ID.');
+	
+	var distance = elements.getElement('pickups', elementId).position.distance(client.player.position);
+	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from pickup ID " + elementId + ".");
+};
+
+cmds.spheredistance = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _elementId);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a sphere ID.");
+	
+	var elementId = util.int(_elementId, -1);
+	if(elementId < 0 || !elements.isSphere(elementId))
+		return chat.pm(client, 'Invalid sphere ID.');
+	
+	var distance = elements.getElement('spheres', elementId).position.distance(client.player.position);
+	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from sphere ID " + elementId + ".");
+};
+
+cmds.peddistance = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _elementId);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a ped ID.");
+	
+	var elementId = util.int(_elementId, -1);
+	if(elementId < 0 || !elements.isPed(elementId))
+		return chat.pm(client, 'Invalid ped ID.');
+	
+	var distance = elements.getElement('peds', elementId).position.distance(client.player.position);
+	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from ped ID " + elementId + ".");
+};
+
+cmds.blipdistance = (client, _elementId) =>
+{
+	[_elementId] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _elementId);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a blip ID.");
+	
+	var elementId = util.int(_elementId, -1);
+	if(elementId < 0 || !elements.isBlip(elementId))
+		return chat.pm(client, 'Invalid blip ID.');
+	
+	var distance = elements.getElement('blips', elementId).position.distance(client.player.position);
+	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from blip ID " + elementId + ".");
+};
 
 
 
