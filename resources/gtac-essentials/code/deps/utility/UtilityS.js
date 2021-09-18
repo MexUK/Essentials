@@ -2092,3 +2092,18 @@ util.getGameName = (gameId) =>
 	return util.gameNames[gameId] ? util.gameNames[gameId] : 'Unknown Game';
 };
 
+util.objectsToArray = (objects, properties) =>
+{
+	var result = [];
+	for(var i in objects)
+	{
+		var arr = [];
+		for(var i2 in properties)
+		{
+			arr.push(objects[i][properties[i2]]);
+		}
+		result.push(arr);
+	}
+	return result;
+};
+

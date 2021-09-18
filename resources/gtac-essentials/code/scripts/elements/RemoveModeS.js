@@ -20,7 +20,7 @@ removeMode.enableRemoveMode = (client, elementName) =>
 		mapper.setDisabled(client);
 	
 	clientData.set(client, 'removeMode', elementName);
-	util.callClientFunction(client, 'removeMode.enable', elementName, removeMode.getElementIds(elementName));
+	util.callClientFunction(client, 'removeMode.enable', elementName, util.objectsToArray(elements.data[elementName], ['id', 'model', 'position', 'rotation']));
 };
 
 removeMode.disableRemoveMode = (client) =>
@@ -98,5 +98,5 @@ removeMode.removeElement = (client, elementName, elementId) =>
 			break;
 	}
 	
-	util.callClientFunction(client, 'removeMode.onElementRemoved', removeMode.getElementIds(elementName));
+	util.callClientFunction(client, 'removeMode.onElementRemoved', util.objectsToArray(elements.data[elementName], ['id', 'model', 'position', 'rotation']));
 };
