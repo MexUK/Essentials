@@ -1,4 +1,7 @@
-global.vehicles = {};
+global.tempVehicles = {};
+
+global.tempVehicles.clientVehicleKey = 'tempVehicle';
+global.tempVehicles.clientElementsKey = 'elements';
 
 // events
 events.onPedExitVehicle.push((event, ped, vehicle, seat) =>
@@ -6,11 +9,13 @@ events.onPedExitVehicle.push((event, ped, vehicle, seat) =>
 	if(ped.isType(ELEMENT_PLAYER))
 	{
 		var client = getClientFromPlayerElement(ped);
-		if(clientData.get(client, 'vehicle') == vehicle)
+		
+		if(!tempVehicles.hasVehicle(client))
+			return;
+		
+		if(tempVehicles.getVehicle(client) == vehicle)
 		{
-			clientData.unset(client, 'vehicle');
-			clientData.unsetarr(client, 'elements', vehicle);
-			destroyElement(vehicle);
+			tempVehicles.removeVehicle(client);
 		}
 	}
 });
@@ -25,12 +30,42 @@ cmds.tempvehicle = (client, _model) =>
 	if(vehicleModelId == -1)
 		return chat.invalidModel(client, ELEMENT_VEHICLE, _model);
 	
+	if(tempVehicles.hasVehicle(client))
+	{
+		tempVehicles.removeVehicle(client);
+	}
+	
 	var position = client.player.position.addPolar(2.5, client.player.heading + util.radians(90.0));
 	var vehicle = gta.createVehicle(vehicleModelId, position);
 	vehicle.heading = client.player.heading;
 	
+	chat.all(client.name + ' added temporary vehicle ' + util.getVehicleModelName(vehicleModelId) + ". (Vehicle ID " + vehicle.id + ")");
+	
 	client.player.warpIntoVehicle(vehicle, 0);
 	
-	clientData.setarr(client, 'elements', vehicle);
-	clientData.set(client, 'vehicle', vehicle);
+	clientData.setarr(client, global.tempVehicles.clientElementsKey, vehicle);
+	clientData.set(client, global.tempVehicles.clientVehicleKey, vehicle);
 };
+
+// api
+tempVehicles.removeVehicle = (client) =>
+{
+	var vehicle = tempVehicles.getVehicle(client);
+	if(!vehicle)
+		return;
+	
+	clientData.unset(client, global.tempVehicles.clientVehicleKey);
+	clientData.unsetarr(client, global.tempVehicles.clientElementsKey, vehicle);
+	destroyElement(vehicle);
+};
+
+tempVehicles.getVehicle = (client) =>
+{
+	return clientData.get(client, global.tempVehicles.clientVehicleKey);
+};
+
+tempVehicles.hasVehicle = (client) =>
+{
+	return tempVehicles.getVehicle(client) != null;
+};
+

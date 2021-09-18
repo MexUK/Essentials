@@ -517,7 +517,7 @@ cmds.nearplayers = (client, _distanceAway) =>
 	if(near.length == 0)
 		chat.all(client.name + " is not near any players. (" + distanceAway + " units)");
 	else
-		chat.all(client.name + " is near " + util.plural('player', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+		chat.all(client.name + " is near " + util.pluralWithCount('player', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 cmds.nearobjects = (client, _distanceAway) =>
@@ -541,7 +541,7 @@ cmds.nearobjects = (client, _distanceAway) =>
 	if(near.length == 0)
 		chat.all(client.name + " is not near any objects. (" + distanceAway + " units)");
 	else
-		chat.all(client.name + " is near " + util.plural('object', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+		chat.all(client.name + " is near " + util.pluralWithCount('object', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 cmds.nearvehicles = (client, _distanceAway) =>
@@ -565,7 +565,7 @@ cmds.nearvehicles = (client, _distanceAway) =>
 	if(near.length == 0)
 		chat.all(client.name + " is not near any vehicles. (" + distanceAway + " units)");
 	else
-		chat.all(client.name + " is near " + util.plural('vehicle', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+		chat.all(client.name + " is near " + util.pluralWithCount('vehicle', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 cmds.nearpickups = (client, _distanceAway) =>
@@ -589,7 +589,7 @@ cmds.nearpickups = (client, _distanceAway) =>
 	if(near.length == 0)
 		chat.all(client.name + " is not near any pickups. (" + distanceAway + " units)");
 	else
-		chat.all(client.name + " is near " + util.plural('pickup', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+		chat.all(client.name + " is near " + util.pluralWithCount('pickup', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 cmds.nearspheres = (client, _distanceAway) =>
@@ -613,7 +613,7 @@ cmds.nearspheres = (client, _distanceAway) =>
 	if(near.length == 0)
 		chat.all(client.name + " is not near any spheres. (" + distanceAway + " units)");
 	else
-		chat.all(client.name + " is near " + util.plural('sphere', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+		chat.all(client.name + " is near " + util.pluralWithCount('sphere', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 cmds.nearpeds = (client, _distanceAway) =>
@@ -637,7 +637,7 @@ cmds.nearpeds = (client, _distanceAway) =>
 	if(near.length == 0)
 		chat.all(client.name + " is not near any peds. (" + distanceAway + " units)");
 	else
-		chat.all(client.name + " is near " + util.plural('ped', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+		chat.all(client.name + " is near " + util.pluralWithCount('ped', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 cmds.nearblips = (client, _distanceAway) =>
@@ -661,7 +661,7 @@ cmds.nearblips = (client, _distanceAway) =>
 	if(near.length == 0)
 		chat.all(client.name + " is not near any blips. (" + distanceAway + " units)");
 	else
-		chat.all(client.name + " is near " + util.plural('blip', near.length) + " (" + distanceAway + " units): " + near.join(' '));
+		chat.all(client.name + " is near " + util.pluralWithCount('blip', near.length) + " (" + distanceAway + " units): " + near.join(' '));
 };
 
 
