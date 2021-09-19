@@ -1163,9 +1163,9 @@ util.setClientVariable = (client, variableName, variableValue) =>
 	triggerNetworkEvent('setClientVariable', client, variableName, variableValue);
 };
 
-util.setClientProperty = (client, variableName, variableValue) =>
+util.setClientProperty = (client, elementId, propertyName, propertyValue) =>
 {
-	triggerNetworkEvent('setClientVariable', client, variableName, variableValue);
+	triggerNetworkEvent('setClientProperty', client, elementId, propertyName, propertyValue);
 };
 
 util.setClientsVariable = (variableName, variableValue) =>
@@ -1173,9 +1173,9 @@ util.setClientsVariable = (variableName, variableValue) =>
 	triggerNetworkEvent('setClientVariable', null, variableName, variableValue);
 };
 
-util.setClientsProperty = (variableName, variableValue) =>
+util.setClientsProperty = (elementId, propertyName, propertyValue) =>
 {
-	triggerNetworkEvent('setClientVariable', null, variableName, variableValue);
+	triggerNetworkEvent('setClientProperty', null, elementId, propertyName, propertyValue);
 };
 
 util.getGameName = (gameId) =>

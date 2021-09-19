@@ -523,15 +523,23 @@ addNetworkHandler('setClientVariable', (variableName, variableValue) =>
 	object[variableName2] = variableValue;
 });
 
-addNetworkHandler('setClientVariableFloat', (variableName, variableValue) =>
+addNetworkHandler('setClientProperty', (elementId, propertyName, propertyValue) =>
 {
-	var object = util.getResolvedItem(variableName);
-	object[variableName] = parseFloat(variableValue);
+	var element = getElementFromId(elementId);
+	if(!element)
+		return;
+	
+	element[propertyName] = propertyValue;
 });
 
 util.getResolvedItem = (itemName) =>
 {
-	var o = global;
+	return util.getResolvedItemWithStart(itemName, global);
+};
+
+util.getResolvedItemWithStart = (itemName, start) =>
+{
+	var o = start;
 	var parts = itemName.split('.');
 	for(var i in parts)
 		o = o[parts[i]];

@@ -504,7 +504,7 @@ cmds.falloffbike = (client, _target, _state) =>
 		return chat.bool(client, 'Fall Off Bike', _state);
 	
 	chat.all(client.name + " set " + target.name + "'s fall off bike status to " + (state ? "on" : "off ") + ".");
-	util.setClientProperty(target, 'localPlayer.canBeKnockedOffBike', state);
+	util.setClientVariable(target, 'localPlayer.canBeKnockedOffBike', state);
 };
 
 cmds.crouch = (client, _target, _state) =>
@@ -533,7 +533,7 @@ cmds.crouch = (client, _target, _state) =>
 		return chat.bool(client, 'Crouch Status', _state);
 	
 	chat.all(client.name + " set " + target.name + "'s crouch status to " + (state ? "crouched" : "not crouched") + ".");
-	util.setClientProperty(target, 'localPlayer.crouching', state);
+	util.setClientVariable(target, 'localPlayer.crouching', state);
 };
 
 cmds.mass = (client, _target, _mass) =>
@@ -562,7 +562,7 @@ cmds.mass = (client, _target, _mass) =>
 		return chat.float(client, 'Mass', _mass);
 	
 	chat.all(client.name + " set " + target.name + "'s mass to " + mass + ".");
-	util.setClientProperty(target, 'localPlayer.mass', mass);
+	util.setClientVariable(target, 'localPlayer.mass', mass);
 };
 
 cmds.vehiclehealth = (client, _target, _health) =>
@@ -594,7 +594,7 @@ cmds.vehiclehealth = (client, _target, _health) =>
 		return chat.float(client, 'Vehicle Health', _health);
 	
 	chat.all(client.name + " set " + target.name + "'s vehicle health to " + health + ".");
-	util.setClientProperty(target, 'localPlayer.vehicle.health', health);
+	util.setClientVariable(target, 'localPlayer.vehicle.health', health);
 };
 
 cmds.snow = (client, _state) =>
@@ -647,9 +647,9 @@ cmds.speed = (client, _target, _speed) =>
 	var heading = target.player.vehicle ? target.player.vehicle.heading : target.player.heading;
 	velocity = velocity.addPolar(speed, heading + (Math.PI / 2.0));
 	if(target.player.vehicle)
-		util.setClientProperty(target, 'localPlayer.vehicle.velocity', velocity);
+		util.setClientVariable(target, 'localPlayer.vehicle.velocity', velocity);
 	else
-		util.setClientProperty(target, 'localPlayer.velocity', velocity);
+		util.setClientVariable(target, 'localPlayer.velocity', velocity);
 };
 
 cmds.whospawned = (client) =>

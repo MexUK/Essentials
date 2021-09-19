@@ -100,6 +100,29 @@ elements.getElement = (elementName, elementId) =>
 	return null;
 };
 
+elements.setPosition = (elementName, elementId, position) =>
+{
+	var element = getElementFromId(elementId);
+	if(element)
+		util.setClientProperty(getClients()[element.syncer], elementId, 'position', position);
+	var elementData = elements.getElement(elementName, elementId);
+	if(elementData)
+		elementData.position = position;
+	var elementNames = {
+		objects:	'Object',
+		vehicles:	'Vehicle',
+		pickups:	'Pickup',
+		spheres:	'Sphere',
+		peds:		'Ped',
+		blips:		'Blip'
+	};
+	xml.setAttr2(elements.gamePath(elements.paths[elementName]), elementNames[elementName], {
+		id:			elementId
+	}, {
+		position:	util.posArray(position).join(',')
+	});
+};
+
 elements.getElementTypeName = (elementId) =>
 {
 	switch(getElementFromId(elementId).type)
@@ -1171,6 +1194,124 @@ cmds.isbliponscreen = (client, _elementId) =>
 	util.callClientMethod(client, 'elements.isElementOnScreen', elementId);
 };
 
+
+
+
+
+
+cmds.saveobject = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an object ID.");
+	
+	if(!elements.isObject(elementId))
+		return chat.pm(client, 'Invalid object ID.');
+	
+	chat.all(client.name + ' updated the position for object ID ' + elementId + '.');
+	
+	var position = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	elements.setPosition('objects', elementId, position);
+};
+
+cmds.savevehicle = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	if(!elements.isVehicle(elementId))
+		return chat.pm(client, 'Invalid vehicle ID.');
+	
+	chat.all(client.name + ' updated the position for vehicle ID ' + elementId + '.');
+	
+	var position = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	elements.setPosition('vehicles', elementId, position);
+};
+
+cmds.savepickup = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a pickup ID.");
+	
+	if(!elements.isPickup(elementId))
+		return chat.pm(client, 'Invalid pickup ID.');
+	
+	chat.all(client.name + ' updated the position for pickup ID ' + elementId + '.');
+	
+	var position = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	elements.setPosition('pickups', elementId, position);
+};
+
+cmds.savesphere = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a sphere ID.");
+	
+	if(!elements.isSphere(elementId))
+		return chat.pm(client, 'Invalid sphere ID.');
+	
+	chat.all(client.name + ' updated the position for sphere ID ' + elementId + '.');
+	
+	var position = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	elements.setPosition('spheres', elementId, position);
+};
+
+cmds.saveped = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a ped ID.");
+	
+	if(!elements.isPed(elementId))
+		return chat.pm(client, 'Invalid ped ID.');
+	
+	chat.all(client.name + ' updated the position for ped ID ' + elementId + '.');
+	
+	var position = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	elements.setPosition('peds', elementId, position);
+};
+
+cmds.saveblip = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a blip ID.");
+	
+	if(!elements.isBlip(elementId))
+		return chat.pm(client, 'Invalid blip ID.');
+	
+	chat.all(client.name + ' updated the position for blip ID ' + elementId + '.');
+	
+	var position = client.player.vehicle ? client.player.vehicle.position : client.player.position;
+	elements.setPosition('blips', elementId, position);
+};
 
 
 
