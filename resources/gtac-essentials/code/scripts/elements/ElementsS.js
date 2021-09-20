@@ -1567,6 +1567,149 @@ cmds.blipsyncer = (client, _elementId) =>
 
 
 
+
+
+
+cmds.gotoobject = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an object ID.");
+	
+	if(!elements.isObject(elementId))
+		return chat.pm(client, 'Invalid object ID.');
+	
+	var elementData = elements.getElementData('objects', elementId);
+	if(!elementData)
+		return chat.pm(client, 'Object not found.');
+	
+	chat.all(client.name + ' teleported to object ID ' + elementId + '.');
+	var rotation = elementData.rotation;
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', elementData.position, rotation);
+};
+
+cmds.gotovehicle = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	if(!elements.isVehicle(elementId))
+		return chat.pm(client, 'Invalid vehicle ID.');
+	
+	var elementData = elements.getElementData('vehicles', elementId);
+	if(!elementData)
+		return chat.pm(client, 'Vehicle not found.');
+	
+	chat.all(client.name + ' teleported to vehicle ID ' + elementId + '.');
+	var rotation = elementData.rotation;
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', elementData.position, rotation);
+};
+
+cmds.gotopickup = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a pickup ID.");
+	
+	if(!elements.isPickup(elementId))
+		return chat.pm(client, 'Invalid pickup ID.');
+	
+	var elementData = elements.getElementData('pickups', elementId);
+	if(!elementData)
+		return chat.pm(client, 'Pickup not found.');
+	
+	chat.all(client.name + ' teleported to pickup ID ' + elementId + '.');
+	var rotation = new Vec3(0.0, 0.0, 0.0);
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', elementData.position, rotation);
+};
+
+cmds.gotosphere = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a sphere ID.");
+	
+	if(!elements.isSphere(elementId))
+		return chat.pm(client, 'Invalid sphere ID.');
+	
+	var elementData = elements.getElementData('spheres', elementId);
+	if(!elementData)
+		return chat.pm(client, 'Sphere not found.');
+	
+	chat.all(client.name + ' teleported to sphere ID ' + elementId + '.');
+	var rotation = new Vec3(0.0, 0.0, 0.0);
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', elementData.position, rotation);
+};
+
+cmds.gotoped = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a ped ID.");
+	
+	if(!elements.isPed(elementId))
+		return chat.pm(client, 'Invalid ped ID.');
+	
+	var elementData = elements.getElementData('peds', elementId);
+	if(!elementData)
+		return chat.pm(client, 'Ped not found.');
+	
+	chat.all(client.name + ' teleported to ped ID ' + elementId + '.');
+	var rotation = new Vec3(0.0, 0.0, elementsData.heading);
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', elementData.position, rotation);
+};
+
+cmds.gotoblip = (client, _elementId) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a blip ID.");
+	
+	if(!elements.islip(elementId))
+		return chat.pm(client, 'Invalid blip ID.');
+	
+	var elementData = elements.getElementData('blips', elementId);
+	if(!elementData)
+		return chat.pm(client, 'Blip not found.');
+	
+	chat.all(client.name + ' teleported to blip ID ' + elementId + '.');
+	var rotation = new Vec3(0.0, 0.0, 0.0);
+	util.callClientFunction(client, 'generic.setLocalPlayerPositionRotation', elementData.position, rotation);
+};
+
+
+
+
+
+
+
+
+
 // objects
 elements.addObject = (model, position, rotation) =>
 {
