@@ -1548,6 +1548,37 @@ cmds.eject = (client, _target) =>
 		tempVehicles.removeVehicle(target);
 };
 
+cmds.pingabove = (client, _amount) =>
+{
+	[_amount] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _amount);
+	
+	if(_amount === undefined)
+		return chat.pm(client, "You didn't type a ping amount.");
+	
+	var amount = util.int(_amount);
+	if(amount < 0)
+		return chat.pm(client, 'Invalid ping amount.');
+	
+	var players = [];
+	getClients().forEach(client =>
+	{
+		if(client.ping > amount)
+		{
+			players.push(client.name + ' (' + client.ping + ')');
+		}
+	});
+	
+	if(players.length == 0)
+		chat.all("There aren't any players with a ping above " + amount + ".");
+	else
+		chat.all("Players with ping above " + amount + ": " + players.join(', '));
+};
+
 
 
 
