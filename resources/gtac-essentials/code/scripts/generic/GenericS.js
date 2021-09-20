@@ -1798,6 +1798,81 @@ cmds.walkstyle = (client, _style) =>
 	util.setClientVariable(client, 'localPlayer.walkStyle', style);
 };
 
+cmds.xoffset = (client, _amount) =>
+{
+	[_amount] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v)
+	],
+	[
+	], _amount);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_amount === undefined)
+		return chat.pm(client, "You didn't type an offset amount for the X coordinate.");
+	
+	var amount = util.float(_amount, null);
+	if(amount === null)
+		return chat.pm(client, 'Invalid offset amount for X coordinate.');
+	
+	chat.all(client.name + " changed their X coordinate by " + (amount < 0.0 ? amount : ('+' + amount)) + " units.");
+	var position = client.player.position;
+	position.x += amount;
+	util.setClientVariable(client, 'localPlayer.position', position);
+};
+
+cmds.yoffset = (client, _amount) =>
+{
+	[_amount] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v)
+	],
+	[
+	], _amount);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_amount === undefined)
+		return chat.pm(client, "You didn't type an offset amount for the Y coordinate.");
+	
+	var amount = util.float(_amount, null);
+	if(amount === null)
+		return chat.pm(client, 'Invalid offset amount for Y coordinate.');
+	
+	chat.all(client.name + " changed their Y coordinate by " + (amount < 0.0 ? amount : ('+' + amount)) + " units.");
+	var position = client.player.position;
+	position.y += amount;
+	util.setClientVariable(client, 'localPlayer.position', position);
+};
+
+cmds.zoffset = (client, _amount) =>
+{
+	[_amount] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v)
+	],
+	[
+	], _amount);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_amount === undefined)
+		return chat.pm(client, "You didn't type an offset amount for the Z coordinate.");
+	
+	var amount = util.float(_amount, null);
+	if(amount === null)
+		return chat.pm(client, 'Invalid offset amount for Z coordinate.');
+	
+	chat.all(client.name + " changed their Z coordinate by " + (amount < 0.0 ? amount : ('+' + amount)) + " units.");
+	var position = client.player.position;
+	position.z += amount;
+	util.setClientVariable(client, 'localPlayer.position', position);
+};
+
 
 
 
