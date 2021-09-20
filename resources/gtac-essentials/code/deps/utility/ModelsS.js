@@ -20,7 +20,7 @@ util.modelRanges[GAME_GTA_III].blips = { min: 0, max: 20 };
 util.modelRanges[GAME_GTA_III].peds = { min: 1, max: 126, invalid: [26, 27, 28, 29] };
 util.modelRanges[GAME_GTA_III].weapons = { min: 0, max: 12 };
 
-util.modelRanges[GAME_GTA_VC].objects = { min: 0, max: 8000 };
+util.modelRanges[GAME_GTA_VC].objects = { min: 258, max: 5000 };
 util.modelRanges[GAME_GTA_VC].vehicles = { min: 130, max: 236 };
 util.modelRanges[GAME_GTA_VC].blips = { min: 0, max: 39 };
 util.modelRanges[GAME_GTA_VC].peds = { min: 0, max: 195, invalid: [8] };
