@@ -511,13 +511,154 @@ cmds.playervehicleids = (client) =>
 		chat.all('Player Vehicle IDs: ' + ids.join(' '));
 };
 
-cmds.objectsyncers = (client) => elements.data.objects.length == 0 ? chat.all('There are no objects.') : chat.all('Object syncers: ' + elements.data.objects.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
-cmds.vehiclesyncers = (client) => elements.data.vehicles.length == 0 ? chat.all('There are no vehicles.') : chat.all('Vehicle syncers: ' + elements.data.vehicles.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
-cmds.pickupsyncers = (client) => elements.data.pickups.length == 0 ? chat.all('There are no pickups.') : chat.all('Pickup syncers: ' + elements.data.pickups.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
-cmds.spheresyncers = (client) => elements.data.spheres.length == 0 ? chat.all('There are no spheres.') : chat.all('Sphere syncers: ' + elements.data.spheres.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : etClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
-cmds.pedsyncers = (client) => elements.data.peds.length == 0 ? chat.all('There are no peds.') : chat.all('Ped syncers: ' + elements.data.peds.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
-cmds.blipsyncers = (client) => elements.data.blips.length == 0 ? chat.all('There are no blips.') : chat.all('Blip syncers: ' + elements.data.blips.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
+cmds.objectsyncers = (client) => elements.data.objects.length == 0 ? chat.all('There are no objects.') : chat.all('Object syncers: ' + elements.data.objects.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (ID ' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (ID ' + data.id + ')').join(', '));
+cmds.vehiclesyncers = (client) => elements.data.vehicles.length == 0 ? chat.all('There are no vehicles.') : chat.all('Vehicle syncers: ' + elements.data.vehicles.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (ID ' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (ID ' + data.id + ')').join(', '));
+cmds.pickupsyncers = (client) => elements.data.pickups.length == 0 ? chat.all('There are no pickups.') : chat.all('Pickup syncers: ' + elements.data.pickups.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (ID ' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (ID ' + data.id + ')').join(', '));
+cmds.spheresyncers = (client) => elements.data.spheres.length == 0 ? chat.all('There are no spheres.') : chat.all('Sphere syncers: ' + elements.data.spheres.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (ID ' + data.id + ')' : etClients()[getElementFromId(data.id).syncer].name + ' (ID ' + data.id + ')').join(', '));
+cmds.pedsyncers = (client) => elements.data.peds.length == 0 ? chat.all('There are no peds.') : chat.all('Ped syncers: ' + elements.data.peds.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (ID ' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (ID ' + data.id + ')').join(', '));
+cmds.blipsyncers = (client) => elements.data.blips.length == 0 ? chat.all('There are no blips.') : chat.all('Blip syncers: ' + elements.data.blips.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (ID ' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (ID ' + data.id + ')').join(', '));
 
+cmds.objectdimensions = (client) =>
+{
+	var data2 = [];
+	if(elements.data.objects.length == 0)
+		chat.all('There are no objects.');
+	else
+	{
+		elements.data.objects.forEach(data =>
+		{
+			if(data2[getElementFromId(data.id).dimension])
+				data2[getElementFromId(data.id).dimension].push(data.id);
+			else
+				data2[getElementFromId(data.id).dimension] = [data.id];
+		});
+		
+		chat.all('Object dimensions: ' + data2.map((ids,dimension) => 'Dimension ' + dimension + ' IDs (' + ids.join(' ') + ')').join(', '));
+	}
+};
+
+cmds.vehicledimensions = (client) =>
+{
+	var data2 = [];
+	if(elements.data.vehicles.length == 0)
+		chat.all('There are no vehicles.');
+	else
+	{
+		elements.data.vehicles.forEach(data =>
+		{
+			if(data2[getElementFromId(data.id).dimension])
+				data2[getElementFromId(data.id).dimension].push(data.id);
+			else
+				data2[getElementFromId(data.id).dimension] = [data.id];
+		});
+		
+		chat.all('Vehicle dimensions: ' + data2.map((ids,dimension) => 'Dimension ' + dimension + ' IDs (' + ids.join(' ') + ')').join(', '));
+	}
+};
+
+cmds.pickupdimensions = (client) =>
+{
+	var data2 = [];
+	if(elements.data.pickups.length == 0)
+		chat.all('There are no pickups.');
+	else
+	{
+		elements.data.pickups.forEach(data =>
+		{
+			if(data2[getElementFromId(data.id).dimension])
+				data2[getElementFromId(data.id).dimension].push(data.id);
+			else
+				data2[getElementFromId(data.id).dimension] = [data.id];
+		});
+		
+		chat.all('Pickup dimensions: ' + data2.map((ids,dimension) => 'Dimension ' + dimension + ' IDs (' + ids.join(' ') + ')').join(', '));
+	}
+};
+
+cmds.spheredimensions = (client) =>
+{
+	var data2 = [];
+	if(elements.data.spheres.length == 0)
+		chat.all('There are no spheres.');
+	else
+	{
+		elements.data.spheres.forEach(data =>
+		{
+			if(data2[getElementFromId(data.id).dimension])
+				data2[getElementFromId(data.id).dimension].push(data.id);
+			else
+				data2[getElementFromId(data.id).dimension] = [data.id];
+		});
+		
+		chat.all('Sphere dimensions: ' + data2.map((ids,dimension) => 'Dimension ' + dimension + ' IDs (' + ids.join(' ') + ')').join(', '));
+	}
+};
+
+cmds.peddimensions = (client) =>
+{
+	var data2 = [];
+	if(elements.data.peds.length == 0)
+		chat.all('There are no peds.');
+	else
+	{
+		elements.data.peds.forEach(data =>
+		{
+			if(data2[getElementFromId(data.id).dimension])
+				data2[getElementFromId(data.id).dimension].push(data.id);
+			else
+				data2[getElementFromId(data.id).dimension] = [data.id];
+		});
+		
+		chat.all('Ped dimensions: ' + data2.map((ids,dimension) => 'Dimension ' + dimension + ' IDs (' + ids.join(' ') + ')').join(', '));
+	}
+};
+
+cmds.blipdimensions = (client) =>
+{
+	var data2 = [];
+	if(elements.data.blips.length == 0)
+		chat.all('There are no blips.');
+	else
+	{
+		elements.data.blips.forEach(data =>
+		{
+			if(blips[getElementFromId(data.id).dimension])
+				data2[getElementFromId(data.id).dimension].push(data.id);
+			else
+				data2[getElementFromId(data.id).dimension] = [data.id];
+		});
+		
+		chat.all('Blip dimensions: ' + data2.map((ids,dimension) => 'Dimension ' + dimension + ' IDs (' + ids.join(' ') + ')').join(', '));
+	}
+};
+
+cmds.playerdimensions = (client) =>
+{
+	var data1 = [];
+	var data2 = [];
+	getClients().forEach(client2 =>
+	{
+		if(client2.player)
+		{
+			data1.push(client2);
+		}
+	});
+	
+	if(data1.length == 0)
+		chat.all('There are no spawned players.');
+	else
+	{
+		data1.forEach(client2 =>
+		{
+			if(data2[client2.player.dimension])
+				data2[client2.player.dimension].push(client2.name);
+			else
+				data2[client2.player.dimension] = [client2.name];
+		});
+		
+		chat.all('Player dimensions: ' + data2.map((ids,dimension) => 'Dimension ' + dimension + ' (' + ids.join(' ') + ')').join(', '));
+	}
+};
 
 
 
