@@ -1699,7 +1699,7 @@ cmds.entervehicle = (client, _vehicleId, _driver) =>
 	if(driver === null)
 		return chat.pm(client, 'Invalid boolean option. e.g. 1 or 0.');
 	
-	chat.all(client.name + " started entering vehicle ID " + vehicleId + " as " + (driver ? "driver" : "passenger") + ".");
+	chat.all(client.name + " started entering vehicle ID " + vehicleId + " as " + (driver ? "the driver" : "a passenger") + ".");
 	util.callClientMethod(client, 'generic.makeLocalPlayerEnterVehicle', vehicleId, driver);
 };
 
@@ -1714,6 +1714,90 @@ cmds.exitvehicle = (client) =>
 	chat.all(client.name + " started exiting their vehicle.");
 	util.callClientMethod(client, 'generic.makeLocalPlayerExitVehicle');
 };
+
+cmds.weaponstate = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	util.requestClientProperty(target, 'localPlayer.weaponState', (weaponState) => chat.all(target.name + "'s weapon state is " + ['Ready', 'Firing', 'Reloading', 'Out of Ammunition', 'Melee made Contact'][weaponState] + "."));
+};
+
+cmds.warp = (client, _target, _vehicleId, _seat) =>
+{
+	[_target, _vehicleId, _seat] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => elements.isVehicle(v),
+		(v) => util.isInt(v)
+	],
+	[
+		client.name
+	], _target, _vehicleId, _seat);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!client.player)
+		return chat.pmNotSpawned(client, client);
+	
+	if(client.player.vehicle)
+		return chat.pm(client, 'You are already in a vehicle.');
+	
+	if(_vehicleId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	var vehicleId = util.int(_vehicleId);
+	
+	if(!elements.isVehicle(vehicleId))
+		return chat.pm(client, 'Invalid vehicle ID.');
+	
+	var seat = util.int(_seat, 0);
+	if(seat === null)
+		return chat.pm(client, 'Invalid seat ID.');
+	
+	chat.all(client.name + " warped " + target.name + " into vehicle ID " + vehicleId + " as " + (seat == 0 ? "the driver" : "a passenger") + ".");
+	util.callClientMethod(target, 'generic.warpLocalPlayerIntoVehicle', vehicleId, seat);
+};
+
+cmds.walkstyle = (client, _style) =>
+{
+	var maxStyle = 150;
+	
+	[_style] = util.grabArgs(client,
+	[
+		(v) => util.isInt(v)
+	],
+	[
+	], _style);
+	
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(_style === undefined)
+		return util.requestClientVariable(client, 'localPlayer.walkStyle', (style) => chat.all(client.name + "'s walk style is " + style + "."));
+	
+	var style = util.int(_style);
+	if(style < 0 || style > maxStyle)
+		return chat.pm(client, 'Invalid walk style.');
+	
+	chat.all(client.name + " set their walk style to " + style + ".");
+	util.setClientVariable(client, 'localPlayer.walkStyle', style);
+};
+
 
 
 

@@ -127,6 +127,18 @@ generic.makeLocalPlayerExitVehicle = function()
 	localPlayer.exitVehicle();
 };
 
+generic.warpLocalPlayerIntoVehicle = function(vehicleId, seat)
+{
+	if(!localClient.player)
+		return
+	
+	var vehicle = getElementFromId(vehicleId);
+	if(!vehicle)
+		return;
+	
+	localPlayer.warpIntoVehicle(vehicle, seat);
+};
+
 generic.getGroundZ = () =>
 {
 	if(!localClient.player)
