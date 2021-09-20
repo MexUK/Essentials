@@ -1617,7 +1617,7 @@ cmds.centerofmass = (client, _target) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
-	util.requestClientProperty(target, 'localPlayer.centerOfMass', (centerOfMass) => chat.all(target.name + "'s player center of mass is " + util.vec3ToArray(centerOfMass).join(', ') + "."));
+	util.requestClientVariable(target, 'localPlayer.centerOfMass', (centerOfMass) => chat.all(target.name + "'s player center of mass is " + util.vec3ToArray(centerOfMass).join(', ') + "."));
 };
 
 
