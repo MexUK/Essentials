@@ -1579,6 +1579,15 @@ cmds.pingabove = (client, _amount) =>
 		chat.all("Players with ping above " + amount + ": " + players.join(', '));
 };
 
+cmds.announce = (client, ...args) =>
+{
+	if(args.length == 0 || args[0] === undefined)
+		return chat.pm(client, "You didn't type any text to announce.");
+	
+	var text = args.join(' ');
+	chat.all(text);
+};
+
 
 
 

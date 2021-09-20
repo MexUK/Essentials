@@ -25,4 +25,5 @@
 	<Command name="startresource" level="9" />
 	<Command name="stopresource" level="9" />
 	<Command name="restartresource" level="9" />
+	<Command name="announce" level="5" />
 </Root>
