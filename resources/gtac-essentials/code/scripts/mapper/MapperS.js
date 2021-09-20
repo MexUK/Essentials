@@ -17,19 +17,6 @@ mapper.storeActiveObject = (client, objectId, modelId, position, rotation) =>
 		elements.setObjectData(objectId, modelId, position, rotation);
 	else
 		elements.addObject(modelId, position, rotation);
-	
-	/*
-	var object = getElementFromId(objectId);
-	if(object)
-	{
-		object.syncer = client.id;
-		elements.setObjectData(objectId, modelId, position, rotation);
-	}
-	else
-	{
-		elements.addObject(modelId, position, rotation);
-	}
-	*/
 };
 
 // commands

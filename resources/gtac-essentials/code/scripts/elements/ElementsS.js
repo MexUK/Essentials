@@ -511,6 +511,13 @@ cmds.playervehicleids = (client) =>
 		chat.all('Player Vehicle IDs: ' + ids.join(' '));
 };
 
+cmds.objectsyncers = (client) => elements.data.objects.length == 0 ? chat.all('There are no objects.') : chat.all('Object syncers: ' + elements.data.objects.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
+cmds.vehiclesyncers = (client) => elements.data.vehicles.length == 0 ? chat.all('There are no vehicles.') : chat.all('Vehicle syncers: ' + elements.data.vehicles.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
+cmds.pickupsyncers = (client) => elements.data.pickups.length == 0 ? chat.all('There are no pickups.') : chat.all('Pickup syncers: ' + elements.data.pickups.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
+cmds.spheresyncers = (client) => elements.data.spheres.length == 0 ? chat.all('There are no spheres.') : chat.all('Sphere syncers: ' + elements.data.spheres.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : etClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
+cmds.pedsyncers = (client) => elements.data.peds.length == 0 ? chat.all('There are no peds.') : chat.all('Ped syncers: ' + elements.data.peds.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
+cmds.blipsyncers = (client) => elements.data.blips.length == 0 ? chat.all('There are no blips.') : chat.all('Blip syncers: ' + elements.data.blips.map(data => getElementFromId(data.id).syncer == -1 ? 'No syncer (' + data.id + ')' : getClients()[getElementFromId(data.id).syncer].name + ' (' + data.id + ')').join(', '));
+
 
 
 
