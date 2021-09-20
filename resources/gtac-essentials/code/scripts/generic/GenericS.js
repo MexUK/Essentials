@@ -1588,6 +1588,38 @@ cmds.announce = (client, ...args) =>
 	chat.all(text);
 };
 
+cmds.calltaxi = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(server.game != GAME_GTA_III && server.game != GAME_GTA_VC)
+		return chat.pm(client, "This command only works on GTA III and GTA VC.");
+	
+	chat.all(client.name + " called for a taxi.");
+	util.callClientFunction(client, 'generic.setLocalPlayerCallForTaxi');
+};
+
+cmds.centerofmass = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	util.requestClientProperty(target, 'localPlayer.centerOfMass', (centerOfMass) => chat.all(target.name + "'s player center of mass is " + util.vec3ToArray(centerOfMass).join(', ') + "."));
+};
+
 
 
 

@@ -99,6 +99,14 @@ generic.removeLocalPlayerFromVehicle = function()
 	localPlayer.removeFromVehicle();
 };
 
+generic.setLocalPlayerCallForTaxi = function()
+{
+	if(!localClient.player)
+		return
+	
+	localPlayer.hailTaxi();
+};
+
 generic.getGroundZ = () =>
 {
 	if(!localClient.player)
