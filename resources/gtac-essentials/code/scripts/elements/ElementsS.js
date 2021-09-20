@@ -64,7 +64,7 @@ elements.nearElements = (client, elementName, distanceAway) =>
 	return near;
 };
 
-elements.getElementDataById = (elementName, elementId) =>
+elements.getElementData = (elementName, elementId) =>
 {
 	for(var i in elements.data[elementName])
 	{
@@ -88,16 +88,9 @@ elements.removeElement = (elementName, elementId) =>
 	}
 };
 
-elements.getElement = (elementName, elementId) =>
+elements.getElement = (elementId) =>
 {
-	for(var i in elements.data[elementName])
-	{
-		if(elements.data[elementName][i].id == elementId)
-		{
-			return elements.data[elementName][i];
-		}
-	}
-	return null;
+	return getElementFromId(elementId);
 };
 
 elements.setPosition = (elementName, elementId, position) =>
@@ -105,7 +98,7 @@ elements.setPosition = (elementName, elementId, position) =>
 	var element = getElementFromId(elementId);
 	if(element)
 		util.setClientProperty(getClients()[element.syncer], elementId, 'position', position);
-	var elementData = elements.getElement(elementName, elementId);
+	var elementData = elements.getElementData(elementName, elementId);
 	if(elementData)
 		elementData.position = position;
 	var elementNames = {
@@ -685,7 +678,7 @@ cmds.objectdistance = (client, _elementId) =>
 	if(elementId < 0 || !elements.isObject(elementId))
 		return chat.pm(client, 'Invalid object ID.');
 	
-	var distance = elements.getElement('objects', elementId).position.distance(client.player.position);
+	var distance = elements.getElementData('objects', elementId).position.distance(client.player.position);
 	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from object ID " + elementId + ".");
 };
 
@@ -708,7 +701,7 @@ cmds.vehicledistance = (client, _elementId) =>
 	if(elementId < 0 || !elements.isVehicle(elementId))
 		return chat.pm(client, 'Invalid vehicle ID.');
 	
-	var distance = elements.getElement('vehicles', elementId).position.distance(client.player.position);
+	var distance = elements.getElementData('vehicles', elementId).position.distance(client.player.position);
 	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from vehicle ID " + elementId + ".");
 };
 
@@ -731,7 +724,7 @@ cmds.pickupdistance = (client, _elementId) =>
 	if(elementId < 0 || !elements.isPickup(elementId))
 		return chat.pm(client, 'Invalid pickup ID.');
 	
-	var distance = elements.getElement('pickups', elementId).position.distance(client.player.position);
+	var distance = elements.getElementData('pickups', elementId).position.distance(client.player.position);
 	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from pickup ID " + elementId + ".");
 };
 
@@ -754,7 +747,7 @@ cmds.spheredistance = (client, _elementId) =>
 	if(elementId < 0 || !elements.isSphere(elementId))
 		return chat.pm(client, 'Invalid sphere ID.');
 	
-	var distance = elements.getElement('spheres', elementId).position.distance(client.player.position);
+	var distance = elements.getElementData('spheres', elementId).position.distance(client.player.position);
 	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from sphere ID " + elementId + ".");
 };
 
@@ -777,7 +770,7 @@ cmds.peddistance = (client, _elementId) =>
 	if(elementId < 0 || !elements.isPed(elementId))
 		return chat.pm(client, 'Invalid ped ID.');
 	
-	var distance = elements.getElement('peds', elementId).position.distance(client.player.position);
+	var distance = elements.getElementData('peds', elementId).position.distance(client.player.position);
 	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from ped ID " + elementId + ".");
 };
 
@@ -800,7 +793,7 @@ cmds.blipdistance = (client, _elementId) =>
 	if(elementId < 0 || !elements.isBlip(elementId))
 		return chat.pm(client, 'Invalid blip ID.');
 	
-	var distance = elements.getElement('blips', elementId).position.distance(client.player.position);
+	var distance = elements.getElementData('blips', elementId).position.distance(client.player.position);
 	chat.all(client.name + " is " + util.round(distance, 3) + " game units away from blip ID " + elementId + ".");
 };
 
@@ -1105,7 +1098,7 @@ cmds.removepickup = (client, _elementId) =>
 	if(!elements.isPickup(elementId))
 		return chat.pm(client, 'Pickup ID ' + elementId + ' does not exist.');
 	
-	chat.all(client.name + " removed pickup ID " + elementId + ". (Model " + elements.getElementDataById('pickups', elementId).model + ")");
+	chat.all(client.name + " removed pickup ID " + elementId + ". (Model " + elements.getElementData('pickups', elementId).model + ")");
 	elements.removePickup(elementId);
 };
 
@@ -1136,7 +1129,7 @@ cmds.removesphere = (client, _elementId) =>
 	if(!elements.isSphere(elementId))
 		return chat.pm(client, 'Sphere ID ' + elementId + ' does not exist.');
 	
-	chat.all(client.name + " removed sphere ID " + elementId + ". (Radius " + elements.getElementDataById('spheres', elementId).radius + ")");
+	chat.all(client.name + " removed sphere ID " + elementId + ". (Radius " + elements.getElementData('spheres', elementId).radius + ")");
 	elements.removeSphere(elementId);
 };
 
@@ -1167,7 +1160,7 @@ cmds.removeblip = (client, _elementId) =>
 	if(!elements.isBlip(elementId))
 		return chat.pm(client, 'Blip ID ' + elementId + ' does not exist.');
 	
-	chat.all(client.name + " removed blip ID " + elementId + ". (Icon " + elements.getElementDataById('blips', elementId).icon + ")");
+	chat.all(client.name + " removed blip ID " + elementId + ". (Icon " + elements.getElementData('blips', elementId).icon + ")");
 	elements.removeBlip(elementId);
 };
 
@@ -1466,6 +1459,114 @@ cmds.saveblip = (client, _elementId) =>
 
 
 
+
+cmds.objectsyncer = (client, _elementId) =>
+{
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type an object ID.");
+	
+	if(!elements.isObject(elementId))
+		return chat.pm(client, 'Invalid object ID.');
+	
+	var element = elements.getElement(elementId);
+	if(element.syncer == -1)
+		chat.all('There is no syncer for object ID ' + elementId + '.');
+	else
+		chat.all('The syncer for object ID ' + elementId + ' is ' + getClients()[element.syncer].name + '.');
+};
+
+cmds.vehiclesyncer = (client, _elementId) =>
+{
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	if(!elements.isVehicle(elementId))
+		return chat.pm(client, 'Invalid vehicle ID.');
+	
+	var element = elements.getElement(elementId);
+	if(element.syncer == -1)
+		chat.all('There is no syncer for vehicle ID ' + elementId + '.');
+	else
+		chat.all('The syncer for vehicle ID ' + elementId + ' is ' + getClients()[element.syncer].name + '.');
+};
+
+cmds.pickupsyncer = (client, _elementId) =>
+{
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a pickup ID.");
+	
+	if(!elements.isPickup(elementId))
+		return chat.pm(client, 'Invalid pickup ID.');
+	
+	var element = elements.getElement(elementId);
+	if(element.syncer == -1)
+		chat.all('There is no syncer for pickup ID ' + elementId + '.');
+	else
+		chat.all('The syncer for pickup ID ' + elementId + ' is ' + getClients()[element.syncer].name + '.');
+};
+
+cmds.spheresyncer = (client, _elementId) =>
+{
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a sphere ID.");
+	
+	if(!elements.isSphere(elementId))
+		return chat.pm(client, 'Invalid sphere ID.');
+	
+	var element = elements.getElement(elementId);
+	if(element.syncer == -1)
+		chat.all('There is no syncer for sphere ID ' + elementId + '.');
+	else
+		chat.all('The syncer for sphere ID ' + elementId + ' is ' + getClients()[element.syncer].name + '.');
+};
+
+cmds.pedsyncer = (client, _elementId) =>
+{
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a ped ID.");
+	
+	if(!elements.isPed(elementId))
+		return chat.pm(client, 'Invalid ped ID.');
+	
+	var element = elements.getElement(elementId);
+	if(element.syncer == -1)
+		chat.all('There is no syncer for ped ID ' + elementId + '.');
+	else
+		chat.all('The syncer for ped ID ' + elementId + ' is ' + getClients()[element.syncer].name + '.');
+};
+
+cmds.blipsyncer = (client, _elementId) =>
+{
+	var elementId = util.int(_elementId);
+	
+	if(_elementId === undefined)
+		return chat.pm(client, "You didn't type a blip ID.");
+	
+	if(!elements.isBlip(elementId))
+		return chat.pm(client, 'Invalid blip ID.');
+	
+	var element = elements.getElement(elementId);
+	if(element.syncer == -1)
+		chat.all('There is no syncer for blip ID ' + elementId + '.');
+	else
+		chat.all('The syncer for blip ID ' + elementId + ' is ' + getClients()[element.syncer].name + '.');
+};
+
+
+
+
+
+
 // objects
 elements.addObject = (model, position, rotation) =>
 {
@@ -1678,12 +1779,12 @@ elements.createPed = (model, position, heading, pedType) =>
 
 
 
-elements.isObject = (elementId) => elements.getElementDataById('objects', elementId) != null;
-elements.isVehicle = (elementId) => elements.getElementDataById('vehicles', elementId) != null;
-elements.isPickup = (elementId) => elements.getElementDataById('pickups', elementId) != null;
-elements.isSphere = (elementId) => elements.getElementDataById('spheres', elementId) != null;
-elements.isPed = (elementId) => elements.getElementDataById('peds', elementId) != null;
-elements.isBlip = (elementId) => elements.getElementDataById('blips', elementId) != null;
+elements.isObject = (elementId) => elements.getElementData('objects', elementId) != null;
+elements.isVehicle = (elementId) => elements.getElementData('vehicles', elementId) != null;
+elements.isPickup = (elementId) => elements.getElementData('pickups', elementId) != null;
+elements.isSphere = (elementId) => elements.getElementData('spheres', elementId) != null;
+elements.isPed = (elementId) => elements.getElementData('peds', elementId) != null;
+elements.isBlip = (elementId) => elements.getElementData('blips', elementId) != null;
 
 
 // load elements
