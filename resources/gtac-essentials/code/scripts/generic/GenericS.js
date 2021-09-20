@@ -1521,6 +1521,33 @@ cmds.damage = (client, _state) =>
 	chat.all(client.name + " " + (state ? 'enabled' : 'disabled') + " damage.");
 };
 
+cmds.eject = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(!target.player.vehicle)
+		return chat.notInVehicle(client, target);
+	
+	chat.all(client.name + " ejected " + target.name + " from their vehicle.");
+	util.callClientFunction(target, 'generic.removeLocalPlayerFromVehicle');
+	
+	if(global.tempVehicles && tempVehicles.hasVehicle(target))
+		tempVehicles.removeVehicle(target);
+};
+
 
 
 

@@ -88,6 +88,17 @@ generic.flipLocalPlayerVehicle = function()
 	localPlayer.vehicle.setRotation(new Vec3(0.0, 0.0, localPlayer.vehicle.heading));
 };
 
+generic.removeLocalPlayerFromVehicle = function()
+{
+	if(!localClient.player)
+		return
+	
+	if(!localPlayer.vehicle)
+		return;
+	
+	localPlayer.removeFromVehicle();
+};
+
 generic.getGroundZ = () =>
 {
 	if(!localClient.player)
