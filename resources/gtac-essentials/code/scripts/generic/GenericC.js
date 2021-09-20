@@ -107,6 +107,26 @@ generic.setLocalPlayerCallForTaxi = function()
 	localPlayer.hailTaxi();
 };
 
+generic.makeLocalPlayerEnterVehicle = function(vehicleId, driver)
+{
+	if(!localClient.player)
+		return
+	
+	var vehicle = getElementFromId(vehicleId);
+	if(!vehicle)
+		return;
+	
+	localPlayer.enterVehicle(vehicle, driver);
+};
+
+generic.makeLocalPlayerExitVehicle = function()
+{
+	if(!localClient.player)
+		return
+	
+	localPlayer.exitVehicle();
+};
+
 generic.getGroundZ = () =>
 {
 	if(!localClient.player)

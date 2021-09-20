@@ -1620,6 +1620,101 @@ cmds.centerofmass = (client, _target) =>
 	util.requestClientVariable(target, 'localPlayer.centerOfMass', (centerOfMass) => chat.all(target.name + "'s player center of mass is " + util.vec3ToArray(centerOfMass).join(', ') + "."));
 };
 
+cmds.maxstamina = (client, _target, _stamina) =>
+{
+	[_target, _stamina] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isFloat(v)
+	],
+	[
+		client.name
+	], _target, _stamina);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_stamina === undefined)
+		return util.requestClientVariable(target, 'localPlayer.maxStamina', (maxStamina) => chat.all(target.name + "'s max stamina is " + maxStamina + "."));
+	
+	var stamina = util.float(_stamina, null);
+	if(stamina === null)
+		return chat.pm(client, 'Invalid max stamina amount.');
+	
+	chat.all(client.name + " set " + target.name + "'s max stamina to " + stamina + ".");
+	util.setClientVariable(target, 'localPlayer.maxStamina', stamina);
+};
+
+cmds.maxhealth = (client, _target, _health) =>
+{
+	[_target, _health] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isInt(v)
+	],
+	[
+		client.name
+	], _target, _health);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(_health === undefined)
+		return util.requestClientVariable(target, 'localPlayer.maxHealth', (maxHealth) => chat.all(target.name + "'s max health is " + maxHealth + "."));
+};
+
+cmds.entervehicle = (client, _vehicleId, _driver) =>
+{
+	[_vehicleId, _driver] = util.grabArgs(client,
+	[
+		(v) => elements.isVehicle(v),
+		(v) => util.isBool(v)
+	],
+	[
+	], _vehicleId, _driver);
+	
+	if(!client.player)
+		return chat.pmNotSpawned(client, client);
+	
+	if(client.player.vehicle)
+		return chat.pm(client, 'You are already in a vehicle.');
+	
+	if(_vehicleId === undefined)
+		return chat.pm(client, "You didn't type a vehicle ID.");
+	
+	var vehicleId = util.int(_vehicleId);
+	
+	if(!elements.isVehicle(vehicleId))
+		return chat.pm(client, 'Invalid vehicle ID.');
+	
+	var driver = util.bool(_driver, true);
+	if(driver === null)
+		return chat.pm(client, 'Invalid boolean option. e.g. 1 or 0.');
+	
+	chat.all(client.name + " started entering vehicle ID " + vehicleId + " as " + (driver ? "driver" : "passenger") + ".");
+	util.callClientMethod(client, 'generic.makeLocalPlayerEnterVehicle', vehicleId, driver);
+};
+
+cmds.exitvehicle = (client) =>
+{
+	if(!client.player)
+		return chat.pmNotSpawned(client, client);
+	
+	if(!client.player.vehicle)
+		return chat.pm(client, 'You are not in a vehicle.');
+	
+	chat.all(client.name + " started exiting their vehicle.");
+	util.callClientMethod(client, 'generic.makeLocalPlayerExitVehicle');
+};
+
 
 
 
