@@ -1088,11 +1088,11 @@ cmds.bounds = (client, _target, _state) =>
 		return chat.notSpawned(client, target);
 	
 	if(_state === undefined)
-		return util.requestClientVariable(target, 'generic.drawBounds', (state) => chat.all(target.name + " collision boundaries are set to " + (state ? "" : "not ") + "render."));
+		return util.requestClientVariable(target, 'generic.drawBounds', (state) => chat.all(target.name + "'s collision boundaries are set to " + (state ? "" : "not ") + "render."));
 	
 	var state = util.bool(_state, null);
 	if(state === null)
-		return chat.bool(client, 'Bleeding', _state);
+		return chat.bool(client, 'Bounds', _state);
 	
 	chat.all(client.name + " set collision boundaries to " + (state ? "" : "not ") + "render for " + target.name + ".");
 	util.callClientFunction(target, 'generic.setLocalPlayerDrawBounds', state);

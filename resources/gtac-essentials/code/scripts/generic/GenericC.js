@@ -73,7 +73,7 @@ generic.setLocalPlayerProofs = function(proofs)
 
 generic.setLocalPlayerDrawBounds = function(enabled)
 {
-	generic.drawBounds = !generic.drawBounds;
+	generic.drawBounds = enabled;
 };
 
 generic.flipLocalPlayerVehicle = function()
