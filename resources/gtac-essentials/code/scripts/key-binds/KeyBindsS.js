@@ -10,7 +10,7 @@ events.onPlayerJoined.push((event, client) =>
 	{
 		if(nameLower == v.name.toLowerCase())
 		{
-			keyBinds.createKeyBind(client, v.key, v.command);
+			keyBinds.createKeyBind(client, v.key, v.command, v.args.split(' '));
 		}
 	});
 });
