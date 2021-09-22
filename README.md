@@ -20,7 +20,8 @@ To get started:
 
 3) Stop the server.
 4) Set your Players.xml file to the 3 lines of XML code below:
-   The Players.xml file path is: resources/gtac-essentials/data/scripts/admin/Players.xml
+
+   The Players.xml file path is located at: resources/gtac-essentials/data/scripts/admin/Players.xml
 
 ```xml
 <Root>
@@ -36,5 +37,6 @@ To get started:
 (Generic.)
 
 7) To change another player's level, use this command in-game: /setlevel name level
+
    e.g. /setlevel PlayerName 10
 8) To view all commands in-game, type /commands
