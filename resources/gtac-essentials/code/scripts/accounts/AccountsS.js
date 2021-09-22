@@ -12,31 +12,35 @@ events.onPlayerJoined.push((event, client) =>
 });
 
 // commands
-cmds.register = (client, _password) =>
+cmds.register = (client, ...args) =>
 {
+	var password = args.join(' ');
+	
 	if(accounts.isNameRegistered(client.name))
 		return chat.pm(client, 'Username is already registered.');
 	
-	if(_password === undefined)
+	if(args.length == 0)
 		return chat.pm(client, "You didn't type a password.");
 	
-	accounts.addAccount(client.name, _password);
+	accounts.addAccount(client.name, password);
 	clientData.set(client, 'registered', true);
 	chat.all(client.name + " has registered their account.");
 };
 
-cmds.login = (client, _password) =>
+cmds.login = (client, ...args) =>
 {
+	var password = args.join(' ');
+	
 	if(!accounts.isNameRegistered(client.name))
 		return chat.pm(client, 'Username is not registered.');
 	
 	if(clientData.get(client, 'loggedIn'))
 		return chat.pm(client, 'You are already logged in.');
 	
-	if(_password === undefined)
+	if(args.length == 0)
 		return chat.pm(client, "You didn't type a password.");
 	
-	if(!accounts.isPasswordCorrect(client.name, _password))
+	if(!accounts.isPasswordCorrect(client.name, password))
 		return chat.pm(client, "Invalid password.");
 	
 	clientData.set(client, 'loggedIn', true);
