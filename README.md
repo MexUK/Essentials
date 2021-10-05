@@ -5,6 +5,8 @@ Should work for III, VC, or SA.
 
 Free for anyone to use.
 
+See Commands.txt for available commands.
+
 <hr>
 
 To get started:
