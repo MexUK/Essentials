@@ -651,6 +651,9 @@ util.weaponNames[GAME_GTA_SA] = [
 	'Grenade',
 	'Tear Gas',
 	'Molotov Cocktail',
+	'',
+	'',
+	'',
 	'9mm',
 	'Silenced 9mm',
 	'Desert Eagle',
@@ -675,10 +678,10 @@ util.weaponNames[GAME_GTA_SA] = [
 	'Camera',
 	'Night Vision Goggles',
 	'Thermal Goggles',
-	'Parachute',
-	'Cellphone',
-	'Jetpack',
-	'Skateboard'
+	'Parachute'//,
+	//'Cellphone',
+	//'Jetpack',
+	//'Skateboard'
 ];
 util.weaponNames[GAME_GTA_IV] = [
 	'UNARMED Fist',
