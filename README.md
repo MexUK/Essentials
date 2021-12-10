@@ -1,11 +1,11 @@
-# Essentials
-GTA Connected Essentials Resource (IV not currently supported)
+# Essentials Resource
+This resource (Essentials) is compatible with the GTA:Connected multiplayer.
 
-Should work for III, VC, or SA.
+Game support for Essentials: III, VC, or SA. (This resource does not currently support IV)
 
-Free for anyone to use.
+Essentials contains over 200 commands, comes with a mapper, and is free.
 
-See Commands.txt for available commands.
+Check Commands.txt for available commands.
 
 <hr>
 
