@@ -921,6 +921,9 @@ util.getInvalidWeaponModels = () => [];
 
 util.findWeapon = function(text)
 {
+	if(text === undefined || text === null)
+		return -1;
+	
 	var textInt = parseInt(text, 10);
 	
 	var minWeaponId = util.getMinWeapon();
