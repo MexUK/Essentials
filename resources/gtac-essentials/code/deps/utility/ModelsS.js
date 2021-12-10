@@ -761,8 +761,8 @@ util.findObjectModel = function(text)
 {
 	var textInt = parseInt(text, 10);
 	
-	var min = 0;
-	var max = 8000;
+	var min = util.getMinObjectModel();
+	var max = util.getMaxObjectModel();
 	
 	if(!isNaN(textInt) && textInt >= min && textInt <= max && !util._in(util.getInvalidObjectModels(), textInt))
 	{
@@ -800,8 +800,8 @@ util.findVehicleModel = function(text, defaultVehicleModelId)
 	
 	var textInt = parseInt(text, 10);
 	
-	var minVehicleModelId = 130;
-	var maxVehicleModelId = 236;
+	var minVehicleModelId = util.getMinVehicleModel();
+	var maxVehicleModelId = util.getMaxVehicleModel();
 	
 	if(!isNaN(textInt) && textInt >= minVehicleModelId && textInt <= maxVehicleModelId && !util._in(util.getInvalidVehicleModels(), textInt))
 	{
@@ -857,8 +857,8 @@ util.findPedModel = function(text)
 {
 	var textInt = parseInt(text, 10);
 	
-	var min = 1;
-	var max = 195;
+	var min = util.getMinPedModel();
+	var max = util.getMaxPedModel();
 	
 	if(!isNaN(textInt) && textInt >= min && textInt <= max && textInt != 8 && !util._in(util.getInvalidPedModels(), textInt))
 	{
@@ -889,8 +889,8 @@ util.findBlipIcon = function(text)
 {
 	var textInt = parseInt(text, 10);
 	
-	var min = 0;
-	var max = 39;
+	var min = util.getMinBlipModel();
+	var max = util.getMaxBlipModel();
 	
 	if(!isNaN(textInt) && textInt >= min && textInt <= max && !util._in(util.getInvalidBlipModels(), textInt))
 	{

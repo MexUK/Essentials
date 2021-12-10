@@ -60,6 +60,9 @@
 	<script src="code/scripts/spawn-and-respawn/SpawnAndRespawnS.js" type="server" language="javascript" />
 	<script src="code/scripts/spawn-and-respawn/SpawnAndRespawnC.js" type="client" language="javascript" />
 	
+	<script src="code/scripts/join-and-quit/JoinAndQuitS.js" type="server" language="javascript" />
+	<script src="code/scripts/join-and-quit/JoinAndQuitC.js" type="client" language="javascript" />
+	
 	<script src="code/scripts/command-aliases/CommandAliasesS.js" type="server" language="javascript" />
 	
 	<script src="code/scripts/key-binds/KeyBindsS.js" type="server" language="javascript" />
