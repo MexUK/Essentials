@@ -42,3 +42,11 @@ To get started:
 
    e.g. /setlevel PlayerName 10
 8) To view all commands in-game, type /commands
+
+
+
+Directory Contents Example
+
+![Image 1](pic1.png)
+![Image 2](pic2.png)
+![Image 3](pic3.png)
