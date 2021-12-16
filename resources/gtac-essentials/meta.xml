@@ -71,6 +71,9 @@
 	<script src="code/scripts/missions/MissionsS.js" type="server" language="javascript" />
 	<script src="code/scripts/missions/MissionsC.js" type="client" language="javascript" />
 	
+	<script src="code/scripts/passenger/PassengerS.js" type="server" language="javascript" />
+	<script src="code/scripts/passenger/PassengerC.js" type="client" language="javascript" />
+	
 	<script src="code/scripts/resources/ResourcesS.js" type="server" language="javascript" />
 	<script src="code/scripts/resources/ResourcesC.js" type="client" language="javascript" />
 	

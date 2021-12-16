@@ -22,7 +22,7 @@
 	<syncmethod>replay</syncmethod>
 	<compresspackets>false</compresspackets>
 	<packetcompressionlevel>default</packetcompressionlevel>
-	<synclocalentities>false</synclocalentities>
+	<synclocalentities>true</synclocalentities>
 
 	<!-- Element Streaming -->
 	<streamindistance>200</streamindistance>
