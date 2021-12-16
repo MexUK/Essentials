@@ -32,10 +32,10 @@ keyBinds.onClientKeyDown = (client, keyCode) =>
 // commands
 cmds.key = (client, _key, _cmd, ...args) =>
 {
-	var key = util.key(_key);
-	
 	if(!util.isKey(_key))
-		return chat.invalidKey(client, key);
+		return chat.invalidKey(client, _key);
+	
+	var key = util.key(_key);
 	
 	if(_cmd === undefined)
 	{
@@ -62,10 +62,10 @@ cmds.key = (client, _key, _cmd, ...args) =>
 
 cmds.unkey = (client, _key) =>
 {
-	var key = util.key(_key);
-	
 	if(!util.isKey(_key))
-		return chat.invalidKey(client, key);
+		return chat.invalidKey(client, _key);
+	
+	var key = util.key(_key);
 	
 	if(!keyBinds.isKeyBound(client, key))
 		return chat.pm(client, "You don't have key " + key + " bound to a command.");
@@ -100,9 +100,9 @@ keyBinds.bindKey = (client, key, cmd, args) =>
 {
 	keyBinds.createKeyBind(client, key, cmd, args);
 	xml.setAttr2(keyBinds.path, 'Key', {
-		name:		client.name
+		name:		client.name,
+		key:		key
 	}, {
-		key:		key,
 		command:	cmd,
 		args:		(args.length == 0 ? '' : args.join(' '))
 	});
