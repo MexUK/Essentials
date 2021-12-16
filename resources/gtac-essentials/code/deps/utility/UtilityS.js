@@ -334,7 +334,7 @@ util.findClient = function(text, defaultClient)
 
 util.isClient = (text) =>
 {
-	return parseInt(text) == parseFloat(text) && util.findClient(text) !== null;
+	return /*(isNaN(parseInt(text)) || parseInt(text) == parseFloat(text)) && */util.findClient(text) !== null;
 };
 
 util.findCommand = (text) =>
@@ -977,7 +977,7 @@ util.grabArgs = (client, conditions, defaults, ...argsIn) =>
 	for(var i in conditions)
 	{
 		var match = false;
-		for(var i2 in argsIn)
+		for(var i2=0,j2=argsIn.length; i2<j2; i2++)
 		{
 			if(conditions[i](argsIn[i2]))
 			{

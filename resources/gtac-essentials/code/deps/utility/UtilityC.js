@@ -520,6 +520,9 @@ addNetworkHandler('setClientVariable', (variableName, variableValue) =>
 	variableName = parts.join('.');
 	
 	var object = util.getResolvedItem(variableName);
+	if(!object)
+		return;
+	
 	object[variableName2] = variableValue;
 });
 
