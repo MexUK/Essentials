@@ -39,11 +39,16 @@ cmds.key = (client, _key, _cmd, ...args) =>
 	
 	if(_cmd === undefined)
 	{
-		var [command, args] = keyBinds.getBoundCommand(client, key);
-		if(command)
+		var data = keyBinds.getBoundCommand(client, key);
+		if(data)
+		{
+			var [command, args] = data;
 			return chat.all(client.name + " has command /" + command + (args.length == 0 ? '' : (' ' + args.join(' '))) + " bound to key " + key + ".");
+		}
 		else
+		{
 			return chat.all(client.name + " doesn't have a command bound to key " + key + ".");
+		}
 	}
 	
 	var cmd = util.command(_cmd);
