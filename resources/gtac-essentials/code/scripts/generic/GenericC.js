@@ -150,6 +150,15 @@ generic.getGroundZ = () =>
 	return util.getGroundZ(localPlayer.position.x, localPlayer.position.y, ignore);
 };
 
+generic.enterNearestVehicle = (asDriver) =>
+{
+	if(!localClient.player)
+		return;
+	
+	var vehicle = util.getNearestVehicle(localPlayer.position);
+	localPlayer.enterVehicle(vehicle, asDriver);
+};
+
 // events
 addEventHandler('onPedSpawn', (event,ped) =>
 {

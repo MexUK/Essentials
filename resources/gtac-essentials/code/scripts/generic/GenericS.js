@@ -1901,6 +1901,22 @@ cmds.zoffset = (client, _amount) =>
 	util.setClientVariable(client, 'localPlayer.position', position);
 };
 
+cmds.enterdriver = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	util.callClientFunction(client, 'generic.enterNearestVehicle', true);
+};
+
+cmds.enterpassenger = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	util.callClientFunction(client, 'generic.enterNearestVehicle', false);
+};
+
 
 
 
