@@ -15,4 +15,8 @@
 	<Command original="weapon" clone="wep" />
 	<Command original="weapon" clone="w" />
 	<Command original="vehicle" clone="v" />
+	<Command original="commandlevel" clone="cmdlevel" />
+	<Command original="commandlevel" clone="cmdlvl" />
+	<Command original="setcommandlevel" clone="setcmdlevel" />
+	<Command original="setcommandlevel" clone="setcmdlvl" />
 </Root>

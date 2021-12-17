@@ -26,4 +26,12 @@
 	<Command name="stopresource" level="9" />
 	<Command name="restartresource" level="9" />
 	<Command name="announce" level="5" />
+	<Command name="removeobjects" level="5" />
+	<Command name="removevehicles" level="5" />
+	<Command name="removepickups" level="5" />
+	<Command name="removespheres" level="5" />
+	<Command name="removeblips" level="5" />
+	<Command name="removepeds" level="5" />
+	<Command name="setcmdlevel" level="8" />
+	<Command name="setcmdlvl" level="8" />
 </Root>
