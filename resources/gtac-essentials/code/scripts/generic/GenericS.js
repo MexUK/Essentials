@@ -16,7 +16,7 @@ events.onPlayerJoined.push((event,client) =>
 });
 
 // commands
-cmds.commands = (client) =>
+cmds.commands = (client, searchOrIndex) =>
 {
 	var cmds2 = [];
 	for(var cmd in cmds)
@@ -24,10 +24,31 @@ cmds.commands = (client) =>
 	
 	cmds2.sort();
 	
-	var cmdCount = cmds2.length;
-	cmds2 = '/' + cmds2.join(' /');
-	
-	chat.all('Commands (' + cmdCount + '): ' + cmds2);
+	if(searchOrIndex === undefined)
+	{
+		chat.all('There are '+cmds2.length+' commands.');
+	}
+	else if(util.isInt(searchOrIndex))
+	{
+		var index = util.int(searchOrIndex);
+		
+		cmds2 = generic.getCommandsArray(cmds2);
+		
+		if(index < 1 || index > cmds2.length)
+			return chat.pm(client, 'Index must be between 1 and '+cmds2.length+'.');
+		
+		var chatLine = 'Commands ('+index+' of '+cmds2.length+'): /'+cmds2[index - 1].join(' /');
+		chat.all(chatLine);
+	}
+	else
+	{
+		cmds2 = cmds2.filter(cmd => cmd.toLowerCase().indexOf(searchOrIndex) != -1);
+		if(cmds2.length == 0)
+			return chat.pm(client, 'There were no commands found matching '+searchOrIndex+'.');
+		
+		var chatLine = 'Commands (matching '+searchOrIndex+'): /'+cmds2.join(' /');
+		chat.all(chatLine);
+	}
 };
 
 cmds.position = (client, _target, _dp) =>
@@ -645,10 +666,7 @@ cmds.speed = (client, _target, _speed) =>
 	chat.all(client.name + " set " + target.name + "'s speed to " + speed + ".");
 	var velocity = target.player.vehicle ? target.player.vehicle.velocity : target.player.velocity;
 	var heading = target.player.vehicle ? target.player.vehicle.heading : target.player.heading;
-	if(speed == 0.)
-		velocity = new Vec3(0.0, 0.0, 0.0);
-	else
-		velocity = velocity.addPolar(speed, heading + (Math.PI / 2.0));
+	velocity = velocity.addPolar(speed, heading + (Math.PI / 2.0));
 	if(target.player.vehicle)
 		util.setClientVariable(target, 'localPlayer.vehicle.velocity', velocity);
 	else
@@ -1944,3 +1962,21 @@ generic.setSnowing = (state) =>
 
 
 
+generic.getCommandsArray = (cmds) =>
+{
+	var every = 10;
+	var cmds2 = [[]];
+	var i2 = 0;
+	for(var i=0,j=cmds.length; i<j; )
+	{
+		cmds2[i2].push(cmds[i]);
+		
+		if((++i % every) == 0)
+		{
+			cmds2[++i2] = [];
+		}
+	}
+	if(cmds2[cmds2.length - 1].length == 0)
+		cmds2.pop();
+	return cmds2;
+};
