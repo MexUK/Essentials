@@ -47,6 +47,8 @@ cmds.commands = (client, searchOrIndex) =>
 	}
 	else
 	{
+		searchOrIndex = searchOrIndex.replace('/', '');
+		
 		cmds2 = cmds2.filter(cmd => cmd.toLowerCase().indexOf(searchOrIndex) != -1);
 		if(cmds2.length == 0)
 			return chat.pm(client, 'There were no commands found matching '+searchOrIndex+'.');
