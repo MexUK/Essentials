@@ -34,4 +34,10 @@
 	<Command name="removepeds" level="5" />
 	<Command name="setcmdlevel" level="8" />
 	<Command name="setcmdlvl" level="8" />
+	<Command name="commandalias" level="7" />
+	<Command name="v" level="5" />
+	<Command name="cmdalias" level="7" />
+	<Command name="removecommandalias" level="7" />
+	<Command name="removecmdalias" level="7" />
+	<Command name="remcmdalias" level="7" />
 </Root>

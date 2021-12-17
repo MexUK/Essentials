@@ -14,9 +14,13 @@
 	<Command original="removevehicle" clone="removevehicles" />
 	<Command original="weapon" clone="wep" />
 	<Command original="weapon" clone="w" />
-	<Command original="vehicle" clone="v" />
 	<Command original="commandlevel" clone="cmdlevel" />
 	<Command original="commandlevel" clone="cmdlvl" />
 	<Command original="setcommandlevel" clone="setcmdlevel" />
 	<Command original="setcommandlevel" clone="setcmdlvl" />
+	<Command original="armour" clone="armor" />
+	<Command original="vehicle" clone="v" />
+	<Command original="commandalias" clone="cmdalias" />
+	<Command original="removecommandalias" clone="removecmdalias" />
+	<Command original="removecommandalias" clone="remcmdalias" />
 </Root>
