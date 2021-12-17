@@ -163,6 +163,7 @@ removeMode.enable = (elementName, elementsData) =>
 	removeMode.enabled = true;
 	removeMode.elementName = elementName;
 	removeMode.elementsData = elementsData;
+	removeMode.localPlayerPosition = localPlayer.position;
 	
 	if(elementsData.length == 0)
 	{
@@ -173,7 +174,6 @@ removeMode.enable = (elementName, elementsData) =>
 	
 	removeMode.elementIndex = 0;
 	removeMode.removeConfirm = 0;
-	removeMode.localPlayerPosition = localPlayer.position;
 	
 	removeMode.objectToCameraZRotation = localPlayer.heading - util.radians(90.0);
 	removeMode.objectToCameraXYInclination = util.radians(45.0);
