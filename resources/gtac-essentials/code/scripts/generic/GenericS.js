@@ -19,14 +19,19 @@ events.onPlayerJoined.push((event,client) =>
 cmds.commands = (client, searchOrIndex) =>
 {
 	var cmds2 = [];
+	var aliasCmdCount = 0;
 	for(var cmd in cmds)
+	{
+		if(commandAliases.isCommandAnAlias(cmd))
+			aliasCmdCount++;
 		cmds2.push(cmd);
+	}
 	
 	cmds2.sort();
 	
 	if(searchOrIndex === undefined)
 	{
-		chat.all('There are '+cmds2.length+' commands.');
+		chat.all('There are '+cmds2.length+' commands. ('+aliasCmdCount+' command alias'+(aliasCmdCount == 1 ? '' : 'es')+')');
 	}
 	else if(util.isInt(searchOrIndex))
 	{

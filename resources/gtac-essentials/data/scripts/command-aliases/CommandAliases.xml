@@ -1,2 +1,15 @@
 ﻿<Root>
+	<Command original="commands" clone="command" />
+	<Command original="commands" clone="cmds" />
+	<Command original="commands" clone="cmd" />
+	<Command original="commands" clone="findcommands" />
+	<Command original="commands" clone="findcommand" />
+	<Command original="commands" clone="findcmds" />
+	<Command original="commands" clone="findcmd" />
+	<Command original="removeblip" clone="removeblips" />
+	<Command original="removeobject" clone="removeobjects" />
+	<Command original="removeped" clone="removepeds" />
+	<Command original="removepickup" clone="removepickups" />
+	<Command original="removesphere" clone="removespheres" />
+	<Command original="removevehicle" clone="removevehicles" />
 </Root>
