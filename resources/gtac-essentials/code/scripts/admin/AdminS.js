@@ -212,6 +212,11 @@ admin.getCommandLevel = (commandName) =>
 		return admin.defaultCommandLevel;
 }
 
+admin.removeCommandLevel = (commandName) =>
+{
+	xml.remove(admin.paths.commands, 'Command', 'name', commandName);
+}
+
 admin.setCommandDisabled = (commandName, disabled) =>
 {
 	if(!admin.commands.has(commandName.toLowerCase()))

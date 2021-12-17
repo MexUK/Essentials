@@ -129,6 +129,11 @@ commandAliases.addCommandAlias = (originalName, cloneName) =>
 		original: originalName,
 		clone: cloneName
 	});
+	
+	if(admin)
+	{
+		admin.setCommandLevel(cloneName, admin.getCommandLevel(originalName));
+	}
 };
 
 commandAliases.removeCommandAlias = (cloneName) =>
@@ -144,6 +149,11 @@ commandAliases.removeCommandAlias = (cloneName) =>
 		}
 	}
 	xml.remove(commandAliases.path, 'Command', 'clone', cloneName);
+	
+	if(admin)
+	{
+		admin.removeCommandLevel(cloneName);
+	}
 };
 
 
