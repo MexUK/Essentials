@@ -12,4 +12,7 @@
 	<Command original="removepickup" clone="removepickups" />
 	<Command original="removesphere" clone="removespheres" />
 	<Command original="removevehicle" clone="removevehicles" />
+	<Command original="weapon" clone="wep" />
+	<Command original="weapon" clone="w" />
+	<Command original="vehicle" clone="v" />
 </Root>
