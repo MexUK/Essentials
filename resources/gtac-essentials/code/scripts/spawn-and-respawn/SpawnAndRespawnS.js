@@ -30,12 +30,50 @@ events.onPedWasted.push((e,p,a,w,pp) => {
 	if(!p.isType(ELEMENT_PLAYER))
 		return;
 	
-	var c = getClientFromPlayerElement(p);
-	clientData.set(c, 'playerModel', p.modelIndex);
+	var clientWhoDied = getClientFromPlayerElement(p);
 	
-	util.clientTimer(c, function()
+	if(clientWhoDied != null)
 	{
-		spawn.spawnPlayer(c);
+		if(w == util.drownWeaponIds[server.game])
+		{
+			chat.all(clientWhoDied.name+' drowned.');
+		}
+		else if(w == util.impactWeaponIds[server.game])
+		{
+			chat.all(clientWhoDied.name+' died of impact.');
+		}
+		else if(a == null)
+		{
+			chat.all(clientWhoDied.name+' died.');
+		}
+		else
+		{
+			var clientAttacker = getClientFromPlayerElement(a);
+			var weaponName = util.weaponNames[server.game][w];
+			var pedPieceName = util.pedPieceNames[server.game][pp];
+			
+			if(weaponName == null || weaponName.trim().length == 0)
+				weaponName = 'Unknown weapon';
+			
+			if(pedPieceName == null || pedPieceName.trim().length == 0)
+				pedPieceName = 'Unknown body part';
+			
+			if(clientAttacker == null)
+			{
+				chat.all('A pedestrian killed '+clientWhoDied.name+'. ('+weaponName+' in '+pedPieceName+')');
+			}
+			else
+			{
+				chat.all(clientAttacker.name+' killed '+clientWhoDied.name+'. ('+weaponName+' in '+pedPieceName+')');
+			}
+		}
+	}
+	
+	clientData.set(clientWhoDied, 'playerModel', p.modelIndex);
+	
+	util.clientTimer(clientWhoDied, function()
+	{
+		spawn.spawnPlayer(clientWhoDied);
 	}, spawn.respawnDuration);
 });
 
@@ -184,8 +222,11 @@ spawn.spawnPlayer = (client) =>
 	var model = clientData.get(client, 'playerModel');
 	var position = spawn.spawns.length == 0 ? spawn.getDefaultSpawnPosition() : spawn.spawns[util.randLen(spawn.spawns.length)].position;
 	var heading = spawn.spawns.length == 0 ? spawn.getDefaultSpawnHeading() : spawn.spawns[util.randLen(spawn.spawns.length)].heading;
+	
 	spawnPlayer(client, position, heading, model);
 	fadeCamera(client, true);
+	
+	chat.all(client.name+' spawned.');
 };
 
 spawn.addSpawn = (position, heading) =>

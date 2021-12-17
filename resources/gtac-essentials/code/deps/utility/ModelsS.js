@@ -4,6 +4,9 @@ util.modelRanges = [];
 util.vehicleModelNames = [];
 util.weaponNames = [];
 util.weaponModelIds = [];
+util.drownWeaponIds = [];
+util.impactWeaponIds = [];
+util.pedPieceNames = [];
 
 
 
@@ -54,7 +57,60 @@ util.weaponModelIds[GAME_GTA_SA] = [];
 util.weaponModelIds[GAME_GTA_IV] = [];
 
 
+util.drownWeaponIds[GAME_GTA_III] = 43;
+util.drownWeaponIds[GAME_GTA_VC] = 43;
+util.drownWeaponIds[GAME_GTA_SA] = 43;
+util.drownWeaponIds[GAME_GTA_IV] = 0;
 
+util.impactWeaponIds[GAME_GTA_III] = 37;
+util.impactWeaponIds[GAME_GTA_VC] = 37;
+util.impactWeaponIds[GAME_GTA_SA] = 37;
+util.impactWeaponIds[GAME_GTA_IV] = 0;
+
+util.pedPieceNames[GAME_GTA_III] = [
+	'Left Knee',
+	'Torso',
+	'Head',
+	'Left Arm',
+	'Right Arm',
+	'Left Hand',
+	'Right Hand',
+	'Left Leg',
+	'Right Leg',
+	'Left Foot',
+	'Right Foot',
+	'Right Knee'
+];
+util.pedPieceNames[GAME_GTA_VC] = [
+	'Left Knee',
+	'Torso',
+	'Head',
+	'Left Arm',
+	'Right Arm',
+	'Left Hand',
+	'Right Hand',
+	'Left Leg',
+	'Right Leg',
+	'Left Foot',
+	'Right Foot',
+	'Right Knee',
+	'Left Knee',
+	'Left Elbo',
+	'Right Elbo',
+	'Neck'
+];
+util.pedPieceNames[GAME_GTA_SA] = [
+	null,
+	null,
+	null,
+	'Torso',
+	'Ass',
+	'Left Arm',
+	'Right Arm',
+	'Left Leg',
+	'Right Leg',
+	'Head',
+];
 
 
 
