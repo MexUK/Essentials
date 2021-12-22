@@ -68,6 +68,9 @@
 	<script src="code/scripts/key-binds/KeyBindsS.js" type="server" language="javascript" />
 	<script src="code/scripts/key-binds/KeyBindsC.js" type="client" language="javascript" />
 	
+	<script src="code/scripts/global-key-binds/GlobalKeyBindsS.js" type="server" language="javascript" />
+	<script src="code/scripts/global-key-binds/GlobalKeyBindsC.js" type="client" language="javascript" />
+	
 	<script src="code/scripts/missions/MissionsS.js" type="server" language="javascript" />
 	<script src="code/scripts/missions/MissionsC.js" type="client" language="javascript" />
 	
