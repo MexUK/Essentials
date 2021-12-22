@@ -340,12 +340,25 @@ util.isClient = (text) =>
 
 util.findCommand = (text) =>
 {
+	text = util.getCommandName(text);
 	return cmds[text] === undefined ? null : cmds[text];
 };
 
 util.isCommand = (text) =>
 {
 	return util.findCommand(text) !== null;
+};
+
+util.getCommandName = (text) =>
+{
+	if(text.startsWith('/'))
+		text = text.substr(1);
+	
+	var space = text.indexOf(' ');
+	if(space != -1)
+		text = text.substr(0, space);
+	
+	return text;
 };
 
 // compare

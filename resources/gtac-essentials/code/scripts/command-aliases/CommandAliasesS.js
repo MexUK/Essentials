@@ -13,7 +13,7 @@ cmds.commandalias = (client, _commandName, _commandAlias) =>
 	if(!util.isCommand(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = _commandName;
+	var commandName = util.getCommandName(_commandName);
 	if(_commandAlias === undefined)
 	{
 		var commandIsAnAlias = commandAliases.isCommandAnAlias(commandName);
@@ -33,7 +33,7 @@ cmds.commandalias = (client, _commandName, _commandAlias) =>
 	if(util.isCommand(_commandAlias))
 		return chat.pm(client, 'Command /' + _commandAlias + ' already exists.');
 	
-	var commandAlias = _commandAlias;
+	var commandAlias = util.getCommandName(_commandAlias);
 	chat.all(client.name + " added command alias /" + commandAlias + " for command /" + commandName + ".");
 	
 	commandAliases.addCommandAlias(commandName, commandAlias);
@@ -47,7 +47,7 @@ cmds.removecommandalias = (client, _commandName) =>
 	if(!util.isCommand(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = _commandName;
+	var commandName = util.getCommandName(_commandName);
 	var commandIsAnAlias = commandAliases.isCommandAnAlias(commandName);
 	if(!commandIsAnAlias)
 		return chat.pm(client, 'Command /' + commandName + ' is not an alias of any command.');
