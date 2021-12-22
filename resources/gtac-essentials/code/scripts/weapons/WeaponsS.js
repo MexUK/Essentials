@@ -74,7 +74,7 @@ cmds.weaponall = (client, _weapon, _ammunition) =>
 		chat.all(client.name + " gave weapon " + util.getWeaponName(weapon) + " to all players.");
 	else
 		chat.all(client.name + " gave weapon " + util.getWeaponName(weapon) + " with " + ammunition + " ammunition to all players.");
-	util.callClientsMethod('weapons.giveLocalPlayerWeapon', weapon, ammunition);
+	util.callClientMethodForAll('weapons.giveLocalPlayerWeapon', weapon, ammunition);
 };
 
 cmds.clearweapons = (client, _target) =>

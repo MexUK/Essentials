@@ -927,7 +927,7 @@ cmds.opengarage = (client, _garage) =>
 		return chat.pm(client, 'Invalid garage ID.');
 	
 	chat.all(client.name + ' opened garage ' + garage + '.');
-	util.callClientsFunction('openGarage', garage);
+	util.callClientFunctionForAll('openGarage', garage);
 };
 
 cmds.closegarage = (client, _garage) =>
@@ -949,7 +949,7 @@ cmds.closegarage = (client, _garage) =>
 		return chat.pm(client, 'Invalid garage ID.');
 	
 	chat.all(client.name + ' closed garage ' + garage + '.');
-	util.callClientsFunction('closeGarage', garage);
+	util.callClientFunctionForAll('closeGarage', garage);
 };
 
 cmds.isgarageclosed = (client, _garage) =>
@@ -1935,8 +1935,8 @@ generic.setSpawnHealth = (health) =>
 {
 	generic.spawnHealth = health;
 	
-	util.setClientsVariable('generic.spawnHealth', generic.spawnHealth);
-	util.setClientsVariable('generic.spawnArmour', generic.spawnArmour);
+	util.setClientVariableForAll('generic.spawnHealth', generic.spawnHealth);
+	util.setClientVariableForAll('generic.spawnArmour', generic.spawnArmour);
 	
 	xml.set('data/scripts/generic/Generic.xml', 'SpawnHealth', health + "");
 };
@@ -1959,8 +1959,8 @@ generic.setSpawnArmour = (armour) =>
 {
 	generic.spawnArmour = armour;
 	
-	util.setClientsVariable('generic.spawnHealth', generic.spawnHealth);
-	util.setClientsVariable('generic.spawnArmour', generic.spawnArmour);
+	util.setClientVariableForAll('generic.spawnHealth', generic.spawnHealth);
+	util.setClientVariableForAll('generic.spawnArmour', generic.spawnArmour);
 	
 	xml.set('data/scripts/generic/Generic.xml', 'SpawnArmour', armour + "");
 };
@@ -1979,7 +1979,7 @@ generic.loadSpawnArmour();
 generic.setSnowing = (state) =>
 {
 	generic.snowing = state;
-	util.callClientsFunction('forceSnowing', state);
+	util.callClientFunctionForAll('forceSnowing', state);
 };
 
 
