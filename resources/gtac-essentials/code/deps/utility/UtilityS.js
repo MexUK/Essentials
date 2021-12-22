@@ -1165,9 +1165,14 @@ util.callClientFunction = (client, functionName, ...args) =>
 	triggerNetworkEvent('callClientFunction', client, functionName, ...args);
 };
 
-util.callClientsFunction = (functionName, ...args) =>
+util.callClientFunctionForAll = (functionName, ...args) =>
 {
 	triggerNetworkEvent('callClientFunction', null, functionName, ...args);
+};
+
+util.callClientFunctionForMultiple = (clients, functionName, ...args) =>
+{
+	clients.forEach(client => triggerNetworkEvent('callClientFunction', client, functionName, ...args));
 };
 
 util.callClientMethod = (client, methodName, ...args) =>
@@ -1175,7 +1180,7 @@ util.callClientMethod = (client, methodName, ...args) =>
 	triggerNetworkEvent('callClientMethod', client, methodName, ...args);
 };
 
-util.callClientsMethod = (methodName, ...args) =>
+util.callClientMethodForAll = (methodName, ...args) =>
 {
 	triggerNetworkEvent('callClientMethod', null, methodName, ...args);
 };
@@ -1208,12 +1213,12 @@ util.setClientProperty = (client, elementId, propertyName, propertyValue) =>
 	triggerNetworkEvent('setClientProperty', client, elementId, propertyName, propertyValue);
 };
 
-util.setClientsVariable = (variableName, variableValue) =>
+util.setClientVariableForAll = (variableName, variableValue) =>
 {
 	triggerNetworkEvent('setClientVariable', null, variableName, variableValue);
 };
 
-util.setClientsProperty = (elementId, propertyName, propertyValue) =>
+util.setClientPropertyForAll = (elementId, propertyName, propertyValue) =>
 {
 	triggerNetworkEvent('setClientProperty', null, elementId, propertyName, propertyValue);
 };
