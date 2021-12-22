@@ -21,6 +21,14 @@ removeMode.enableRemoveMode = (client, elementName) =>
 	
 	clientData.set(client, 'removeMode', elementName);
 	util.callClientFunction(client, 'removeMode.enable', elementName, util.objectsToArray(elements.data[elementName], ['id', 'model', 'position', 'rotation']));
+	
+	if(elementName == 'vehicles' && client.player && client.player.vehicle)
+		removeMode.setElementById(client, client.player.vehicle.id);
+};
+
+removeMode.setElementById = (client, elementId) =>
+{
+	util.callClientFunction(client, 'removeMode.setElementById', elementId);
 };
 
 removeMode.disableRemoveMode = (client) =>

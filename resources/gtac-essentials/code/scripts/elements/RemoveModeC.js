@@ -203,6 +203,24 @@ removeMode.getElementsData = () =>
 	return removeMode.elementsData;
 };
 
+removeMode.getElementIndexByElementId = (elementId) =>
+{
+	for(var i=0,j=removeMode.elementsData.length; i<j; i++)
+	{
+		if(elementId == removeMode.elementsData[i][0])
+		{
+			return i;
+		}
+	}
+	return -1;
+};
+
+removeMode.setElementById = (elementId) =>
+{
+	removeMode.elementIndex = removeMode.getElementIndexByElementId(elementId);
+	removeMode.updateCamera();
+};
+
 removeMode.setNextElement = () =>
 {
 	if(removeMode.elementIndex == (removeMode.elementsData.length - 1))
@@ -262,7 +280,7 @@ removeMode.updateElement = () =>
 	if(!elementData)
 		return;
 	
-	removeMode.element = getElementFromId(elementData[0]);//.id);
+	removeMode.element = getElementFromId(elementData[0]);
 	
 	if(removeMode.element == null)
 		return;
