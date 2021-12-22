@@ -33,6 +33,11 @@ clientData.get = (client, name) =>
 	return clientData.clients[client.index][name];
 };
 
+clientData.has = (client, name) =>
+{
+	return clientData.clients[client.index][name] !== undefined;
+};
+
 // array
 clientData.setarr = (client, name, value) =>
 {
