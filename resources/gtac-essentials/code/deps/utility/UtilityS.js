@@ -55,6 +55,7 @@ util.disconnectReasons = [
 addEventHandler('onPlayerQuit', function(event, client)
 {
 	util.killClientTimer(client);
+	util.removePendingRequestedClientData(client);
 });
 
 // angle
@@ -1061,6 +1062,31 @@ var requestClientVariables = new Map();
 var requestClientProperties = new Map();
 var requestClientFunctionCalls = new Map();
 
+util.removePendingRequestedClientData = function(client)
+{
+	util.removePendingRequestedClientVariables(client);
+	util.removePendingRequestedClientProperties(client);
+	util.removePendingRequestedClientFunctionCalls(client);
+};
+
+util.removePendingRequestedClientVariables = function(client)
+{
+	if(requestClientVariables.has(client))
+		requestClientVariables.delete(client);
+};
+
+util.removePendingRequestedClientProperties = function(client)
+{
+	if(requestClientProperties.has(client))
+		requestClientProperties.delete(client);
+};
+
+util.removePendingRequestedClientFunctionCalls = function(client)
+{
+	if(requestClientFunctionCalls.has(client))
+		requestClientFunctionCalls.delete(client);
+};
+
 addNetworkHandler('requestClientVariable', (client, result) =>
 {
 	if(!requestClientVariables.has(client))
@@ -1103,6 +1129,7 @@ util.getResolvedItem = (itemName) =>
 util.clientFunctionCalls =
 [
 	'keyBinds.onClientKeyDown',
+	'globalKeyBinds.onClientKeyDown',
 	'mapper.storeActiveObject',
 	'elements.isElementOnScreen',
 	'removeMode.removeElement'
@@ -1176,6 +1203,11 @@ util.setClientsVariable = (variableName, variableValue) =>
 util.setClientsProperty = (elementId, propertyName, propertyValue) =>
 {
 	triggerNetworkEvent('setClientProperty', null, elementId, propertyName, propertyValue);
+};
+
+util.getVariableFromClients = (clients, variableName) =>
+{
+	clients.map(client => triggerNetworkEvent('getVariableFromClients', client, variableName));
 };
 
 util.getGameName = (gameId) =>
