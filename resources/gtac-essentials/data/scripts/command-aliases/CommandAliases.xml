@@ -24,4 +24,5 @@
 	<Command original="removecommandalias" clone="removecmdalias" />
 	<Command original="removecommandalias" clone="remcmdalias" />
 	<Command original="health" clone="hp" />
+	<Command original="commandaliases" clone="cmdaliases" />
 </Root>
