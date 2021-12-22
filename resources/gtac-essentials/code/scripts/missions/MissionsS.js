@@ -28,14 +28,44 @@ cmds.mission = (client, _missionId, ..._targets) =>
 		});
 	}
 	
-	var states = [];
+	/*
+	util.getVariableFromClients(clients, 'gta.onMission', (dataFromClients) =>
+	{
+		var playerNameOnMission = null;
+		
+		states.forEach((state, clientId) =>
+		{
+			if(state)
+			{
+				playerNameOnMission = clients[clientId].name;
+			}
+		});
+		
+		if(playerNameOnMission)
+			return chat.pm(client, playerNameOnMission + " is already on a mission.");
+		
+		if(clients.length == 1)
+			chat.all(client.name + ' started mission ID ' + missionId + ' by themself.');
+		else
+			chat.all(client.name + ' started mission ID ' + missionId + ' with players: ' + clients.map(client => client.name).join(', ') + '.');
+		clients.forEach(client => util.callClientFunction(client, 'gta.startMission', missionId));
+	}), (failedClients) =>
+	{
+		return chat.pm(client, "Failed to detect current mission status for players: " + failedClients.map(failedClient => failedClient.name).join(', '));
+	});
+	*/
+	
+	var states = new Map();
 	clients.forEach(client2 =>
 	{
 		util.requestClientVariable(client2, 'gta.onMission', (state) =>
 		{
-			states[client2.index] = state;
+			states.set(client2.index, state);
 			
-			if(clients.length == states.length)
+			var count = 0;
+			states.forEach(v => count++);
+			
+			if(clients.length == count)
 			{
 				var playerNameOnMission = null;
 				
