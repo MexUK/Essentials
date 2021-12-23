@@ -203,7 +203,7 @@ removeMode.enable = (elementType, elementsData) =>
 		return;
 	}
 	
-	removeMode.elementIndex = 0;
+	removeMode.elementIndex = removeMode.getElementIndexForNearestElement();
 	removeMode.removeConfirm = 0;
 	
 	removeMode.objectToCameraZRotation = localPlayer.heading - util.radians(90.0);
@@ -266,6 +266,23 @@ removeMode.getElementIndexByElementId = (elementId) =>
 		}
 	}
 	return -1;
+};
+
+removeMode.getElementIndexForNearestElement = () =>
+{
+	var localPlayerPosition = localPlayer.position;
+	var nearestElementDistance = 99999.99999;
+	var nearestElementIndex = -1;
+	for(var i=0,j=removeMode.elementsData.length; i<j; i++)
+	{
+		var elementDistance = localPlayerPosition.distance(removeMode.elementsData[i][2]);
+		if(elementDistance < nearestElementDistance)
+		{
+			nearestElementDistance = elementDistance;
+			nearestElementIndex = i;
+		}
+	}
+	return nearestElementIndex;
 };
 
 removeMode.setElementById = (elementId) =>
