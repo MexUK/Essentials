@@ -1241,7 +1241,11 @@ util.objectsToArray = (objects, properties) =>
 		var arr = [];
 		for(var i2 in properties)
 		{
-			arr.push(objects[i][properties[i2]]);
+			var property = properties[i2];
+			if(property === undefined || property === null)
+				arr.push(null);
+			else
+				arr.push(objects[i][properties[i2]]);
 		}
 		result.push(arr);
 	}
