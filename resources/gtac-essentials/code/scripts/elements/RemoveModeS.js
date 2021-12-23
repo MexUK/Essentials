@@ -40,6 +40,11 @@ removeMode.disableRemoveMode = (client) =>
 	util.callClientFunction(client, 'removeMode.disable');
 };
 
+removeMode.disableRemoveModeFromClientSide = (client) =>
+{
+	removeMode.disableRemoveMode(client);
+};
+
 removeMode.setElementById = (client, elementId) =>
 {
 	util.callClientFunction(client, 'removeMode.setElementById', elementId);

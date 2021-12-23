@@ -23,6 +23,7 @@ removeMode.removeConfirm = 0;
 removeMode.elementsData = [];
 removeMode.drawBB = true;
 removeMode.localPlayerPosition = null;
+removeMode.exitModeConfirm = 0;
 
 addEventHandler('onBeforeDrawHUD', function(e)
 {
@@ -66,6 +67,12 @@ addEventHandler('onBeforeDrawHUD', function(e)
 			removeMode.drawTextRight(50, y, 'Press R twice to remove', fontSize, colour);
 	}
 	y += yStep;
+	
+	y = gta.height - 50;
+	if(removeMode.exitModeConfirm)
+		removeMode.drawTextRight(50, y, 'Press Backspace again to exit remove mode, or c to cancel', fontSize, colourAlertable);
+	else
+		removeMode.drawTextRight(50, y, 'Press Backspace twice to exit remove mode', fontSize, colour);
 	
 	if(removeMode.drawBB && removeMode.element != null && removeMode.element.isType(ELEMENT_ENTITY))
 	{
@@ -134,12 +141,30 @@ bindKey(SDLK_c, KEYSTATE_DOWN, () =>
 	if(!removeMode.enabled)
 		return;
 	
-	if(removeMode.removeConfirm == 0)
+	if(removeMode.removeConfirm == 1)
 	{
+		removeMode.removeConfirm = 0;
+	}
+	
+	if(removeMode.exitModeConfirm == 1)
+	{
+		removeMode.exitModeConfirm = 0;
+	}
+});
+
+bindKey(SDLK_BACKSPACE, KEYSTATE_DOWN, () =>
+{
+	if(!removeMode.enabled)
+		return;
+	
+	if(removeMode.exitModeConfirm == 0)
+	{
+		removeMode.exitModeConfirm = 1;
 		return;
 	}
 	
-	removeMode.removeConfirm = 0;
+	removeMode.exitModeConfirm = 0;
+	removeMode.disableFromClientSide();
 });
 
 removeMode.drawTextRight = function(x, y, text, size, colour)
@@ -197,6 +222,11 @@ removeMode.disable = () =>
 	removeMode.enabled = false;
 	removeMode.elementIndex = -1;
 	removeMode.localPlayerPosition = null;
+};
+
+removeMode.disableFromClientSide = () =>
+{
+	util.callServerFunction('removeMode.disableRemoveModeFromClientSide');
 };
 
 removeMode.isEnabled = () =>

@@ -1145,7 +1145,8 @@ util.clientFunctionCalls =
 	'globalKeyBinds.onClientKeyDown',
 	'mapper.storeActiveObject',
 	'elements.isElementOnScreen',
-	'removeMode.removeElement'
+	'removeMode.removeElement',
+	'removeMode.disableRemoveModeFromClientSide'
 ];
 
 addNetworkHandler('callServerFunction', (client, functionName, ...args) =>
