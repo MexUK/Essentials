@@ -1977,6 +1977,26 @@ cmds.traffic = (client, _state) =>
 	util.callClientFunctionForAll('gta.setTrafficEnabled', state);
 };
 
+cmds.trafficdensity = (client, _density) =>
+{
+	[_density] = util.grabArgs(client,
+	[
+		(v) => util.isFloat(v)
+	],
+	[
+	], _density);
+	
+	if(_density === undefined)
+		return util.requestClientProperty(client, 'gta.trafficDensity', (density) => chat.all("The traffic density is set to " + density + "."));
+	
+	var density = util.float(_density, null);
+	if(density === null)
+		return chat.pm(client, 'Invalid traffic density amount.');
+	
+	chat.all(client.name + " set the traffic density to " + density + ".");
+	util.setClientVariableForAll('gta.trafficDensity', density);
+};
+
 
 
 
