@@ -689,9 +689,10 @@ cmds.speed = (client, _target, _speed) =>
 		return chat.float(client, 'Speed', _speed);
 	
 	chat.all(client.name + " set " + target.name + "'s speed to " + speed + ".");
-	var velocity = target.player.vehicle ? target.player.vehicle.velocity : target.player.velocity;
+	
 	var heading = target.player.vehicle ? target.player.vehicle.heading : target.player.heading;
-	velocity = velocity.addPolar(speed, heading + (Math.PI / 2.0));
+	var velocity = new Vec3(0.0, 0.0, 0.0).addPolar(speed, heading + util.radians(90.0));
+	
 	if(target.player.vehicle)
 		util.setClientVariable(target, 'localPlayer.vehicle.velocity', velocity);
 	else
