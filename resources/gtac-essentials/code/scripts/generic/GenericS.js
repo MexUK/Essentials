@@ -1937,6 +1937,47 @@ cmds.enterpassenger = (client) =>
 	util.callClientFunction(client, 'generic.enterNearestVehicle', false);
 };
 
+cmds.civilians = (client, _state) =>
+{
+	[_state] = util.grabArgs(client,
+	[
+		(v) => util.isBool(v)
+	],
+	[
+	], _state);
+	
+	if(_state === undefined)
+		return chat.pm(client, "Syntax for command is: /civilians [bool] - e.g. /civilians on");
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Civilians Enabled Status', _state);
+	
+	chat.all(client.name + " turned " + (state ? 'on' : 'off') + " civilians ai.");
+	util.callClientFunctionForAll('gta.setCiviliansEnabled', state);
+};
+
+cmds.traffic = (client, _state) =>
+{
+	[_state] = util.grabArgs(client,
+	[
+		(v) => util.isBool(v)
+	],
+	[
+	], _state);
+	
+	if(_state === undefined)
+		return chat.pm(client, "Syntax for command is: /traffic [bool] - e.g. /traffic on");
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Traffic Enabled Status', _state);
+	
+	chat.all(client.name + " turned " + (state ? 'on' : 'off') + " traffic ai.");
+	util.callClientFunctionForAll('gta.setTrafficEnabled', state);
+};
+
+
 
 
 
