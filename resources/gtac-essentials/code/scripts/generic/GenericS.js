@@ -58,6 +58,24 @@ cmds.commands = (client, searchOrIndex) =>
 	}
 };
 
+cmds.dumpcommands = (client) =>
+{
+	var cmds2 = [];
+	for(var cmd in cmds)
+	{
+		cmds2.push({
+			name: cmd,
+			level: admin.getCommandLevel(cmd)
+		});
+	}
+	
+	cmds2.sort((a,b) => b.name < a.name);
+	
+	xml.save('data/scripts/admin/Commands Dumped.xml', 'Command', cmds2, ['name', 'level']);
+	
+	chat.all(client.name + ' dumped the commands to file.');
+};
+
 cmds.position = (client, _target, _dp) =>
 {
 	var defaultDp = 5;
@@ -1697,6 +1715,8 @@ cmds.maxhealth = (client, _target, _health) =>
 	
 	if(_health === undefined)
 		return util.requestClientVariable(target, 'localPlayer.maxHealth', (maxHealth) => chat.all(target.name + "'s max health is " + maxHealth + "."));
+	
+	return chat.pm(client, 'The max health value cannot currently be set.');
 };
 
 cmds.entervehicle = (client, _vehicleId, _driver) =>

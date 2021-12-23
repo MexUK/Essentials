@@ -42,4 +42,11 @@
 	<Command name="remcmdalias" level="7" />
 	<Command name="ungkey" level="5" />
 	<Command name="gkey" level="5" />
+	<Command name="dumpcommands" level="8" />
+	<Command name="savevehicle" level="5" />
+	<Command name="saveobject" level="5" />
+	<Command name="saveped" level="5" />
+	<Command name="saveblip" level="5" />
+	<Command name="savesphere" level="5" />
+	<Command name="savepickup" level="5" />
 </Root>
