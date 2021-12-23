@@ -49,4 +49,6 @@
 	<Command name="saveblip" level="5" />
 	<Command name="savesphere" level="5" />
 	<Command name="savepickup" level="5" />
+	<Command name="traffic" level="3" />
+	<Command name="civilians" level="3" />
 </Root>
