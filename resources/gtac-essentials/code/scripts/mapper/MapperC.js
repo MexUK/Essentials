@@ -563,39 +563,6 @@ mapper.getObjectPositionOffset = (usew) =>
 	return offset;
 };
 
-// object collision size
-util.getColVerticesMinMax = function()
-{
-	var vertices = mapper.object.collisionVertices;
-	
-	if(vertices.length > 0)
-	{
-		var min = new Vec3(99999,99999,99999);
-		var max = new Vec3(-99999,-99999,-99999);
-		
-		if(vertices.length > 0)
-		{
-			for(var i=0,j=vertices.length; i<j; i++)
-			{
-				min = util.getMinVec(min, vertices[i]);
-				max = util.getMaxVec(max, vertices[i]);
-			}
-		}
-		
-		return [min, max];
-	}
-	else
-	{
-		return [mapper.object.boundingMax, mapper.object.boundingMin];
-	}
-};
-
-util.getColSize = function()
-{
-	var bbmm = util.getColMinMax(mapper.object);
-	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
-};
-
 // create object
 mapper.createObject = function(model, pos)
 {
