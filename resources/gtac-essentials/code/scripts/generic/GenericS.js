@@ -1543,9 +1543,9 @@ cmds.damage = (client, _state) =>
 	
 	var state = util.bool(_state, null);
 	if(state === null)
-		return chat.pm(client, "You didnt't specify a boolean option. e.g. 1 or 0");
+		return chat.pm(client, "You didn't specify a boolean option. e.g. 1 or 0");
 	
-	util.setClientVariable(client, 'generic.damage', state);
+	util.callClientFunction(client, 'generic.setLocalPlayerDamageStatus', state);
 	chat.all(client.name + " " + (state ? 'enabled' : 'disabled') + " damage.");
 };
 

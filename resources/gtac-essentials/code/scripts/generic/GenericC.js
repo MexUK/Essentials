@@ -5,6 +5,11 @@ generic.spawnHealth = null;
 generic.drawBounds = false;
 generic.damage = true;
 
+generic.damageData = {};
+generic.damageData.health = 100.0;
+generic.damageData.armour = 100.0;
+generic.damageData.vehicleHealth = 1000.0;
+
 generic.setLocalPlayerPositionRotation = function(position, rotation)
 {
 	if(!localClient.player)
@@ -159,6 +164,24 @@ generic.enterNearestVehicle = (asDriver) =>
 	localPlayer.enterVehicle(vehicle, asDriver);
 };
 
+generic.setLocalPlayerDamageStatus = (status) =>
+{
+	if(status)
+	{
+		generic.damageData.health = 100.0;
+		generic.damageData.armour = 100.0;
+		generic.damageData.vehicleHealth = 1000.0;
+	}
+	else
+	{
+		generic.damageData.health = localClient.player ? localPlayer.health : 100.0;
+		generic.damageData.armour = localClient.player ? localPlayer.armour : 100.0;
+		generic.damageData.vehicleHealth = localClient.player && localPlayer.vehicle ? localPlayer.vehicle.health : 1000.0;
+	}
+	
+	generic.damage = status;
+};
+
 // events
 addEventHandler('onPedSpawn', (event,ped) =>
 {
@@ -192,15 +215,21 @@ addEventHandler('onProcess', (event, delta) =>
 	{
 		if(localClient.player)
 		{
-			if(localClient.player.health < 100.0)
+			if(localPlayer.health < generic.damageData.health)
 			{
-				localClient.player.health = 100.0;
+				localPlayer.health = generic.damageData.health;
+			}
+			
+			if(localPlayer.armour < generic.damageData.armour)
+			{
+				localPlayer.armour = generic.damageData.armour;
 			}
 			
 			if(localPlayer.vehicle)
 			{
-				if(localPlayer.vehicle.health < 1000.0)
+				if(localPlayer.vehicle.health < generic.damageData.vehicleHealth)
 				{
+					localPlayer.vehicle.health = generic.damageData.vehicleHealth;
 					localPlayer.vehicle.fix();
 				}
 			}
