@@ -1,8 +1,10 @@
 global.removeMode = global.removeMode || {};
 
+global._ELEMENT_MARKER = 8194;
+
 removeMode.enabled = false;
 removeMode.object = null;
-removeMode.elementName = '';
+removeMode.elementType = '';
 removeMode.elementIndex = -1;
 removeMode.font1 = lucasFont.createDefaultFont(50.0, "Arial");
 removeMode.defaultCameraZoom = 10.0;
@@ -36,7 +38,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	y = 200;
 	yStep = 35;
 	fontSize = 25.0;
-	removeMode.drawTextRight(50, y, 'Remove ' + removeMode.getElementName(), fontSize, colour);
+	removeMode.drawTextRight(50, y, 'Remove ' + removeMode.getElementTypeName(), fontSize, colour);
 	
 	y += 100;
 	yStep = 35;
@@ -47,7 +49,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 		removeMode.drawTextRight(50, y, (removeMode.elementIndex + 1) + '/' + removeMode.elementsData.length, fontSize, colour);
 	y += yStep;
 	if(removeMode.element != null)
-		removeMode.drawTextRight(50, y, removeMode.getElementName() + ' ID: ' + removeMode.element.id, fontSize, colour);
+		removeMode.drawTextRight(50, y, removeMode.getElementTypeName() + ' ID: ' + removeMode.element.id, fontSize, colour);
 	y += yStep;
 	if(removeMode.element != null)
 	{
@@ -145,27 +147,27 @@ removeMode.drawTextRight = function(x, y, text, size, colour)
 	removeMode.font1.render(text, new Vec2(gta.width - x, y), 0, 1.0, 0.0, size, colour);
 };
 
-removeMode.getElementName = () =>
+removeMode.getElementTypeName = () =>
 {
-	switch(removeMode.elementName)
+	switch(removeMode.elementType)
 	{
-		case 'objects':		return 'Object';
-		case 'vehicles':	return 'Vehicle';
-		case 'pickups':		return 'Pickup';
-		case 'spheres':		return 'Marker';
-		case 'peds':		return 'Ped';
-		case 'blips':		return 'Blip';
-		default:			return 'Unknown';
+		case ELEMENT_BLIP:		return 'Blip';
+		case ELEMENT_OBJECT:	return 'Object';
+		case ELEMENT_PED:		return 'Ped';
+		case ELEMENT_PICKUP:	return 'Pickup';
+		case _ELEMENT_MARKER:	return 'Sphere';
+		case ELEMENT_VEHICLE:	return 'Vehicle';
+		default:				return 'Unknown Element Type';
 	}
 };
 
-removeMode.enable = (elementName, elementsData) =>
+removeMode.enable = (elementType, elementsData) =>
 {
 	if(removeMode.isEnabled())
 		removeMode.disable();
 	
 	removeMode.enabled = true;
-	removeMode.elementName = elementName;
+	removeMode.elementType = elementType;
 	removeMode.elementsData = elementsData;
 	removeMode.localPlayerPosition = localPlayer.position;
 	
@@ -312,7 +314,7 @@ removeMode.updateElement = () =>
 
 removeMode.removeElement = () =>
 {
-	util.callServerFunction('removeMode.removeElement', removeMode.elementName, removeMode.element.id);
+	util.callServerFunction('removeMode.removeElement', removeMode.elementType, removeMode.element.id);
 	
 	removeMode.element = null;
 };

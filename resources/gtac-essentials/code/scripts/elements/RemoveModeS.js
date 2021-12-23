@@ -1,5 +1,7 @@
 global.removeMode = global.removeMode || {};
 
+global._ELEMENT_MARKER = 8194;
+
 removeMode.attr = {};
 removeMode.attr.objects = ['id', 'model', 'position', 'rotation'];
 removeMode.attr.vehicles = ['id', 'model', 'position', 'rotation'];
@@ -15,20 +17,20 @@ removeMode.isAnyRemoveModeEnabled = (client) =>
 	return clientData.get(client, 'removeMode') != null;
 };
 
-removeMode.isRemoveModeEnabled = (client, elementName) =>
+removeMode.isRemoveModeEnabled = (client, elementType) =>
 {
-	return clientData.get(client, 'removeMode') == elementName;
+	return clientData.get(client, 'removeMode') == elementType;
 };
 
-removeMode.enableRemoveMode = (client, elementName) =>
+removeMode.enableRemoveMode = (client, elementType) =>
 {
 	if(mapper.isEnabled(client))
 		mapper.setDisabled(client);
 	
-	clientData.set(client, 'removeMode', elementName);
-	util.callClientFunction(client, 'removeMode.enable', elementName, removeMode.getElementsData(elementName));
+	clientData.set(client, 'removeMode', elementType);
+	util.callClientFunction(client, 'removeMode.enable', elementType, removeMode.getElementsData(elementType));
 	
-	if(elementName == 'vehicles' && client.player && client.player.vehicle)
+	if(elementType == ELEMENT_VEHICLE && client.player && client.player.vehicle)
 		removeMode.setElementById(client, client.player.vehicle.id);
 };
 
@@ -43,12 +45,12 @@ removeMode.setElementById = (client, elementId) =>
 	util.callClientFunction(client, 'removeMode.setElementById', elementId);
 };
 
-removeMode.getClientsInRemoveMode = (elementName) =>
+removeMode.getClientsInRemoveMode = (elementType) =>
 {
 	var clients = [];
 	getClients().forEach(client2 =>
 	{
-		if(elementName == clientData.get(client2, 'removeMode'))
+		if(elementType == clientData.get(client2, 'removeMode'))
 		{
 			clients.push(client2);
 		}
@@ -56,82 +58,98 @@ removeMode.getClientsInRemoveMode = (elementName) =>
 	return clients;
 };
 
-removeMode.getElementName = (elementName) =>
+removeMode.getElementTypeName = (elementType) =>
 {
-	switch(elementName)
+	switch(elementType)
 	{
-		case 'objects':		return 'Object';
-		case 'vehicles':	return 'Vehicle';
-		case 'pickups':		return 'Pickup';
-		case 'spheres':		return 'Marker';
-		case 'peds':		return 'Ped';
-		case 'blips':		return 'Blip';
-		default:			return 'Unknown';
+		case ELEMENT_BLIP:		return 'Blip';
+		case ELEMENT_OBJECT:	return 'Object';
+		case ELEMENT_PED:		return 'Ped';
+		case ELEMENT_PICKUP:	return 'Pickup';
+		case _ELEMENT_MARKER:	return 'Sphere';
+		case ELEMENT_VEHICLE:	return 'Vehicle';
+		default:				return 'Unknown Element Type';
 	}
 };
 
-removeMode.getElementIds = (elementName) =>
+removeMode.getElementTypePropertyName = (elementType) =>
 {
+	switch(elementType)
+	{
+		case ELEMENT_BLIP:		return 'blips';
+		case ELEMENT_OBJECT:	return 'objects';
+		case ELEMENT_PED:		return 'peds';
+		case ELEMENT_PICKUP:	return 'pickups';
+		case _ELEMENT_MARKER:	return 'spheres';
+		case ELEMENT_VEHICLE:	return 'vehicles';
+		default:				return 'unknownElementType';
+	}
+};
+
+removeMode.getElementIds = (elementType) =>
+{
+	var elementName = removeMode.getElementTypePropertyName(elementType);
 	if(elements.data[elementName] === undefined)
 		return [];
 	return elements.data[elementName].map(v => v.id);
 };
 
-removeMode.removeElement = (client, elementName, elementId) =>
+removeMode.removeElement = (client, elementType, elementId) =>
 {
-	if(!removeMode.isRemoveModeEnabled(client, elementName))
+	if(!removeMode.isRemoveModeEnabled(client, elementType))
 		return;
 	
-	chat.all(client.name + ' removed ' + removeMode.getElementName(elementName).toLowerCase() + ' with ID ' + elementId + '.');
+	chat.all(client.name + ' removed ' + removeMode.getElementTypeName(elementType).toLowerCase() + ' with ID ' + elementId + '.');
 	
-	switch(elementName)
+	switch(elementType)
 	{
-		case 'objects':
+		case ELEMENT_OBJECT:
 			if(!elements.isObject(elementId))
 				return;
 			elements.removeObject(elementId);
 			break;
-		case 'vehicles':
+		case ELEMENT_VEHICLE:
 			if(!elements.isVehicle(elementId))
 				return;
 			elements.removeVehicle(elementId);
 			break;
-		case 'pickups':
+		case ELEMENT_PICKUP:
 			if(!elements.isPickup(elementId))
 				return;
 			elements.removePickup(elementId);
 			break;
-		case 'spheres':
+		case _ELEMENT_MARKER:
 			if(!elements.isSphere(elementId))
 				return;
 			elements.removeSphere(elementId);
 			break;
-		case 'peds':
+		case ELEMENT_PED:
 			if(!elements.isPed(elementId))
 				return;
 			elements.removePed(elementId);
 			break;
-		case 'blips':
+		case ELEMENT_BLIP:
 			if(!elements.isBlip(elementId))
 				return;
 			elements.removeBlip(elementId);
 			break;
 	}
 	
-	removeMode.onElementRemoved(elementName);
+	removeMode.onElementRemoved(elementType);
 };
 
-removeMode.getElementsData = (elementName) =>
+removeMode.getElementsData = (elementType) =>
 {
+	var elementName = removeMode.getElementTypePropertyName(elementType);
 	return util.objectsToArray(elements.data[elementName], removeMode.attr[elementName]);
 };
 
-removeMode.onElementRemoved = (elementName) =>
+removeMode.onElementRemoved = (elementType) =>
 {
 	util.callClientFunctionForMultiple(
-		removeMode.getClientsInRemoveMode(elementName),
+		removeMode.getClientsInRemoveMode(elementType),
 		'removeMode.onElementRemoved',
-		removeMode.getElementsData(elementName)
+		removeMode.getElementsData(elementType)
 	);
 };
 
