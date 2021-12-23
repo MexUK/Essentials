@@ -40,4 +40,6 @@
 	<Command name="removecommandalias" level="7" />
 	<Command name="removecmdalias" level="7" />
 	<Command name="remcmdalias" level="7" />
+	<Command name="ungkey" level="5" />
+	<Command name="gkey" level="5" />
 </Root>
