@@ -1,6 +1,12 @@
 global.removeMode = global.removeMode || {};
 
-
+removeMode.attr = {};
+removeMode.attr.objects = ['id', 'model', 'position', 'rotation'];
+removeMode.attr.vehicles = ['id', 'model', 'position', 'rotation'];
+removeMode.attr.pickups = ['id', 'model', 'position', 'rotation'];
+removeMode.attr.spheres = ['id', null, 'position', 'rotation'];
+removeMode.attr.peds = ['id', 'model', 'position', 'rotation'];
+removeMode.attr.blips = ['id', 'icon', 'position', 'rotation'];
 
 
 
@@ -20,10 +26,16 @@ removeMode.enableRemoveMode = (client, elementName) =>
 		mapper.setDisabled(client);
 	
 	clientData.set(client, 'removeMode', elementName);
-	util.callClientFunction(client, 'removeMode.enable', elementName, util.objectsToArray(elements.data[elementName], ['id', 'model', 'position', 'rotation']));
+	util.callClientFunction(client, 'removeMode.enable', elementName, removeMode.getElementsData(elementName));
 	
 	if(elementName == 'vehicles' && client.player && client.player.vehicle)
 		removeMode.setElementById(client, client.player.vehicle.id);
+};
+
+removeMode.disableRemoveMode = (client) =>
+{
+	clientData.set(client, 'removeMode', null);
+	util.callClientFunction(client, 'removeMode.disable');
 };
 
 removeMode.setElementById = (client, elementId) =>
@@ -31,10 +43,17 @@ removeMode.setElementById = (client, elementId) =>
 	util.callClientFunction(client, 'removeMode.setElementById', elementId);
 };
 
-removeMode.disableRemoveMode = (client) =>
+removeMode.getClientsInRemoveMode = (elementName) =>
 {
-	clientData.set(client, 'removeMode', null);
-	util.callClientFunction(client, 'removeMode.disable');
+	var clients = [];
+	getClients().forEach(client2 =>
+	{
+		if(elementName == clientData.get(client2, 'removeMode'))
+		{
+			clients.push(client2);
+		}
+	});
+	return clients;
 };
 
 removeMode.getElementName = (elementName) =>
@@ -53,16 +72,9 @@ removeMode.getElementName = (elementName) =>
 
 removeMode.getElementIds = (elementName) =>
 {
-	switch(elementName)
-	{
-		case 'objects':		return elements.data.objects.map(v => v.id);
-		case 'vehicles':	return elements.data.vehicles.map(v => v.id);
-		case 'pickups':		return elements.data.pickups.map(v => v.id);
-		case 'spheres':		return elements.data.spheres.map(v => v.id);
-		case 'peds':		return elements.data.peds.map(v => v.id);
-		case 'blips':		return elements.data.blips.map(v => v.id);
-		default:			return [];
-	}
+	if(elements.data[elementName] === undefined)
+		return [];
+	return elements.data[elementName].map(v => v.id);
 };
 
 removeMode.removeElement = (client, elementName, elementId) =>
@@ -106,5 +118,20 @@ removeMode.removeElement = (client, elementName, elementId) =>
 			break;
 	}
 	
-	util.callClientFunction(client, 'removeMode.onElementRemoved', util.objectsToArray(elements.data[elementName], ['id', 'model', 'position', 'rotation']));
+	removeMode.onElementRemoved(elementName);
 };
+
+removeMode.getElementsData = (elementName) =>
+{
+	return util.objectsToArray(elements.data[elementName], removeMode.attr[elementName]);
+};
+
+removeMode.onElementRemoved = (elementName) =>
+{
+	util.callClientFunctionForMultiple(
+		removeMode.getClientsInRemoveMode(elementName),
+		'removeMode.onElementRemoved',
+		removeMode.getElementsData(elementName)
+	);
+};
+

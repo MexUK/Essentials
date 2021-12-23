@@ -5,7 +5,8 @@ removeMode.object = null;
 removeMode.elementName = '';
 removeMode.elementIndex = -1;
 removeMode.font1 = lucasFont.createDefaultFont(50.0, "Arial");
-removeMode.cameraZoom = 10.0;
+removeMode.defaultCameraZoom = 10.0;
+removeMode.cameraZoom = removeMode.defaultCameraZoom;
 removeMode.objectToCameraZRotation = 0.0;
 removeMode.objectToCameraXYInclination = 0.0;
 removeMode.colours =
@@ -49,7 +50,10 @@ addEventHandler('onBeforeDrawHUD', function(e)
 		removeMode.drawTextRight(50, y, removeMode.getElementName() + ' ID: ' + removeMode.element.id, fontSize, colour);
 	y += yStep;
 	if(removeMode.element != null)
-		removeMode.drawTextRight(50, y, 'Model ID: ' + removeMode.element.modelIndex, fontSize, colour);
+	{
+		var modelId = removeMode.getModelId();
+		removeMode.drawTextRight(50, y, 'Model ID: ' + (modelId == -1 ? 'n/a' : modelId), fontSize, colour);
+	}
 	y += yStep;
 	
 	if(removeMode.element != null)
@@ -61,7 +65,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	}
 	y += yStep;
 	
-	if(removeMode.drawBB && removeMode.element != null)
+	if(removeMode.drawBB && removeMode.element != null && removeMode.element.isType(ELEMENT_ENTITY))
 	{
 		util.drawBB(removeMode.element, removeMode.colours.bb);
 		util.drawColLines(removeMode.element, removeMode.colours.lines);
@@ -198,6 +202,23 @@ removeMode.isEnabled = () =>
 	return removeMode.enabled;
 };
 
+removeMode.getModelId = () =>
+{
+	var elementData = removeMode.getElementData();
+	if(!elementData)
+		return -1;
+	if(elementData[1] === undefined || elementData[1] === null)
+		return -1;
+	return elementData[1];
+};
+
+removeMode.getElementData = () =>
+{
+	if(removeMode.elementIndex == -1)
+		return null;
+	return removeMode.elementsData[removeMode.elementIndex];
+};
+
 removeMode.getElementsData = () =>
 {
 	return removeMode.elementsData;
@@ -246,13 +267,12 @@ removeMode.updateCamera = function()
 	if(removeMode.elementIndex == -1)
 		return;
 	
-	var elementData = removeMode.elementsData[removeMode.elementIndex];
+	var elementData = removeMode.getElementData();
 	if(!elementData)
 		return;
 	
 	var elementPosition = elementData[2];//.position;
 	var cameraPosition = elementPosition.addSpherical(removeMode.cameraZoom, removeMode.objectToCameraXYInclination, removeMode.objectToCameraZRotation);
-	
 	gta.setCameraLookAt(cameraPosition, elementPosition, true);
 	
 	removeMode.updateLocalPlayer();
@@ -261,12 +281,11 @@ removeMode.updateCamera = function()
 
 removeMode.updateLocalPlayer = () =>
 {
-	var elementData = removeMode.elementsData[removeMode.elementIndex];
+	var elementData = removeMode.getElementData();
 	if(!elementData)
 		return;
 	
 	var elementPosition = elementData[2];//.position;
-	
 	localPlayer.position = new Vec3(elementPosition.x, elementPosition.y, elementPosition.z - 35.0);
 	localPlayer.health = 100.0;
 };
@@ -276,7 +295,7 @@ removeMode.updateElement = () =>
 	if(removeMode.elementIndex == -1)
 		return;
 	
-	var elementData = removeMode.elementsData[removeMode.elementIndex];
+	var elementData = removeMode.getElementData();
 	if(!elementData)
 		return;
 	
@@ -285,7 +304,10 @@ removeMode.updateElement = () =>
 	if(removeMode.element == null)
 		return;
 	
-	removeMode.cameraZoom = removeMode.element.boundingRadius * 5.0;
+	if(removeMode.element.isType(ELEMENT_ENTITY))
+		removeMode.cameraZoom = removeMode.element.boundingRadius * 5.0;
+	else
+		removeMode.cameraZoom = removeMode.defaultCameraZoom;
 };
 
 removeMode.removeElement = () =>

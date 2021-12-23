@@ -33,6 +33,14 @@ elements.data.spheres = [];
 elements.data.peds = [];
 elements.data.blips = [];
 
+elements.attr = {};
+elements.attr.objects = ['id', 'model', 'position', 'rotation'];
+elements.attr.vehicles = ['id', 'model', 'position', 'rotation'];
+elements.attr.pickups = ['id', 'model', 'position'];
+elements.attr.spheres = ['id', 'position', 'radius'];
+elements.attr.peds = ['id', 'model', 'position', 'heading', 'pedType'];
+elements.attr.blips = ['id', 'icon', 'position', 'size', 'colour'];
+
 elements.near = {};
 elements.near.maxDistanceAway		= 1000000.0;
 elements.near.defaultDistanceAway	= 20.0;
@@ -97,7 +105,10 @@ elements.setPosition = (elementName, elementId, position) =>
 {
 	var element = getElementFromId(elementId);
 	if(element)
+	{
+		element.position = position;
 		util.setClientProperty(getClients()[element.syncer], elementId, 'position', position);
+	}
 	var elementData = elements.getElementData(elementName, elementId);
 	if(elementData)
 		elementData.position = position;
@@ -1938,12 +1949,12 @@ xml.load(elements.gamePath(elements.paths.spheres), 'Sphere', (data) => elements
 xml.load(elements.gamePath(elements.paths.peds), 'Ped', (data) => elements.createPed(util.int(data.model), util.vec3(data.position), util.float(data.heading), util.int(data.pedType)));
 xml.load(elements.gamePath(elements.paths.blips), 'Blip', (data) => elements.createBlip(util.int(data.icon), util.vec3(data.position), util.int(data.size), util.int(data.colour)));
 
-xml.save(elements.gamePath(elements.paths.objects), 'Object', elements.data.objects, ['id', 'model', 'position', 'rotation']);
-xml.save(elements.gamePath(elements.paths.vehicles), 'Vehicle', elements.data.vehicles, ['id', 'model', 'position', 'rotation']);
-xml.save(elements.gamePath(elements.paths.pickups), 'Pickup', elements.data.pickups, ['id', 'model', 'position']);
-xml.save(elements.gamePath(elements.paths.spheres), 'Sphere', elements.data.spheres, ['id', 'position', 'radius']);
-xml.save(elements.gamePath(elements.paths.peds), 'Ped', elements.data.peds, ['id', 'model', 'position', 'heading', 'pedType']);
-xml.save(elements.gamePath(elements.paths.blips), 'Blip', elements.data.blips, ['id', 'icon', 'position', 'size', 'colour']);
+xml.save(elements.gamePath(elements.paths.objects), 'Object', elements.data.objects, elements.attr.objects);
+xml.save(elements.gamePath(elements.paths.vehicles), 'Vehicle', elements.data.vehicles, elements.attr.vehicles);
+xml.save(elements.gamePath(elements.paths.pickups), 'Pickup', elements.data.pickups, elements.attr.pickups);
+xml.save(elements.gamePath(elements.paths.spheres), 'Sphere', elements.data.spheres, elements.attr.spheres);
+xml.save(elements.gamePath(elements.paths.peds), 'Ped', elements.data.peds, elements.attr.peds);
+xml.save(elements.gamePath(elements.paths.blips), 'Blip', elements.data.blips, elements.attr.blips);
 
 
 
