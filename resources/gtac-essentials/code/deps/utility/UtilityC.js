@@ -637,18 +637,47 @@ util.getColMinMax = function(object)
 
 util.getColSize = function(object)
 {
+	//var bbmm = util.getColMinMax(object);
 	var bbmm = util.getColMinMaxForObject(object);
 	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
 };
 
-
+util.getColVerticesMinMax = function()
+{
+	var vertices = mapper.object.collisionVertices;
+	
+	if(vertices.length > 0)
+	{
+		var min = new Vec3(99999,99999,99999);
+		var max = new Vec3(-99999,-99999,-99999);
+		
+		if(vertices.length > 0)
+		{
+			for(var i=0,j=vertices.length; i<j; i++)
+			{
+				min = util.getMinVec(min, vertices[i]);
+				max = util.getMaxVec(max, vertices[i]);
+			}
+		}
+		
+		return [min, max];
+	}
+	else
+	{
+		return [mapper.object.boundingMax, mapper.object.boundingMin];
+	}
+};
 
 util.drawBB = function(object, colour)
 {
+	if(!object.isType(ELEMENT_ENTITY))
+		return;
+	
 	var bbmm = util.getColMinMax(object);
 	var lines = util.getBoxPointLines(object.position, object.getRotation(), bbmm[0], bbmm[1]);
 	if(!lines || lines.length == 0)
 		return;
+	
 	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
 	{
 		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
@@ -657,9 +686,13 @@ util.drawBB = function(object, colour)
 
 util.drawBB2 = function(object, colour)
 {
+	if(!object.isType(ELEMENT_ENTITY))
+		return;
+	
 	var lines = util.getBoxPointLines(object.position, object.getRotation(), object.boundingMin, object.boundingMax);
 	if(!lines || lines.length == 0)
 		return;
+	
 	for(var i2=0, j2=lines.length; i2<j2; i2 += 2)
 	{
 		graphics.drawLine3D(lines[i2], lines[i2 + 1], colour, colour);
@@ -668,9 +701,13 @@ util.drawBB2 = function(object, colour)
 
 util.drawColLines = function(object, colour)
 {
+	if(!object.isType(ELEMENT_ENTITY))
+		return;
+	
 	var points = object.collisionLines;
 	if(!points || points.length == 0)
 		return;
+	
 	for(var i=0, j=points.length; i<j; i += 2)
 	{
 		var p1 = points[i];
@@ -685,9 +722,13 @@ util.drawColLines = function(object, colour)
 
 util.drawColBoxes = function(object, colour)
 {
+	if(!object.isType(ELEMENT_ENTITY))
+		return;
+	
 	var points = object.collisionBoxes;
 	if(!points || points.length == 0)
 		return;
+	
 	for(var i=0, j=points.length; i<j; i += 2)
 	{
 		var min = points[i];
@@ -704,6 +745,9 @@ util.drawColBoxes = function(object, colour)
 
 util.drawColSpheres = function(object, colour)
 {
+	if(!object.isType(ELEMENT_ENTITY))
+		return;
+	
 	var points = object.collisionSpheres;
 	if(!points || points.length == 0)
 		return;
@@ -711,9 +755,13 @@ util.drawColSpheres = function(object, colour)
 
 util.drawColTriangles = function(object, colour)
 {
+	if(!object.isType(ELEMENT_ENTITY))
+		return;
+	
 	var points = object.collisionVertices;
 	if(!points || points.length == 0)
 		return;
+	
 	for(var i=0, j=points.length; i<j; i += 3)
 	{
 		for(var i2=0; i2<3; i2++)
@@ -728,5 +776,4 @@ util.drawColTriangles = function(object, colour)
 		}
 	}
 };
-
 
