@@ -7,3 +7,4 @@ events.onPedSpawn = [];
 events.onPedWasted = [];
 events.onPedExitVehicle = [];
 events.onKeyDown = [];
+events.onPlayerCommand = [];

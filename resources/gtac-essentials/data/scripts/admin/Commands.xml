@@ -42,7 +42,6 @@
 	<Command name="remcmdalias" level="7" />
 	<Command name="ungkey" level="5" />
 	<Command name="gkey" level="5" />
-	<Command name="dumpcommands" level="8" />
 	<Command name="savevehicle" level="5" />
 	<Command name="saveobject" level="5" />
 	<Command name="saveped" level="5" />
@@ -52,4 +51,7 @@
 	<Command name="traffic" level="3" />
 	<Command name="civilians" level="3" />
 	<Command name="trafficdensity" level="3" />
+	<Command name="dumpcommandsxml" level="8" />
+	<Command name="dumpcommandstxt" level="8" />
+	<Command name="invalidcommandstatus" level="5" />
 </Root>

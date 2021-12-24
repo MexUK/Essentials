@@ -358,6 +358,8 @@ util.getCommandName = (text) =>
 	if(space != -1)
 		text = text.substr(0, space);
 	
+	text = text.toLowerCase();
+	
 	return text;
 };
 
@@ -481,6 +483,11 @@ util.getFileLines2 = function(path)
 	}
 	return lines;
 	*/
+};
+
+util.setFileData = function(path, str)
+{
+	saveTextFile(path, str);
 };
 
 util.fixEOLs = function(data)

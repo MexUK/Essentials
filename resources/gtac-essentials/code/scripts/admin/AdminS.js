@@ -2,6 +2,7 @@ global.admin = {};
 
 admin.defaultPlayerLevel = 0;
 admin.defaultCommandLevel = 0;
+admin.invalidCommandMessageEnabled = true;
 
 admin.paths = {};
 admin.paths.players = 'data/scripts/admin/Players.xml';
@@ -13,6 +14,12 @@ admin.commands = new Map();
 events.onPlayerJoined.push((event, client) =>
 {
 	clientData.set(client, 'level', xml.getAttr(admin.paths.players, 'Player', 'name', client.name, 'Level', admin.defaultPlayerLevel));
+});
+
+events.onPlayerCommand.push((event, client, command, parameters) =>
+{
+	if(!util.isCommand(command))
+		admin.onInvalidCommand(client, command, parameters);
 });
 
 // commands
@@ -181,6 +188,27 @@ cmds.alladmin = (client, _level) =>
 		chat.all('All admin for level ' + level + ' or higher: ' + names.join(', '));
 };
 
+cmds.invalidcommandstatus = (client, _state) =>
+{
+	[_state] = util.grabArgs(client,
+	[
+		(v) => util.isBool(v)
+	],
+	[
+	], _state);
+	
+	if(_state === undefined)
+		return chat.all('The invalid command message status is currently ' + (admin.invalidCommandMessageEnabled ? 'enabled' : 'disabled') + '.');
+	
+	var state = util.bool(_state, null);
+	if(state === null)
+		return chat.bool(client, 'Invalid command message status', _state);
+	
+	chat.all(client.name + " set the invalid command message status to " + (state ? "on" : "off") + ".");
+	admin.invalidCommandMessageEnabled = state;
+};
+
+
 
 
 
@@ -293,6 +321,15 @@ admin.getClientLevel = (client) =>
 	return clientData.get(client, 'level');
 };
 
+
+
+admin.onInvalidCommand = (client, command, parameters) =>
+{
+	if(!admin.invalidCommandMessageEnabled)
+		return;
+	
+	chat.pm(client, "Command /"	+ command + " wasn't found.");
+};
 
 
 
