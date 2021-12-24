@@ -1,0 +1,250 @@
+﻿/accounts
+/addspawn
+/admin
+/alladmin
+/announce
+/armour
+/bigmessage
+/bleeding
+/blip
+/blipdimensions
+/blipdistance
+/blipids
+/blips
+/blipsyncer
+/blipsyncers
+/bounds
+/bulletproof
+/calltaxi
+/cancelmission
+/centerofmass
+/civilians
+/clearmessages
+/clearweapons
+/clientids
+/closegarage
+/collisionproof
+/commandalias
+/commandaliases
+/commandlevel
+/commandlevels
+/commands
+/crouch
+/damage
+/disablecommand
+/disabledcommands
+/dumpcommandstxt
+/dumpcommandsxml
+/eject
+/elements
+/enablecommand
+/enterdriver
+/enterpassenger
+/entervehicle
+/exitvehicle
+/explosionproof
+/falloffbike
+/fireproof
+/fix
+/flip
+/fly
+/game
+/gameversion
+/get
+/gkey
+/gkeys
+/goto
+/gotoblip
+/gotoobject
+/gotoped
+/gotopickup
+/gotoposition
+/gotospawn
+/gotosphere
+/gototeleport
+/gotovehicle
+/gravity
+/ground
+/heading
+/health
+/hour
+/id
+/interior
+/invalidcommandstatus
+/isbliponscreen
+/isgarageclosed
+/isobjectonscreen
+/ispedonscreen
+/ispickuponscreen
+/issphereonscreen
+/isvehicleonscreen
+/key
+/keys
+/kill
+/killplayer
+/level
+/lights
+/login
+/logout
+/mapper
+/mass
+/maxblips
+/maxhealth
+/maxobjects
+/maxpeds
+/maxpickups
+/maxplayers
+/maxspheres
+/maxstamina
+/maxvehicles
+/meleeproof
+/minute
+/mission
+/nearblips
+/nearobjects
+/nearpeds
+/nearpickups
+/nearplayers
+/nearspheres
+/nearvehicles
+/object
+/objectdimensions
+/objectdistance
+/objectids
+/objects
+/objectsyncer
+/objectsyncers
+/occupants
+/onmission
+/opengarage
+/pagermessage
+/ped
+/peddimensions
+/peddistance
+/pedids
+/peds
+/pedsyncer
+/pedsyncers
+/pickup
+/pickupdimensions
+/pickupdistance
+/pickupids
+/pickups
+/pickupsyncer
+/pickupsyncers
+/ping
+/pingabove
+/playerdimensions
+/playerdistance
+/playerids
+/playermodel
+/players
+/playervehicleids
+/pointgunat
+/position
+/register
+/removeblip
+/removecommandalias
+/removeobject
+/removeped
+/removepickup
+/removespawn
+/removesphere
+/removeteleport
+/removevehicle
+/resourcenames
+/resources
+/resourcesstarted
+/resourcesstarting
+/resourcesstopped
+/restartresource
+/rotation
+/saveblip
+/saveobject
+/saveped
+/savepickup
+/savespawn
+/savesphere
+/savevehicle
+/second
+/setcommandlevel
+/setlevel
+/smallmessage
+/snow
+/spawnarmour
+/spawnhealth
+/spawnids
+/spawns
+/speed
+/sphere
+/spheredimensions
+/spheredistance
+/sphereids
+/spheres
+/spheresyncer
+/spheresyncers
+/startresource
+/stopresource
+/teleport
+/teleports
+/tempvehicle
+/time
+/traffic
+/trafficdensity
+/turnvelocity
+/ungkey
+/unkey
+/updateteleport
+/vehicle
+/vehicledimensions
+/vehicledistance
+/vehiclehealth
+/vehicleids
+/vehicleinfo
+/vehiclemodel
+/vehicles
+/vehiclesyncer
+/vehiclesyncers
+/velocity
+/walkstyle
+/warp
+/weapon
+/weaponall
+/weapons
+/weaponstate
+/weather
+/whoinvehicle
+/whospawned
+/xoffset
+/yoffset
+/zoffset
+
+/armor - Alias of /armour
+/cmd - Alias of /commands
+/cmdalias - Alias of /commandalias
+/cmdaliases - Alias of /commandaliases
+/cmdlevel - Alias of /commandlevel
+/cmdlvl - Alias of /commandlevel
+/cmds - Alias of /commands
+/command - Alias of /commands
+/findcmd - Alias of /commands
+/findcmds - Alias of /commands
+/findcommand - Alias of /commands
+/findcommands - Alias of /commands
+/gotopos - Alias of /gotoposition
+/hp - Alias of /health
+/pos - Alias of /position
+/remcmdalias - Alias of /removecommandalias
+/removeblips - Alias of /removeblip
+/removecmdalias - Alias of /removecommandalias
+/removeobjects - Alias of /removeobject
+/removepeds - Alias of /removeped
+/removepickups - Alias of /removepickup
+/removespheres - Alias of /removesphere
+/removevehicles - Alias of /removevehicle
+/rot - Alias of /rotation
+/setcmdlevel - Alias of /setcommandlevel
+/setcmdlvl - Alias of /setcommandlevel
+/v - Alias of /vehicle
+/w - Alias of /weapon
+/wep - Alias of /weapon

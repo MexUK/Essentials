@@ -5,8 +5,11 @@ admin.defaultCommandLevel = 0;
 admin.invalidCommandMessageEnabled = true;
 
 admin.paths = {};
-admin.paths.players = 'data/scripts/admin/Players.xml';
-admin.paths.commands = 'data/scripts/admin/Commands.xml';
+admin.paths.adminDir = 'data/scripts/admin/';
+admin.paths.players = admin.paths.adminDir + 'Players.xml';
+admin.paths.commands = admin.paths.adminDir + 'Commands.xml';
+admin.paths.commandsDumpedXML = admin.paths.adminDir + 'Commands Dumped.xml';
+admin.paths.commandsDumpedTXT = admin.paths.adminDir + 'Commands Dumped.txt';
 
 admin.commands = new Map();
 
@@ -206,6 +209,74 @@ cmds.invalidcommandstatus = (client, _state) =>
 	
 	chat.all(client.name + " set the invalid command message status to " + (state ? "on" : "off") + ".");
 	admin.invalidCommandMessageEnabled = state;
+};
+
+cmds.dumpcommandsxml = (client) =>
+{
+	var cmds2 = [];
+	for(var cmd in cmds)
+	{
+		cmds2.push({
+			name: cmd,
+			level: admin.getCommandLevel(cmd)
+		});
+	}
+	
+	cmds2.sort((a,b) => b.name < a.name);
+	
+	chat.all(client.name + ' dumped all the commands to an XML file.');
+	xml.save(admin.paths.commandsDumpedXML, 'Command', cmds2, ['name', 'level']);
+};
+
+cmds.dumpcommandstxt = (client) =>
+{
+	var cmds2 = [];
+	var cmdsAliases = [];
+	for(var cmd in cmds)
+	{
+		if(commandAliases.isCommandAnAlias(cmd))
+		{
+			cmdsAliases.push({
+				name: cmd,
+				level: admin.getCommandLevel(cmd)
+			});
+		}
+		else
+		{
+			cmds2.push({
+				name: cmd,
+				level: admin.getCommandLevel(cmd)
+			});
+		}
+	}
+	
+	cmds2.sort((a,b) => b.name < a.name);
+	cmdsAliases.sort((a,b) => b.name < a.name);
+	
+	var lines = [];
+	for(var i in cmds2)
+	{
+		var cmdData = cmds2[i];
+		
+		var line = '/' + cmdData.name;
+		
+		lines.push(line);
+	}
+	
+	lines.push('');
+	
+	for(var i in cmdsAliases)
+	{
+		var cmdData = cmdsAliases[i];
+		
+		var line = '/' + cmdData.name;
+		line += ' - Alias of /' + commandAliases.getCommandAliasOf(cmdData.name).original;
+		
+		lines.push(line);
+	}
+	
+	chat.all(client.name + ' dumped all the commands to a TXT file.');
+	util.setFileData(admin.paths.commandsDumpedTXT, lines.join("\r\n"));
 };
 
 
