@@ -5,7 +5,7 @@ Game support for Essentials: III, VC, or SA. (This resource does not currently s
 
 Essentials contains over 200 commands, comes with a mapper, and is free.
 
-Check Commands.txt for available commands.
+Check "Essentials Commands.txt" for available commands.
 
 <hr>
 
