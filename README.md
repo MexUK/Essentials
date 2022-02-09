@@ -47,6 +47,14 @@ To get started:
 
 Directory Contents Example
 
+Pic 1:
+
 ![Image 1](pic1.png)
+
+Pic 2:
+
 ![Image 2](pic2.png)
+
+Pic 3:
+
 ![Image 3](pic3.png)
