@@ -1,0 +1,53 @@
+<meta>
+	<info author="Mex" description="Essentials - A resource for GTA:Connected." />
+	
+	<!-- ThirdParty/ -->
+	<script src="Code/ThirdParty/sha512.js" type="server" language="javascript" />
+	<script src="Code/ThirdParty/mathjs.js" type="client" language="javascript" />
+	
+	<!-- Load/ -->
+	<script src="Code/Server/Load/Before.js" type="server" language="javascript" />
+	
+	<!-- Core/ -->
+	<script src="Code/Server/Core/Chat.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/ClientData.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/Models.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/Utility.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/XML.js" type="server" language="javascript" />
+	
+	<script src="Code/Client/Core/Chat.js" type="client" language="javascript" />
+	<script src="Code/Client/Core/Utility.js" type="client" language="javascript" />
+	
+	<!-- / -->
+	<script src="Code/Server/Accounts.js" type="server" language="javascript" />
+	<script src="Code/Server/Admin.js" type="server" language="javascript" />
+	<script src="Code/Server/CommandAliases.js" type="server" language="javascript" />
+	<script src="Code/Server/Elements.js" type="server" language="javascript" />
+	<script src="Code/Server/Generic.js" type="server" language="javascript" />
+	<script src="Code/Server/GlobalKeyBinds.js" type="server" language="javascript" />
+	<script src="Code/Server/JoinAndQuit.js" type="server" language="javascript" />
+	<script src="Code/Server/KeyBinds.js" type="server" language="javascript" />
+	<script src="Code/Server/Mapper.js" type="server" language="javascript" />	
+	<script src="Code/Server/Missions.js" type="server" language="javascript" />
+	<script src="Code/Server/RemoveMode.js" type="server" language="javascript" />
+	<script src="Code/Server/Resources.js" type="server" language="javascript" />
+	<script src="Code/Server/Spawn.js" type="server" language="javascript" />
+	<script src="Code/Server/Teleports.js" type="server" language="javascript" />
+	<script src="Code/Server/TempVehicles.js" type="server" language="javascript" />
+	<script src="Code/Server/Weapons.js" type="server" language="javascript" />
+	
+	<script src="Code/Client/Elements.js" type="client" language="javascript" />
+	<script src="Code/Client/Generic.js" type="client" language="javascript" />
+	<script src="Code/Client/GlobalKeyBinds.js" type="client" language="javascript" />
+	<script src="Code/Client/JoinAndQuit.js" type="client" language="javascript" />
+	<script src="Code/Client/KeyBinds.js" type="client" language="javascript" />
+	<script src="Code/Client/Mapper.js" type="client" language="javascript" />
+	<script src="Code/Client/Missions.js" type="client" language="javascript" />
+	<script src="Code/Client/RemoveMode.js" type="client" language="javascript" />
+	<script src="Code/Client/Resources.js" type="client" language="javascript" />
+	<script src="Code/Client/Spawn.js" type="client" language="javascript" />
+	<script src="Code/Client/Weapons.js" type="client" language="javascript" />
+	
+	<!-- Load/ -->
+	<script src="Code/Server/Load/After.js" type="server" language="javascript" />
+</meta>

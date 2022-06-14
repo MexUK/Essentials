@@ -73,6 +73,6 @@
 	<!-- Resources -->
 	<!-- https://wiki.gtaconnected.com/Resources -->
 	<resources>
-		<resource src="gtac-essentials" />
+		<resource src="Essentials" />
 	</resources>
 </server>

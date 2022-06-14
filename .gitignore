@@ -2,5 +2,7 @@
 *.dll
 logs/*
 htdocs/*
-resources/gtac-essentials/data/scripts/elements/*/*.xml
-resources/gtac-essentials/data/scripts/admin/Players.xml
+Documentation/*
+resources/Essentials/Data/Global/Accounts.xml
+resources/Essentials/Data/*/Players.xml
+resources/Essentials/Data/*/Elements/*.xml
