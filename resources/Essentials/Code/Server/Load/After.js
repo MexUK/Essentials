@@ -5,8 +5,12 @@ for(var k in cmds)
 
 for(var k in events)
 {
-	for(var i in events[k])
+	if(k == 'onPlayerLogin' || k == 'onPlayerLogout')
+		continue;
+
+	let callbacks = events[k];
+	for(var i in callbacks)
 	{
-		addEventHandler(k, events[k][i]);
+		addEventHandler(k, callbacks[i]);
 	}
 }

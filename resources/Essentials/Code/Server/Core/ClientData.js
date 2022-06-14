@@ -73,6 +73,13 @@ clientData.unsetmap = (client, name, key) =>
 	clientData.clients[client.index][name].delete(key);
 };
 
+clientData.clearmap = (client, name) =>
+{
+	if(clientData.clients[client.index][name] === undefined)
+		return;
+	clientData.clients[client.index][name].clear();
+};
+
 clientData.getmap = (client, name, key) =>
 {
 	if(clientData.clients[client.index][name] === undefined)

@@ -44,6 +44,7 @@ cmds.login = (client, ...args) =>
 		return chat.pm(client, "Invalid password.");
 	
 	clientData.set(client, 'loggedIn', true);
+	events.trigger('onPlayerLogin', null, client);
 	chat.all(client.name + " has logged in.");
 };
 
@@ -56,6 +57,7 @@ cmds.logout = (client) =>
 		return chat.pm(client, 'You are not logged in.');
 	
 	clientData.set(client, 'loggedIn', false);
+	events.trigger('onPlayerLogout', null, client);
 	chat.all(client.name + " has logged out.");
 };
 
@@ -72,6 +74,11 @@ cmds.accounts = (client) =>
 
 
 
+
+accounts.isClientAuthorized = (client) =>
+{
+	return !clientData.get(client, 'registered') || clientData.get(client, 'loggedIn');
+};
 
 accounts.isNameRegistered = (name) =>
 {

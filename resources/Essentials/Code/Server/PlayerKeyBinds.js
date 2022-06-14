@@ -3,7 +3,7 @@ global.playerKeyBinds = {};
 playerKeyBinds.path = 'Data/' + util.getCurrentShortGameName() + '/PlayerKeyBinds.xml';
 
 // events
-events.onPlayerJoined.push((event, client) =>
+events.onPlayerLogin.push((event, client) =>
 {
 	var nameLower = client.name.toLowerCase();
 	xml.load(playerKeyBinds.path, 'Key', (v) =>
@@ -15,8 +15,16 @@ events.onPlayerJoined.push((event, client) =>
 	});
 });
 
+events.onPlayerLogout.push((event, client) =>
+{
+	playerKeyBinds.destroyAllKeyBinds(client);
+});
+
 playerKeyBinds.onClientKeyDown = (client, keyCode) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+
 	var key = String.fromCharCode(keyCode);
 	
 	if(!util.isKey(key))
@@ -94,6 +102,16 @@ cmds.keys = (client) =>
 playerKeyBinds.createKeyBind = (client, key, cmd, args) =>
 {
 	clientData.setmap(client, 'keys', key, [cmd, args]);
+};
+
+playerKeyBinds.destroyKeyBind = (client, key) =>
+{
+	clientData.unsetmap(client, 'keys', key);
+};
+
+playerKeyBinds.destroyAllKeyBinds = (client) =>
+{
+	clientData.clearmap(client, 'keys');
 };
 
 playerKeyBinds.bindKey = (client, key, cmd, args) =>
