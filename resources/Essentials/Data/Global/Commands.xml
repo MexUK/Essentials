@@ -79,6 +79,7 @@
 	<Command name="gotovehicle" level="0" />
 	<Command name="gravity" level="0" />
 	<Command name="ground" level="0" />
+	<Command name="gun" level="0" />
 	<Command name="heading" level="0" />
 	<Command name="health" level="0" />
 	<Command name="hour" level="0" />

@@ -28,4 +28,5 @@
 	<Command original="gotoposition" clone="gotopos" />
 	<Command original="position" clone="pos" />
 	<Command original="rotation" clone="rot" />
+	<Command original="weapon" clone="gun" />
 </Root>
