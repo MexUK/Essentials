@@ -22,6 +22,7 @@
 	<script src="Code/Server/Accounts.js" type="server" language="javascript" />
 	<script src="Code/Server/Admin.js" type="server" language="javascript" />
 	<script src="Code/Server/CommandAliases.js" type="server" language="javascript" />
+	<script src="Code/Server/Commands.js" type="server" language="javascript" />
 	<script src="Code/Server/Elements.js" type="server" language="javascript" />
 	<script src="Code/Server/Generic.js" type="server" language="javascript" />
 	<script src="Code/Server/GlobalKeyBinds.js" type="server" language="javascript" />

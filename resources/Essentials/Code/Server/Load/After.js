@@ -1,8 +1,10 @@
+// bind command callbacks
 for(var k in cmds)
 {
-	util.bindCommand(k, cmds[k]);
+	commands.bind(k, cmds[k]);
 }
 
+// bind event callbacks
 for(var k in events)
 {
 	if(k == 'onPlayerLogin' || k == 'onPlayerLogout')

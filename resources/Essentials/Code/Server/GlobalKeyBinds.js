@@ -48,7 +48,7 @@ cmds.gkey = (client, _key, _cmd, ...args) =>
 	
 	var cmd = util.command(_cmd);
 	
-	if(!util.isCommand(cmd))
+	if(!commands.exists(cmd))
 		return chat.invalidCommand(client, _cmd);
 	
 	chat.all(client.name + " globally binded " + key + " key to command /" + cmd + (args.length == 0 ? '' : (' ' + args.join(' '))));

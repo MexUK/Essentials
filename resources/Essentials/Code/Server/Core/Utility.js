@@ -348,31 +348,6 @@ util.isClient = (text) =>
 	return /*(isNaN(parseInt(text)) || parseInt(text) == parseFloat(text)) && */util.findClient(text) !== null;
 };
 
-util.findCommand = (text) =>
-{
-	text = util.getCommandName(text);
-	return cmds[text] === undefined ? null : cmds[text];
-};
-
-util.isCommand = (text) =>
-{
-	return util.findCommand(text) !== null;
-};
-
-util.getCommandName = (text) =>
-{
-	if(text.startsWith('/'))
-		text = text.substr(1);
-	
-	var space = text.indexOf(' ');
-	if(space != -1)
-		text = text.substr(0, space);
-	
-	text = text.toLowerCase();
-	
-	return text;
-};
-
 // compare
 util.compareValues = function(v1, v2)
 {
@@ -737,30 +712,6 @@ util._in = (arr, value) =>
 		}
 	}
 	return false;
-};
-
-util.bindCommand = (cmd2, callback) =>
-{
-	addCommandHandler(cmd2, (cmd,arg,client) =>
-	{
-		if(clientData.get(client, 'registered') && !clientData.get(client, 'loggedIn') && cmd.toLowerCase() != 'login')
-			return chat.pm(client, "You aren't logged in.");
-		
-		if(admin.isCommandDisabled(cmd))
-			return chat.pm(client, 'Command /' + cmd + ' is disabled.');
-		
-		if(admin.getClientLevel(client) < admin.getCommandLevel(cmd))
-			return chat.pm(client, 'Command /' + cmd + ' requires admin level ' + admin.getCommandLevel(cmd) + '.');
-		
-		var args = util.cleanSplit(arg);
-		args.unshift(client);
-		callback.apply(null, args);
-	});
-};
-
-util.unbindCommand = (cmd) =>
-{
-	removeCommandHandler(cmd);
 };
 
 util.cleanSplit = (text) =>

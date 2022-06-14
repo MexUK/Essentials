@@ -10,10 +10,10 @@ cmds.commandalias = (client, _commandName, _commandAlias) =>
 	if(_commandName === undefined)
 		return chat.pm(client, "You didn't type a command name.");
 	
-	if(!util.isCommand(_commandName))
+	if(!commands.exists(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = util.getCommandName(_commandName);
+	var commandName = commands.getName(_commandName);
 	if(_commandAlias === undefined)
 	{
 		var commandIsAnAlias = commandAliases.isCommandAnAlias(commandName);
@@ -30,10 +30,10 @@ cmds.commandalias = (client, _commandName, _commandAlias) =>
 			return chat.all("Command /" + commandName + " is not an alias of any command, and has command aliases: /" + aliasesForCommand.join(' /'));
 	}
 	
-	if(util.isCommand(_commandAlias))
+	if(commands.exists(_commandAlias))
 		return chat.pm(client, 'Command /' + _commandAlias + ' already exists.');
 	
-	var commandAlias = util.getCommandName(_commandAlias);
+	var commandAlias = commands.getName(_commandAlias);
 	chat.all(client.name + " added command alias /" + commandAlias + " for command /" + commandName + ".");
 	
 	commandAliases.addCommandAlias(commandName, commandAlias);
@@ -44,10 +44,10 @@ cmds.removecommandalias = (client, _commandName) =>
 	if(_commandName === undefined)
 		return chat.pm(client, "You didn't type a command name.");
 	
-	if(!util.isCommand(_commandName))
+	if(!commands.exists(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = util.getCommandName(_commandName);
+	var commandName = commands.getName(_commandName);
 	var commandIsAnAlias = commandAliases.isCommandAnAlias(commandName);
 	if(!commandIsAnAlias)
 		return chat.pm(client, 'Command /' + commandName + ' is not an alias of any command.');
@@ -109,13 +109,13 @@ commandAliases.isCommandAnAlias = (commandName) =>
 commandAliases.createCommandAlias = (originalName, cloneName) =>
 {
 	cmds[cloneName] = cmds[originalName];
-	util.bindCommand(cloneName, cmds[originalName]);
+	commands.bind(cloneName, cmds[originalName]);
 };
 
 commandAliases.destroyCommandAlias = (cloneName) =>
 {
 	cmds[cloneName] = undefined;
-	util.unbindCommand(cloneName);
+	commands.unbind(cloneName);
 };
 
 commandAliases.addCommandAlias = (originalName, cloneName) =>
@@ -132,7 +132,7 @@ commandAliases.addCommandAlias = (originalName, cloneName) =>
 	
 	if(global.admin)
 	{
-		admin.setCommandLevel(cloneName, admin.getCommandLevel(originalName));
+		commands.setLevel(cloneName, commands.getLevel(originalName));
 	}
 };
 
@@ -152,7 +152,7 @@ commandAliases.removeCommandAlias = (cloneName) =>
 	
 	if(admin)
 	{
-		admin.removeCommandLevel(cloneName);
+		commands.removeLevel(cloneName);
 	}
 };
 
