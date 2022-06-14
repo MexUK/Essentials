@@ -4,22 +4,22 @@
 
 <server>
 	<!-- General Information -->
-	<servername>GTAC Essentials</servername>
+	<servername>Default Server</servername>
 	<game>gta:vc</game>
-	<gamemode>Essentials</gamemode>
-	<serverbrowser>false</serverbrowser>
-	<maxplayers>100</maxplayers>
+	<gamemode>Free Roam</gamemode>
+	<serverbrowser>true</serverbrowser>
+	<maxplayers>32</maxplayers>
 	<password></password>
-	<minclientversion>1.2.25</minclientversion>
+	<minclientversion>1.3.0</minclientversion>
 	<duplicatenames>false</duplicatenames>
 
 	<!-- Networking -->
 	<port>22000</port>
 	<httpport>22000</httpport>
 	<httpserver>true</httpserver>
-	<syncinterval>100</syncinterval>
-	<processinterval>100</processinterval>
-	<syncmethod>replay</syncmethod>
+	<syncinterval>30</syncinterval>
+	<processinterval>30</processinterval>
+	<syncmethod>interval</syncmethod>
 	<compresspackets>false</compresspackets>
 	<packetcompressionlevel>default</packetcompressionlevel>
 	<synclocalentities>true</synclocalentities>
@@ -33,6 +33,12 @@
 	<!-- Logging -->
 	<logpath>logs</logpath>
 	<logtimestamp>[%d/%m/%Y - %X]</logtimestamp>
+
+	<!-- GTA IV -->
+	<!-- https://wiki.gtaconnected.com/Resources/GTAIV/GameModes -->
+	<!-- https://wiki.gtaconnected.com/Resources/GTAIV/Episodes -->
+	<iv_gamemode>8</iv_gamemode>
+	<iv_episode>0</iv_episode>
 
 	<!-- Modules -->
 	<!-- https://wiki.gtaconnected.com/Modules -->
@@ -55,20 +61,20 @@
 	<cvar name="traffic" value="1" />
 	<cvar name="civilians" value="1" />
 	<cvar name="defaultpickups" value="1" />
-	<cvar name="singleplayer" value="0" />
-	<cvar name="bigmap" value="0" />
+	<cvar name="singleplayer" value="1" />
+	<cvar name="bigmap" value="1" />
 	<cvar name="iv_playerwalking" value="0" />
-	<cvar name="iv_scenariopeds" value="0" />
-	<cvar name="iv_randomcops" value="0" />
-	<cvar name="iv_sptraffic" value="0" />
-	<cvar name="iv_spcopmodels" value="0" />
-	<cvar name="iv_spbulletspread" value="0" />
-	<cvar name="iv_skiplobby" value="0" />
+	<cvar name="iv_scenariopeds" value="1" />
+	<cvar name="iv_randomcops" value="1" />
+	<cvar name="iv_sptraffic" value="1" />
+	<cvar name="iv_spcopmodels" value="1" />
+	<cvar name="iv_spbulletspread" value="1" />
+	<cvar name="iv_skiplobby" value="1" />
 
 	<!-- Rules -->
 	<!-- https://wiki.gtaconnected.com/ServerRules -->
-	<rule name="Owner" value="(NAME HERE)" />
-	<rule name="Website" value="(WEBSITE HERE)" />
+	<rule name="Owner" value="Nobody" />
+	<rule name="Website" value="https://gtaconnected.com" />
 
 	<!-- Resources -->
 	<!-- https://wiki.gtaconnected.com/Resources -->
