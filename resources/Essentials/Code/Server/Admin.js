@@ -77,7 +77,7 @@ cmds.commandlevel = (client, _commandName) =>
 	if(!util.isCommand(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = util.getCommandName(_commandName);
+	var commandName = util.command(_commandName);
 	var level = admin.getCommandLevel(commandName);
 	chat.all("Command level for /" + commandName + " is " + level + ".");
 };
@@ -90,7 +90,7 @@ cmds.setcommandlevel = (client, _commandName, _newLevel) =>
 	if(!util.isCommand(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = util.getCommandName(_commandName);
+	var commandName = util.command(_commandName);
 	var oldLevel = admin.getCommandLevel(commandName);
 	
 	if(_newLevel === undefined)
@@ -114,7 +114,7 @@ cmds.disablecommand = (client, _commandName) =>
 	if(!util.isCommand(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = util.getCommandName(_commandName);
+	var commandName = util.command(_commandName);
 	
 	if(admin.isCommandDisabled(commandName))
 		return chat.pm(client, 'Command /' + commandName + ' is already disabled.');
@@ -131,7 +131,7 @@ cmds.enablecommand = (client, _commandName) =>
 	if(!util.isCommand(_commandName))
 		return chat.pm(client, 'Command not found.');
 	
-	var commandName = util.getCommandName(_commandName);
+	var commandName = util.command(_commandName);
 	
 	if(!admin.isCommandDisabled(commandName))
 		return chat.pm(client, 'Command /' + commandName + ' is already enabled.');
