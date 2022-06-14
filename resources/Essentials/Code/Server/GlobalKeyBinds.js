@@ -132,6 +132,6 @@ globalKeyBinds.getBoundCommand = (key) =>
 
 xml.load(globalKeyBinds.path, 'Key', (v) =>
 {
-	globalKeyBinds.createKeyBind(v.key, v.command, v.args.split(' '));
+	globalKeyBinds.createKeyBind(v.key, v.command, v.args.length == 0 ? '' : v.args.split(' '));
 });
 

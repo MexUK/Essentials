@@ -10,7 +10,7 @@ events.onPlayerLogin.push((event, client) =>
 	{
 		if(nameLower == v.name.toLowerCase())
 		{
-			playerKeyBinds.createKeyBind(client, v.key, v.command, v.args.split(' '));
+			playerKeyBinds.createKeyBind(client, v.key, v.command, v.args.length == 0 ? '' : v.args.split(' '));
 		}
 	});
 });
@@ -151,5 +151,3 @@ playerKeyBinds.getBoundCommand = (client, key) =>
 {
 	return clientData.getmap(client, 'keys', key);
 };
-
-
