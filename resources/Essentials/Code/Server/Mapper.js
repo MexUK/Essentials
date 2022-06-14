@@ -48,7 +48,7 @@ cmds.mapper = (client, _model) =>
 // map editor
 mapper.isEnabled = (client) =>
 {
-	return clientData.get(client, 'mapper') == 1;
+	return cd.get(client, 'mapper') == 1;
 };
 
 mapper.setEnabled = (client, model) =>
@@ -56,13 +56,13 @@ mapper.setEnabled = (client, model) =>
 	if(removeMode.isAnyRemoveModeEnabled(client))
 		removeMode.disableRemoveMode(client);
 	
-	clientData.set(client, 'mapper', 1);
+	cd.set(client, 'mapper', 1);
 	util.callClientFunction(client, 'mapper.setEnabled', model);
 };
 
 mapper.setDisabled = (client) =>
 {
-	clientData.set(client, 'mapper', 0);
+	cd.set(client, 'mapper', 0);
 	util.callClientFunction(client, 'mapper.setDisabled');
 };
 

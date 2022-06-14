@@ -14,12 +14,12 @@ removeMode.attr.blips = ['id', 'icon', 'position', 'rotation'];
 
 removeMode.isAnyRemoveModeEnabled = (client) =>
 {
-	return clientData.get(client, 'removeMode') != null;
+	return cd.get(client, 'removeMode') != null;
 };
 
 removeMode.isRemoveModeEnabled = (client, elementType) =>
 {
-	return clientData.get(client, 'removeMode') == elementType;
+	return cd.get(client, 'removeMode') == elementType;
 };
 
 removeMode.enableRemoveMode = (client, elementType) =>
@@ -27,7 +27,7 @@ removeMode.enableRemoveMode = (client, elementType) =>
 	if(mapper.isEnabled(client))
 		mapper.setDisabled(client);
 	
-	clientData.set(client, 'removeMode', elementType);
+	cd.set(client, 'removeMode', elementType);
 	util.callClientFunction(client, 'removeMode.enable', elementType, removeMode.getElementsData(elementType));
 	
 	if(elementType == ELEMENT_VEHICLE && client.player && client.player.vehicle)
@@ -36,7 +36,7 @@ removeMode.enableRemoveMode = (client, elementType) =>
 
 removeMode.disableRemoveMode = (client) =>
 {
-	clientData.set(client, 'removeMode', null);
+	cd.set(client, 'removeMode', null);
 	util.callClientFunction(client, 'removeMode.disable');
 };
 
@@ -55,7 +55,7 @@ removeMode.getClientsInRemoveMode = (elementType) =>
 	var clients = [];
 	getClients().forEach(client2 =>
 	{
-		if(elementType == clientData.get(client2, 'removeMode'))
+		if(elementType == cd.get(client2, 'removeMode'))
 		{
 			clients.push(client2);
 		}

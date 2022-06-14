@@ -11,7 +11,7 @@ admin.paths.players = 'Data/' + util.getCurrentShortGameName() + '/Players.xml';
 // events
 events.onPlayerJoined.push((event, client) =>
 {
-	clientData.set(client, 'level', xml.getAttr(admin.paths.players, 'Player', 'name', client.name, 'level', admin.defaultPlayerLevel));
+	cd.set(client, 'level', xml.getAttr(admin.paths.players, 'Player', 'name', client.name, 'level', admin.defaultPlayerLevel));
 });
 
 events.onPlayerCommand.push((event, client, command, parameters) =>
@@ -59,7 +59,7 @@ cmds.setlevel = (client, _target, _newLevel) =>
 	if(client == target)
 		return chat.pm(client, "You can't use this command on your own account.");
 	
-	if(level >= clientData.get(client, 'level'))
+	if(level >= cd.get(client, 'level'))
 		return chat.pm(client, 'Their admin level is either the same or more than yours.');
 	
 	chat.all(client.name + " changed " + target.name + "'s admin level to " + newLevel + ". (" + (newLevel >= level ? "+"+(newLevel-level) : "-"+(level-newLevel)) + ")");
@@ -104,7 +104,7 @@ cmds.alladmin = (client, _level) =>
 // client level
 admin.setClientLevel = (client, level) =>
 {
-	clientData.set(client, 'level', level);
+	cd.set(client, 'level', level);
 	if(level == admin.defaultPlayerLevel)
 		xml.removeAttr(admin.paths.players, 'Player', 'name', client.name, 'level');
 	else
@@ -113,5 +113,5 @@ admin.setClientLevel = (client, level) =>
 
 admin.getClientLevel = (client) =>
 {
-	return clientData.get(client, 'level');
+	return cd.get(client, 'level');
 };

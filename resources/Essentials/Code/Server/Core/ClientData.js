@@ -1,109 +1,110 @@
-global.clientData = {};
+global.cd = {};
 
-clientData.clients = new Map();
-
-var addPlayerCB = (event,client) =>
-{
-	clientData.clients[client.index] = {};
-};
-
-(() => getClients().forEach(client => addPlayerCB(null, client)))();
+cd.clients = new Map();
 
 // events
+var addPlayerCB = (event, client) =>
+{
+	cd.clients[client.index] = {};
+};
+
 events.onPlayerJoined.push(addPlayerCB);
 
 events.onPlayerQuit.push((event,client,type) =>
 {
-	clientData.clients[client.index] = undefined;
+	cd.clients[client.index] = undefined;
 });
 
+// load
+(() => getClients().forEach(client => addPlayerCB(null, client)))();
+
 // string
-clientData.set = (client, name, value) =>
+cd.set = (client, name, value) =>
 {
-	clientData.clients[client.index][name] = value;
+	cd.clients[client.index][name] = value;
 };
 
-clientData.unset = (client, name) =>
+cd.unset = (client, name) =>
 {
-	clientData.clients[client.index][name] = undefined;
+	cd.clients[client.index][name] = undefined;
 };
 
-clientData.get = (client, name) =>
+cd.get = (client, name) =>
 {
-	return clientData.clients[client.index][name];
+	return cd.clients[client.index][name];
 };
 
-clientData.has = (client, name) =>
+cd.has = (client, name) =>
 {
-	return clientData.clients[client.index][name] !== undefined;
+	return cd.clients[client.index][name] !== undefined;
 };
 
 // array
-clientData.setarr = (client, name, value) =>
+cd.setarr = (client, name, value) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
-		clientData.clients[client.index][name] = [value];
+	if(cd.clients[client.index][name] === undefined)
+		cd.clients[client.index][name] = [value];
 	else
-		clientData.clients[client.index][name].push(value);
+		cd.clients[client.index][name].push(value);
 };
 
-clientData.unsetarr = (client, name, value) =>
+cd.unsetarr = (client, name, value) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
+	if(cd.clients[client.index][name] === undefined)
 		return;
-	var index = clientData.clients[client.index][name].indexOf(value);
+	var index = cd.clients[client.index][name].indexOf(value);
 	if(index != -1)
-		clientData.clients[client.index][name].splice(index, 1);
-	if(clientData.clients[client.index][name].length == 0)
-		clientData.clients[client.index][name] = undefined;
+		cd.clients[client.index][name].splice(index, 1);
+	if(cd.clients[client.index][name].length == 0)
+		cd.clients[client.index][name] = undefined;
 };
 
 // map
-clientData.setmap = (client, name, key, value) =>
+cd.setmap = (client, name, key, value) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
-		clientData.clients[client.index][name] = new Map();
-	clientData.clients[client.index][name].set(key, value);
+	if(cd.clients[client.index][name] === undefined)
+		cd.clients[client.index][name] = new Map();
+	cd.clients[client.index][name].set(key, value);
 };
 
-clientData.unsetmap = (client, name, key) =>
+cd.unsetmap = (client, name, key) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
+	if(cd.clients[client.index][name] === undefined)
 		return;
-	clientData.clients[client.index][name].delete(key);
+	cd.clients[client.index][name].delete(key);
 };
 
-clientData.clearmap = (client, name) =>
+cd.clearmap = (client, name) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
+	if(cd.clients[client.index][name] === undefined)
 		return;
-	clientData.clients[client.index][name].clear();
+	cd.clients[client.index][name].clear();
 };
 
-clientData.getmap = (client, name, key) =>
+cd.getmap = (client, name, key) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
+	if(cd.clients[client.index][name] === undefined)
 		return;
-	return clientData.clients[client.index][name].get(key);
+	return cd.clients[client.index][name].get(key);
 };
 
-clientData.hasmap = (client, name, key) =>
+cd.hasmap = (client, name, key) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
+	if(cd.clients[client.index][name] === undefined)
 		return false;
-	return clientData.clients[client.index][name].has(key);
+	return cd.clients[client.index][name].has(key);
 };
 
-clientData.getmapcontainer = (client, name) =>
+cd.getmapcontainer = (client, name) =>
 {
-	if(clientData.clients[client.index][name] === undefined)
-		clientData.clients[client.index][name] = new Map();
-	return clientData.clients[client.index][name];
+	if(cd.clients[client.index][name] === undefined)
+		cd.clients[client.index][name] = new Map();
+	return cd.clients[client.index][name];
 };
 
 // clear
-clientData.clear = (client) =>
+cd.clear = (client) =>
 {
-	clientData.clients[client.index].elements.forEach(element => destroyElement(element));
-	clientData.clients[client.index] = undefined;
+	cd.clients[client.index].elements.forEach(element => destroyElement(element));
+	cd.clients[client.index] = undefined;
 };

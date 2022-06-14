@@ -13,7 +13,7 @@ var cb1 = (e,c) => {
 		return;
 	}
 	
-	clientData.set(c, 'playerModel', util.getRandomPedModel());
+	cd.set(c, 'playerModel', util.getRandomPedModel());
 	spawn.spawnPlayer(c);
 };
 events.onPlayerJoined.push(cb1);
@@ -63,9 +63,9 @@ events.onPedWasted.push((e,p,a,w,pp) => {
 	
 	var useRandomSkinOnRespawn = true;
 	if(useRandomSkinOnRespawn)
-		clientData.set(clientWhoDied, 'playerModel', util.getRandomPedModel());
+		cd.set(clientWhoDied, 'playerModel', util.getRandomPedModel());
 	else
-		clientData.set(clientWhoDied, 'playerModel', p.modelIndex);
+		cd.set(clientWhoDied, 'playerModel', p.modelIndex);
 	
 	util.clientTimer(clientWhoDied, function()
 	{
@@ -232,7 +232,7 @@ spawn.getDataPath = () =>
 
 spawn.spawnPlayer = (client) =>
 {
-	var model = clientData.get(client, 'playerModel');
+	var model = cd.get(client, 'playerModel');
 	var spawnDataIndex = spawn.spawns.length == 0 ? -1 : util.randLen(spawn.spawns.length);
 	var position = spawn.spawns.length == 0 ? spawn.getDefaultSpawnPosition() : spawn.spawns[spawnDataIndex].position;
 	var heading = spawn.spawns.length == 0 ? spawn.getDefaultSpawnHeading() : spawn.spawns[spawnDataIndex].heading;

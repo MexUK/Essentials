@@ -216,7 +216,7 @@ commands.bind = (cmd2, callback) =>
 {
 	addCommandHandler(cmd2, (cmd,arg,client) =>
 	{
-		if(clientData.get(client, 'registered') && !clientData.get(client, 'loggedIn') && cmd.toLowerCase() != 'login')
+		if(cd.get(client, 'registered') && !cd.get(client, 'loggedIn') && cmd.toLowerCase() != 'login')
 			return chat.pm(client, "You aren't logged in.");
 		
 		if(commands.isDisabled(cmd))

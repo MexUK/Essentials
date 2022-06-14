@@ -13,7 +13,7 @@ events.onPlayerJoined.push((event,client) =>
 	util.setClientVariable(client, 'generic.spawnArmour', generic.spawnArmour);
 	util.callClientFunction(client, 'forceSnowing', generic.snowing);
 	
-	clientData.set(client, 'proofs', [false, false, false, false, false]);
+	cd.set(client, 'proofs', [false, false, false, false, false]);
 });
 
 // commands
@@ -790,7 +790,7 @@ cmds.bulletproof = (client, _target, _state) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
-	var proofs = clientData.get(client, 'proofs');
+	var proofs = cd.get(client, 'proofs');
 	if(_state === undefined)
 		return chat.all(target.name + ' is ' + (proofs[proofIDs.BULLET_PROOF] ? '' : 'not ') + 'bullet proof.');
 	
@@ -800,7 +800,7 @@ cmds.bulletproof = (client, _target, _state) =>
 	
 	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "bullet proof.");
 	proofs[proofIDs.BULLET_PROOF] = state;
-	clientData.set(client, 'proofs', proofs);
+	cd.set(client, 'proofs', proofs);
 	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
 };
 
@@ -822,7 +822,7 @@ cmds.fireproof = (client, _target, _state) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
-	var proofs = clientData.get(client, 'proofs');
+	var proofs = cd.get(client, 'proofs');
 	if(_state === undefined)
 		return chat.all(target.name + ' is ' + (proofs[proofIDs.FIRE_PROOF] ? '' : 'not ') + 'fire proof.');
 	
@@ -832,7 +832,7 @@ cmds.fireproof = (client, _target, _state) =>
 	
 	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "fire proof.");
 	proofs[proofIDs.FIRE_PROOF] = state;
-	clientData.set(client, 'proofs', proofs);
+	cd.set(client, 'proofs', proofs);
 	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
 };
 
@@ -854,7 +854,7 @@ cmds.explosionproof = (client, _target, _state) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
-	var proofs = clientData.get(client, 'proofs');
+	var proofs = cd.get(client, 'proofs');
 	if(_state === undefined)
 		return chat.all(target.name + ' is ' + (proofs[proofIDs.EXPLOSION_PROOF] ? '' : 'not ') + 'explosion proof.');
 	
@@ -864,7 +864,7 @@ cmds.explosionproof = (client, _target, _state) =>
 	
 	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "explosion proof.");
 	proofs[proofIDs.EXPLOSION_PROOF] = state;
-	clientData.set(client, 'proofs', proofs);
+	cd.set(client, 'proofs', proofs);
 	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
 };
 
@@ -886,7 +886,7 @@ cmds.collisionproof = (client, _target, _state) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
-	var proofs = clientData.get(client, 'proofs');
+	var proofs = cd.get(client, 'proofs');
 	if(_state === undefined)
 		return chat.all(target.name + ' is ' + (proofs[proofIDs.COLLISION_PROOF] ? '' : 'not ') + 'collision proof.');
 	
@@ -896,7 +896,7 @@ cmds.collisionproof = (client, _target, _state) =>
 	
 	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "collision proof.");
 	proofs[proofIDs.COLLISION_PROOF] = state;
-	clientData.set(client, 'proofs', proofs);
+	cd.set(client, 'proofs', proofs);
 	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
 };
 
@@ -918,7 +918,7 @@ cmds.meleeproof = (client, _target, _state) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
-	var proofs = clientData.get(client, 'proofs');
+	var proofs = cd.get(client, 'proofs');
 	if(_state === undefined)
 		return chat.all(target.name + ' is ' + (proofs[proofIDs.MELEE_PROOF] ? '' : 'not ') + 'melee proof.');
 	
@@ -928,7 +928,7 @@ cmds.meleeproof = (client, _target, _state) =>
 	
 	chat.all(client.name + " set " + target.name + " to be " + (state ? "" : "not ") + "melee proof.");
 	proofs[proofIDs.MELEE_PROOF] = state;
-	clientData.set(client, 'proofs', proofs);
+	cd.set(client, 'proofs', proofs);
 	util.callClientFunction(target, 'generic.setLocalPlayerProofs', proofs);
 };
 

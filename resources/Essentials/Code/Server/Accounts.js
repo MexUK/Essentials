@@ -7,8 +7,8 @@ accounts.path = 'Data/Global/Accounts.xml';
 // events
 events.onPlayerJoined.push((event, client) =>
 {
-	clientData.set(client, 'loggedIn', false);
-	clientData.set(client, 'registered', accounts.isNameRegistered(client.name));
+	cd.set(client, 'loggedIn', false);
+	cd.set(client, 'registered', accounts.isNameRegistered(client.name));
 });
 
 // commands
@@ -23,7 +23,7 @@ cmds.register = (client, ...args) =>
 		return chat.pm(client, "You didn't type a password.");
 	
 	accounts.addAccount(client.name, password);
-	clientData.set(client, 'registered', true);
+	cd.set(client, 'registered', true);
 	chat.all(client.name + " has registered their account.");
 };
 
@@ -34,7 +34,7 @@ cmds.login = (client, ...args) =>
 	if(!accounts.isNameRegistered(client.name))
 		return chat.pm(client, 'Username is not registered.');
 	
-	if(clientData.get(client, 'loggedIn'))
+	if(cd.get(client, 'loggedIn'))
 		return chat.pm(client, 'You are already logged in.');
 	
 	if(args.length == 0)
@@ -43,7 +43,7 @@ cmds.login = (client, ...args) =>
 	if(!accounts.isPasswordCorrect(client.name, password))
 		return chat.pm(client, "Invalid password.");
 	
-	clientData.set(client, 'loggedIn', true);
+	cd.set(client, 'loggedIn', true);
 	events.trigger('onPlayerLogin', null, client);
 	chat.all(client.name + " has logged in.");
 };
@@ -53,10 +53,10 @@ cmds.logout = (client) =>
 	if(!accounts.isNameRegistered(client.name))
 		return chat.pm(client, 'Username is not registered.');
 	
-	if(!clientData.get(client, 'loggedIn'))
+	if(!cd.get(client, 'loggedIn'))
 		return chat.pm(client, 'You are not logged in.');
 	
-	clientData.set(client, 'loggedIn', false);
+	cd.set(client, 'loggedIn', false);
 	events.trigger('onPlayerLogout', null, client);
 	chat.all(client.name + " has logged out.");
 };
@@ -77,7 +77,7 @@ cmds.accounts = (client) =>
 
 accounts.isClientAuthorized = (client) =>
 {
-	return !clientData.get(client, 'registered') || clientData.get(client, 'loggedIn');
+	return !cd.get(client, 'registered') || cd.get(client, 'loggedIn');
 };
 
 accounts.isNameRegistered = (name) =>
