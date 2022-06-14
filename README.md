@@ -1,5 +1,5 @@
 # Essentials Resource
-This resource, named Essentials, is for GTA:Connected multiplayer (GTAC).
+This resource, named Essentials, is for GTA:Connected multiplayer (GTAC). https://gtaconnected.com
 
 This resource works with III, VC, and SA.  Please note, this resource does not work with IV.
 
@@ -59,4 +59,14 @@ e.g. /setlevel PlayerName 9
 When in-game, type either /commands or /cmds.
 
 Also see Essentials Commands.txt in the Essentials-main folder.
+
+##### GTAC Wiki
+
+https://wiki.gtaconnected.com
+
+Useful information for getting started:
+
+https://wiki.gtaconnected.com/ServerManual
+
+https://wiki.gtaconnected.com/HostingAndJoining
 
