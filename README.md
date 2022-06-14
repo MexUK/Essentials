@@ -15,15 +15,15 @@ Over 200 commands are available to use, and a mapper is included.
 
 3. Download the server files from this URL: https://gtaconnected.com/downloads/
 
-4. Open the downloaded zip and extract the following 4 files into your Essentials-main folder:
-Server.exe
-mozglue_x86.dll
-mozjs-52_x86.dll
+4. Open the downloaded zip and extract the following 4 files into your Essentials-main folder:<br/>
+Server.exe<br/>
+mozglue_x86.dll<br/>
+mozjs-52_x86.dll<br/>
 nspr4_x86.dll
 
 ##### Creating a Level 10 Admin Account
 
-Note: In this resource, accounts are the same for all games, but admin levels are per game.
+Note: In this resource, accounts are the same for all games, but admin levels are per game.<br/>
 Note: This stage only needs to occur once.
 
 1. Start the server, by running Server.exe.
@@ -37,11 +37,13 @@ Note: This stage only needs to occur once.
 File Path: Essentials-main\resources\Essentials\Data\VC\Players.xml
 
 File Data:
+```xml
 <Root>
 	<Player name="Mex" level="10" />
 </Root>
+```
 
-Note: Choose the applicable game folder in the file path. (Either III, VC, SA.)
+Note: Choose the applicable game folder in the file path. (Either III, VC, SA.)<br/>
 Note: Change the username Mex to your username which you chose in the GTAC launcher.
 
 5. The server is now ready to start (again), and your admin account should now be setup.
@@ -49,10 +51,12 @@ Note: Change the username Mex to your username which you chose in the GTAC launc
 ##### Change a Player's Admin Level
 
 1) When in-game, type: /setlevel name level
+
 e.g. /setlevel PlayerName 9
 
 ##### View All Commands
 
 When in-game, type either /commands or /cmds.
+
 Also see Essentials Commands.txt in the Essentials-main folder.
 
