@@ -1,52 +1,58 @@
 # Essentials Resource
-This resource (Essentials) is compatible with the GTA:Connected multiplayer.
+This resource, named Essentials, is for GTA:Connected multiplayer (GTAC).
 
-Game support for Essentials: III, VC, or SA. (This resource does not currently support IV)
+This resource works with III, VC, and SA.  Please note, this resource does not work with IV.
 
-Essentials contains over 200 commands, comes with a mapper, and is free.
-
-Check Commands.txt for available commands.
+Over 200 commands are available to use, and a mapper is included.
 
 <hr>
 
-To get started:
+##### Getting Started
 
-(Registering your account.)
+1. Click the green Code button then click Download ZIP at this URL: https://github.com/MexUK/Essentials
 
-1) Start the server.
-2) Register an account by typing /register password
+2. Open the downloaded zip and extract Essentials-main to somewhere on your computer.
 
+3. Download the server files from this URL: https://gtaconnected.com/downloads/
 
+4. Open the downloaded zip and extract the following 4 files into your Essentials-main folder:
+Server.exe
+mozglue_x86.dll
+mozjs-52_x86.dll
+nspr4_x86.dll
 
-(Setting your account level.)
+##### Creating a Level 10 Admin Account
 
-3) Stop the server.
-4) Set your Players.xml file to the 3 lines of XML code below:
+Note: In this resource, accounts are the same for all games, but admin levels are per game.
+Note: This stage only needs to occur once.
 
-   The Players.xml file path is located at: resources/gtac-essentials/data/scripts/admin/Players.xml
+1. Start the server, by running Server.exe.
 
-```xml
+2. Register your account when in-game by typing /register password
+
+3. Now stop the server, by closing the server console.
+
+4. Add your username and level to the admin XML file.
+
+File Path: Essentials-main\resources\Essentials\Data\VC\Players.xml
+
+File Data:
 <Root>
-	<Player name="Mex" Level="10" />
+	<Player name="Mex" level="10" />
 </Root>
-```
 
-5) Change the username to the name that you registered with the /register command, then save the XML file.
-6) Start the server.
+Note: Choose the applicable game folder in the file path. (Either III, VC, SA.)
+Note: Change the username Mex to your username which you chose in the GTAC launcher.
 
+5. The server is now ready to start (again), and your admin account should now be setup.
 
+##### Change a Player's Admin Level
 
-(Generic.)
+1) When in-game, type: /setlevel name level
+e.g. /setlevel PlayerName 9
 
-7) To change another player's level, use this command in-game: /setlevel name level
+##### View All Commands
 
-   e.g. /setlevel PlayerName 10
-8) To view all commands in-game, type /commands
+When in-game, type either /commands or /cmds.
+Also see Essentials Commands.txt in the Essentials-main folder.
 
-
-
-Directory Contents Example
-
-![Image 1](pic1.png)
-![Image 2](pic2.png)
-![Image 3](pic3.png)
