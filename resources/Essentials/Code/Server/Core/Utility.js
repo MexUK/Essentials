@@ -1157,7 +1157,7 @@ util.getResolvedItem = (itemName) =>
 
 util.clientFunctionCalls =
 [
-	'keyBinds.onClientKeyDown',
+	'playerKeyBinds.onClientKeyDown',
 	'globalKeyBinds.onClientKeyDown',
 	'mapper.storeActiveObject',
 	'elements.isElementOnScreen',

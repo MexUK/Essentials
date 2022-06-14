@@ -1,31 +1,31 @@
-global.keyBinds = {};
+global.playerKeyBinds = {};
 
-keyBinds.path = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/KeyBinds.xml';
+playerKeyBinds.path = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/PlayerKeyBinds.xml';
 
 // events
 events.onPlayerJoined.push((event, client) =>
 {
 	var nameLower = client.name.toLowerCase();
-	xml.load(keyBinds.path, 'Key', (v) =>
+	xml.load(playerKeyBinds.path, 'Key', (v) =>
 	{
 		if(nameLower == v.name.toLowerCase())
 		{
-			keyBinds.createKeyBind(client, v.key, v.command, v.args.split(' '));
+			playerKeyBinds.createKeyBind(client, v.key, v.command, v.args.split(' '));
 		}
 	});
 });
 
-keyBinds.onClientKeyDown = (client, keyCode) =>
+playerKeyBinds.onClientKeyDown = (client, keyCode) =>
 {
 	var key = String.fromCharCode(keyCode);
 	
 	if(!util.isKey(key))
 		return;
 	
-	if(!keyBinds.isKeyBound(client, key))
+	if(!playerKeyBinds.isKeyBound(client, key))
 		return;
 	
-	var [command, args] = keyBinds.getBoundCommand(client, key);
+	var [command, args] = playerKeyBinds.getBoundCommand(client, key);
 	cmds[command.toLowerCase()](client, ...args);
 };
 
@@ -39,7 +39,7 @@ cmds.key = (client, _key, _cmd, ...args) =>
 	
 	if(_cmd === undefined)
 	{
-		var data = keyBinds.getBoundCommand(client, key);
+		var data = playerKeyBinds.getBoundCommand(client, key);
 		if(data)
 		{
 			var [command, args] = data;
@@ -57,7 +57,7 @@ cmds.key = (client, _key, _cmd, ...args) =>
 		return chat.invalidCommand(client, _cmd);
 	
 	chat.all(client.name + " binded " + key + " key to command /" + cmd + (args.length == 0 ? '' : (' ' + args.join(' '))));
-	keyBinds.bindKey(client, key, cmd, args);
+	playerKeyBinds.bindKey(client, key, cmd, args);
 };
 
 cmds.unkey = (client, _key) =>
@@ -67,17 +67,17 @@ cmds.unkey = (client, _key) =>
 	
 	var key = util.key(_key);
 	
-	if(!keyBinds.isKeyBound(client, key))
+	if(!playerKeyBinds.isKeyBound(client, key))
 		return chat.pm(client, "You don't have key " + key + " bound to a command.");
 	
-	var [command, args] = keyBinds.getBoundCommand(client, key);
+	var [command, args] = playerKeyBinds.getBoundCommand(client, key);
 	chat.all(client.name + " unbinded " + key + " key from command /" + command + (args.length == 0 ? '' : (' ' + args.join(' '))) + ".");
-	keyBinds.unbindKey(client, key);
+	playerKeyBinds.unbindKey(client, key);
 };
 
 cmds.keys = (client) =>
 {
-	var keys = keyBinds.getBoundKeys(client);
+	var keys = playerKeyBinds.getBoundKeys(client);
 	
 	if(keys.length == 0)
 		chat.all(client.name + " doesn't have any keys bound to a command.");
@@ -91,15 +91,15 @@ cmds.keys = (client) =>
 
 
 
-keyBinds.createKeyBind = (client, key, cmd, args) =>
+playerKeyBinds.createKeyBind = (client, key, cmd, args) =>
 {
 	clientData.setmap(client, 'keys', key, [cmd, args]);
 };
 
-keyBinds.bindKey = (client, key, cmd, args) =>
+playerKeyBinds.bindKey = (client, key, cmd, args) =>
 {
-	keyBinds.createKeyBind(client, key, cmd, args);
-	xml.setAttr2(keyBinds.path, 'Key', {
+	playerKeyBinds.createKeyBind(client, key, cmd, args);
+	xml.setAttr2(playerKeyBinds.path, 'Key', {
 		name:		client.name,
 		key:		key
 	}, {
@@ -108,28 +108,28 @@ keyBinds.bindKey = (client, key, cmd, args) =>
 	});
 };
 
-keyBinds.unbindKey = (client, key) =>
+playerKeyBinds.unbindKey = (client, key) =>
 {
 	clientData.unsetmap(client, 'keys', key);
-	xml.removeAttr2(keyBinds.path, 'Key', {
+	xml.removeAttr2(playerKeyBinds.path, 'Key', {
 		name:		client.name,
 		key:		key
 	});
 };
 
-keyBinds.isKeyBound = (client, key) =>
+playerKeyBinds.isKeyBound = (client, key) =>
 {
 	return clientData.hasmap(client, 'keys', key);
 };
 
-keyBinds.getBoundKeys = (client) =>
+playerKeyBinds.getBoundKeys = (client) =>
 {
 	var keys = [];
 	clientData.getmapcontainer(client, 'keys').forEach((v,k) => keys.push([k,v]));
 	return keys;
 };
 
-keyBinds.getBoundCommand = (client, key) =>
+playerKeyBinds.getBoundCommand = (client, key) =>
 {
 	return clientData.getmap(client, 'keys', key);
 };
