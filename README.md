@@ -1,4 +1,4 @@
-# Essentials Resource
+# Essentials Resource for GTAC
 This resource, named Essentials, is for GTA:Connected multiplayer (GTAC). https://gtaconnected.com
 
 This resource works with III, VC, and SA.  Please note, this resource does not work with IV.
@@ -7,7 +7,7 @@ Over 200 commands are available to use, and a mapper is included.
 
 <hr>
 
-##### Getting Started
+#### Getting Started
 
 1. Click the green Code button then click Download ZIP at this URL: https://github.com/MexUK/Essentials
 
@@ -21,7 +21,7 @@ mozglue_x86.dll<br/>
 mozjs-52_x86.dll<br/>
 nspr4_x86.dll
 
-##### Creating a Level 10 Admin Account
+#### Creating a Level 10 Admin Account
 
 Note: In this resource, accounts are the same for all games, but admin levels are per game.<br/>
 Note: This stage only needs to occur once.
@@ -48,19 +48,19 @@ Note: Change the username Mex to your username which you chose in the GTAC launc
 
 5. The server is now ready to start (again), and your admin account should now be setup.
 
-##### Change a Player's Admin Level
+#### Change a Player's Admin Level
 
 1) When in-game, type: /setlevel name level
 
 e.g. /setlevel PlayerName 9
 
-##### View All Commands
+#### View All Commands
 
 When in-game, type either /commands or /cmds.
 
 Also see Essentials Commands.txt in the Essentials-main folder.
 
-##### GTAC Wiki
+#### GTAC Wiki
 
 https://wiki.gtaconnected.com
 
