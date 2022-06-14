@@ -70,3 +70,7 @@ https://wiki.gtaconnected.com/ServerManual
 
 https://wiki.gtaconnected.com/HostingAndJoining
 
+#### Example Folder Layout
+
+![Example-Folder-Layout](Example-Folder-Layout.png)
+
