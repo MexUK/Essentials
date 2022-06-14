@@ -4,7 +4,8 @@ util.timers = {};
 util.messages = {};
 
 // data
-util.gameNames = ['', 'GTA III', 'GTA VC', 'GTA SA', 'GTA IV'];
+util.gameNames = ['', 'GTA III', 'GTA VC', 'GTA SA', '', 'GTA IV'];
+util.shortGameNames = ['UnknownGame', 'III', 'VC', 'SA', '', 'IV'];
 
 util.boolOptionsLower = new Map();
 util.boolOptionsLower.set('true', true);
@@ -1248,6 +1249,16 @@ util.getVariableFromClients = (clients, variableName) =>
 util.getGameName = (gameId) =>
 {
 	return util.gameNames[gameId] ? util.gameNames[gameId] : 'Unknown Game';
+};
+
+util.getShortGameName = (gameId) =>
+{
+	return util.shortGameNames[gameId] ? util.shortGameNames[gameId] : 'Unknown Game';
+};
+
+util.getCurrentShortGameName = () =>
+{
+	return util.getShortGameName(server.game);
 };
 
 util.objectsToArray = (objects, properties) =>

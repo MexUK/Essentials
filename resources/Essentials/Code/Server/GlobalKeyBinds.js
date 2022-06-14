@@ -1,7 +1,7 @@
 global.globalKeyBinds = {};
 
 globalKeyBinds.binds = new Map();
-globalKeyBinds.path = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/GlobalKeyBinds.xml';
+globalKeyBinds.path = 'Data/' + util.getCurrentShortGameName() + '/GlobalKeyBinds.xml';
 
 // events
 globalKeyBinds.onClientKeyDown = (client, keyCode) =>

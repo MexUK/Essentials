@@ -89,7 +89,7 @@ mapper.loadAllMaps = function()
 // map
 mapper.getMapPath = function(mapName)
 {
-	return 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Maps/'+mapName+'.txt';
+	return 'Data/' + util.getCurrentShortGameName() + '/Maps/'+mapName+'.txt';
 };
 
 mapper.loadMap = function(mapName)

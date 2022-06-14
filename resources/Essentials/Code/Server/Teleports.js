@@ -1,6 +1,6 @@
 global.teleports = {};
 
-teleports.path = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Teleports.xml';
+teleports.path = 'Data/' + util.getCurrentShortGameName() + '/Teleports.xml';
 
 teleports.teleports = [];
 

@@ -16,16 +16,17 @@ elements.gameFolderNames =
 	'iii',
 	'vc',
 	'sa',
+	'unknown2',
 	'iv'
 ];
 
 elements.paths = {};
-elements.paths.objects	= 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Elements/Objects.xml';
-elements.paths.vehicles	= 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Elements/Vehicles.xml';
-elements.paths.pickups	= 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Elements/Pickups.xml';
-elements.paths.spheres	= 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Elements/Spheres.xml';
-elements.paths.peds		= 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Elements/Peds.xml';
-elements.paths.blips	= 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Elements/Blips.xml';
+elements.paths.objects	= 'Data/' + util.getCurrentShortGameName() + '/Elements/Objects.xml';
+elements.paths.vehicles	= 'Data/' + util.getCurrentShortGameName() + '/Elements/Vehicles.xml';
+elements.paths.pickups	= 'Data/' + util.getCurrentShortGameName() + '/Elements/Pickups.xml';
+elements.paths.spheres	= 'Data/' + util.getCurrentShortGameName() + '/Elements/Spheres.xml';
+elements.paths.peds		= 'Data/' + util.getCurrentShortGameName() + '/Elements/Peds.xml';
+elements.paths.blips	= 'Data/' + util.getCurrentShortGameName() + '/Elements/Blips.xml';
 
 elements.data = {};
 elements.data.objects = [];

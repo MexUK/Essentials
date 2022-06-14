@@ -1,7 +1,7 @@
 global.spawn = {};
 
-spawn.spawnsPath = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/Spawns.xml';
-spawn.dataPath = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/SpawnData.xml';
+spawn.spawnsPath = 'Data/' + util.getCurrentShortGameName() + '/Spawns.xml';
+spawn.dataPath = 'Data/' + util.getCurrentShortGameName() + '/SpawnData.xml';
 
 spawn.spawns = [];
 

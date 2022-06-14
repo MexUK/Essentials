@@ -1,6 +1,6 @@
 global.playerKeyBinds = {};
 
-playerKeyBinds.path = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/PlayerKeyBinds.xml';
+playerKeyBinds.path = 'Data/' + util.getCurrentShortGameName() + '/PlayerKeyBinds.xml';
 
 // events
 events.onPlayerJoined.push((event, client) =>
