@@ -6,7 +6,8 @@ admin.invalidCommandMessageEnabled = true;
 
 admin.paths = {};
 admin.paths.adminDir = 'Data/Global/';
-admin.paths.players = admin.paths.adminDir + 'Players.xml';
+admin.paths.adminDir2 = 'Data/' + ['UnknownGame','III','VC','SA'][server.game] + '/';
+admin.paths.players = admin.paths.adminDir2 + 'Players.xml';
 admin.paths.commands = admin.paths.adminDir + 'Commands.xml';
 admin.paths.commandsDumpedXML = admin.paths.adminDir + 'Commands Dumped.xml';
 admin.paths.commandsDumpedTXT = admin.paths.adminDir + 'Commands Dumped.txt';
