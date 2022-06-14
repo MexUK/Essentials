@@ -58,6 +58,15 @@ addEventHandler('onPlayerQuit', function(event, client)
 	util.removePendingRequestedClientData(client);
 });
 
+// velocity
+util.velocityToSpeed = (velocity) => {
+	return velocity.length * 180.0;
+};
+
+util.speedToVelocity = (speed, headingRad) => {
+	return new Vec3(0.0, 0.0, 0.0).addPolar(speed / 180.0, headingRad);
+};
+
 // angle
 util.radians = function(deg)
 {

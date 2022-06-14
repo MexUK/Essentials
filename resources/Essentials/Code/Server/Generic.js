@@ -682,19 +682,22 @@ cmds.speed = (client, _target, _speed) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
+	let vehicle = target.player.vehicle;
+	let inVehicle = vehicle != null;
+
 	if(_speed === undefined)
-		return util.requestClientProperty(target, target.player.vehicle ? 'localPlayer.vehicle.velocity.squaredLength' : 'localPlayer.velocity.squaredLength', (speed) => chat.all(target.name + "'s speed is " + speed + "."));
+		return util.requestClientProperty(target, inVehicle ? 'localPlayer.vehicle.velocity' : 'localPlayer.velocity', (velocity) => chat.all(target.name + "'s " + (target.player.vehicle ? "vehicle " : "") + "speed is " + (util.velocityToSpeed(velocity)) + "."));
 	
 	var speed = util.float(_speed, null);
 	if(speed === null)
 		return chat.float(client, 'Speed', _speed);
 	
-	chat.all(client.name + " set " + target.name + "'s speed to " + speed + ".");
+	chat.all(client.name + " set " + target.name + "'s " + (inVehicle ? "vehicle " : "") + "speed to " + speed + ".");
 	
-	var heading = target.player.vehicle ? target.player.vehicle.heading : target.player.heading;
-	var velocity = new Vec3(0.0, 0.0, 0.0).addPolar(speed, heading + util.radians(90.0));
+	var heading = inVehicle ? vehicle.heading : target.player.heading;
+	var velocity = util.speedToVelocity(speed, heading + util.radians(90.0));
 	
-	if(target.player.vehicle)
+	if(inVehicle)
 		util.setClientVariable(target, 'localPlayer.vehicle.velocity', velocity);
 	else
 		util.setClientVariable(target, 'localPlayer.velocity', velocity);
