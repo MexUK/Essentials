@@ -17,11 +17,16 @@ commands.commands = new Map();
 // events
 commands.onInvalidCommand = (client, command, parameters) =>
 {
-	if(!commands.invalidCommandMessageEnabled)
-		return;
-	
-	chat.pm(client, "Command /"	+ command + " doesn't exist. To find a command, type: /commands search");
+	if(!accounts.isClientAuthorized(client))
+	{
+		chat.pm(client, "Command /"	+ command + " doesn't exist. Please login to use commands, because username " + client.name + " is registered.");
+	}
+	else if(commands.invalidCommandMessageEnabled)
+	{
+		chat.pm(client, "Command /"	+ command + " doesn't exist. To find a command, type: /commands search");
+	}
 };
+
 
 
 
