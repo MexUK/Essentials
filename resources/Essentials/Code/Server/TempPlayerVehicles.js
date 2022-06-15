@@ -43,7 +43,7 @@ cmds.tempvehicle = (client, _model) =>
 	
 	client.player.warpIntoVehicle(vehicle, 0);
 	
-	cd.setarr(client, global.tempPlayerVehicles.clientElementsKey, vehicle);
+	cd.array.set(client, global.tempPlayerVehicles.clientElementsKey, vehicle);
 	cd.set(client, global.tempPlayerVehicles.clientVehicleKey, vehicle);
 };
 
@@ -55,7 +55,7 @@ tempPlayerVehicles.removeVehicle = (client) =>
 		return;
 	
 	cd.unset(client, global.tempPlayerVehicles.clientVehicleKey);
-	cd.unsetarr(client, global.tempPlayerVehicles.clientElementsKey, vehicle);
+	cd.array.unset(client, global.tempPlayerVehicles.clientElementsKey, vehicle);
 	destroyElement(vehicle);
 };
 

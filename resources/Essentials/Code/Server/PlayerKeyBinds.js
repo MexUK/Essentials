@@ -101,17 +101,17 @@ cmds.keys = (client) =>
 
 playerKeyBinds.createKeyBind = (client, key, cmd, args) =>
 {
-	cd.setmap(client, 'keys', key, [cmd, args]);
+	cd.map.set(client, 'keys', key, [cmd, args]);
 };
 
 playerKeyBinds.destroyKeyBind = (client, key) =>
 {
-	cd.unsetmap(client, 'keys', key);
+	cd.map.unset(client, 'keys', key);
 };
 
 playerKeyBinds.destroyAllKeyBinds = (client) =>
 {
-	cd.clearmap(client, 'keys');
+	cd.map.clear(client, 'keys');
 };
 
 playerKeyBinds.bindKey = (client, key, cmd, args) =>
@@ -128,7 +128,7 @@ playerKeyBinds.bindKey = (client, key, cmd, args) =>
 
 playerKeyBinds.unbindKey = (client, key) =>
 {
-	cd.unsetmap(client, 'keys', key);
+	cd.map.unset(client, 'keys', key);
 	xml.removeAttr2(playerKeyBinds.path, 'Key', {
 		name:		client.name,
 		key:		key
@@ -137,17 +137,17 @@ playerKeyBinds.unbindKey = (client, key) =>
 
 playerKeyBinds.isKeyBound = (client, key) =>
 {
-	return cd.hasmap(client, 'keys', key);
+	return cd.map.has(client, 'keys', key);
 };
 
 playerKeyBinds.getBoundKeys = (client) =>
 {
 	var keys = [];
-	cd.getmapcontainer(client, 'keys').forEach((v,k) => keys.push([k,v]));
+	cd.map.getContainer(client, 'keys').forEach((v,k) => keys.push([k,v]));
 	return keys;
 };
 
 playerKeyBinds.getBoundCommand = (client, key) =>
 {
-	return cd.getmap(client, 'keys', key);
+	return cd.map.get(client, 'keys', key);
 };

@@ -1,6 +1,8 @@
 global.cd = {};
 
 cd.clients = {};
+cd.array = {};
+cd.map = {};
 
 
 
@@ -48,7 +50,7 @@ cd.has = (client, name) =>
 };
 
 // array
-cd.setarr = (client, name, value) =>
+cd.array.set = (client, name, value) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		cd.clients[client.index][name] = [value];
@@ -56,7 +58,7 @@ cd.setarr = (client, name, value) =>
 		cd.clients[client.index][name].push(value);
 };
 
-cd.unsetarr = (client, name, value) =>
+cd.array.unset = (client, name, value) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		return;
@@ -68,42 +70,42 @@ cd.unsetarr = (client, name, value) =>
 };
 
 // map
-cd.setmap = (client, name, key, value) =>
+cd.map.set = (client, name, key, value) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		cd.clients[client.index][name] = new Map();
 	cd.clients[client.index][name].set(key, value);
 };
 
-cd.unsetmap = (client, name, key) =>
+cd.map.unset = (client, name, key) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		return;
 	cd.clients[client.index][name].delete(key);
 };
 
-cd.clearmap = (client, name) =>
+cd.map.clear = (client, name) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		return;
 	cd.clients[client.index][name].clear();
 };
 
-cd.getmap = (client, name, key) =>
+cd.map.get = (client, name, key) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		return;
 	return cd.clients[client.index][name].get(key);
 };
 
-cd.hasmap = (client, name, key) =>
+cd.map.has = (client, name, key) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		return false;
 	return cd.clients[client.index][name].has(key);
 };
 
-cd.getmapcontainer = (client, name) =>
+cd.map.getContainer = (client, name) =>
 {
 	if(cd.clients[client.index][name] === undefined)
 		cd.clients[client.index][name] = new Map();
