@@ -52,13 +52,6 @@ util.disconnectReasons = [
 	'Kicked'
 ];
 
-// events
-addEventHandler('onPlayerQuit', function(event, client)
-{
-	util.killClientTimer(client);
-	util.removePendingRequestedClientData(client);
-});
-
 // velocity
 util.velocityToSpeed = (velocity) => {
 	return velocity.length * 180.0;
@@ -183,6 +176,26 @@ util.array = function(...args)
 	return out;
 };
 */
+
+util.arrayToKeys = (array) =>
+{
+	let dictionary = {};
+	array.map(v =>
+	{
+		dictionary[v] = true;
+	});
+	return dictionary;
+};
+
+util.arrayToKeysLower = (array) =>
+{
+	let dictionary = {};
+	array.map(v =>
+	{
+		dictionary[v.toLowerCase()] = true;
+	});
+	return dictionary;
+};
 
 util.getArrayKey = function(arr, value)
 {

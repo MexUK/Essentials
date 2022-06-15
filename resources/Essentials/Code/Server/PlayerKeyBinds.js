@@ -3,7 +3,7 @@ global.playerKeyBinds = {};
 playerKeyBinds.path = 'Data/' + util.getCurrentShortGameName() + '/PlayerKeyBinds.xml';
 
 // events
-events.onPlayerLogin.push((event, client) =>
+events.bind('onPlayerLogin', (event, client) =>
 {
 	var nameLower = client.name.toLowerCase();
 	xml.load(playerKeyBinds.path, 'Key', (v) =>
@@ -15,7 +15,7 @@ events.onPlayerLogin.push((event, client) =>
 	});
 });
 
-events.onPlayerLogout.push((event, client) =>
+events.bind('onPlayerLogout', (event, client) =>
 {
 	playerKeyBinds.destroyAllKeyBinds(client);
 });

@@ -355,6 +355,14 @@ commands.checkToRemoveCommandFromFile = (command) =>
 
 
 // load
+commands.bindAll = () =>
+{
+	for(var k in cmds)
+	{
+		commands.bind(k, cmds[k]);
+	}
+};
+
 setImmediate(() =>
 {
 	xml.load(commands.paths.commands, 'Command', (data) =>

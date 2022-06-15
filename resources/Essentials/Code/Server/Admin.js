@@ -9,12 +9,12 @@ admin.paths.players = 'Data/' + util.getCurrentShortGameName() + '/Players.xml';
 
 
 // events
-events.onPlayerJoined.push((event, client) =>
+events.bind('onPlayerJoined', (event, client) =>
 {
 	cd.set(client, 'level', xml.getAttr(admin.paths.players, 'Player', 'name', client.name, 'level', admin.defaultPlayerLevel));
 });
 
-events.onPlayerCommand.push((event, client, command, parameters) =>
+events.bind('onPlayerCommand', (event, client, command, parameters) =>
 {
 	if(!commands.exists(command))
 		commands.onInvalidCommand(client, command, parameters);

@@ -7,7 +7,7 @@ generic.spawnArmour = null;
 generic.snowing = false;
 
 // events
-events.onPlayerJoined.push((event,client) =>
+events.bind('onPlayerJoined', (event, client) =>
 {
 	util.setClientVariable(client, 'generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariable(client, 'generic.spawnArmour', generic.spawnArmour);

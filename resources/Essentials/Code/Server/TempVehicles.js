@@ -4,7 +4,7 @@ global.tempVehicles.clientVehicleKey = 'tempVehicle';
 global.tempVehicles.clientElementsKey = 'elements';
 
 // events
-events.onPedExitVehicle.push((event, ped, vehicle, seat) =>
+events.bind('onPedExitVehicle', (event, ped, vehicle, seat) =>
 {
 	if(ped.isType(ELEMENT_PLAYER))
 	{

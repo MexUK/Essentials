@@ -8,15 +8,17 @@
 	<!-- Load/ -->
 	<script src="Code/Server/Load/Before.js" type="server" language="javascript" />
 	
-	<!-- Core/ -->
-	<script src="Code/Server/Core/Chat.js" type="server" language="javascript" />
-	<script src="Code/Server/Core/ClientData.js" type="server" language="javascript" />
-	<script src="Code/Server/Core/Models.js" type="server" language="javascript" />
+	<!-- Core/ --> <!-- Intentionally not A-Z -->
 	<script src="Code/Server/Core/Utility.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/Chat.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/Events.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/ClientData.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/ClientNetwork.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/Models.js" type="server" language="javascript" />
 	<script src="Code/Server/Core/XML.js" type="server" language="javascript" />
 	
-	<script src="Code/Client/Core/Chat.js" type="client" language="javascript" />
 	<script src="Code/Client/Core/Utility.js" type="client" language="javascript" />
+	<script src="Code/Client/Core/Chat.js" type="client" language="javascript" />
 	
 	<!-- / -->
 	<script src="Code/Server/Accounts.js" type="server" language="javascript" />

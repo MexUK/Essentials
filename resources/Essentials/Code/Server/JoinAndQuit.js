@@ -1,13 +1,13 @@
 global.joinQuit = {};
 
 // events
-events.onPlayerJoined.push((e,c) =>
+events.bind('onPlayerJoined', (event, client) =>
 {
-	message(c.name+' has joined.');
+	message(client.name+' has joined.');
 });
 
-events.onPlayerQuit.push((e,c) =>
+events.bind('onPlayerQuit', (event, client, type) =>
 {
-	message(c.name+' has left.');
+	message(client.name+' has left.');
 });
 

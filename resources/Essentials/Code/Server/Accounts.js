@@ -5,7 +5,7 @@ accounts.pepper = 453785345; // Only change this value when clearing all user ac
 accounts.path = 'Data/Global/Accounts.xml';
 
 // events
-events.onPlayerJoined.push((event, client) =>
+events.bind('onPlayerJoined', (event, client) =>
 {
 	cd.set(client, 'loggedIn', false);
 	cd.set(client, 'registered', accounts.isNameRegistered(client.name));
@@ -17,7 +17,7 @@ cmds.register = (client, ...args) =>
 	var password = args.join(' ');
 	
 	if(accounts.isNameRegistered(client.name))
-		return chat.pm(client, 'Username is already registered.');
+		return chat.pm(client, 'Username ' + client.name + ' is already registered.');
 	
 	if(args.length == 0)
 		return chat.pm(client, "You didn't type a password.");
@@ -32,7 +32,7 @@ cmds.login = (client, ...args) =>
 	var password = args.join(' ');
 	
 	if(!accounts.isNameRegistered(client.name))
-		return chat.pm(client, 'Username is not registered.');
+		return chat.pm(client, 'Username ' + client.name + ' is not registered.');
 	
 	if(cd.get(client, 'loggedIn'))
 		return chat.pm(client, 'You are already logged in.');
@@ -51,7 +51,7 @@ cmds.login = (client, ...args) =>
 cmds.logout = (client) =>
 {
 	if(!accounts.isNameRegistered(client.name))
-		return chat.pm(client, 'Username is not registered.');
+		return chat.pm(client, 'Username ' + client.name + ' is not registered.');
 	
 	if(!cd.get(client, 'loggedIn'))
 		return chat.pm(client, 'You are not logged in.');

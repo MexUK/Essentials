@@ -1,6 +1,9 @@
 global.cd = {};
 
-cd.clients = new Map();
+cd.clients = {};
+
+
+
 
 // events
 var addPlayerCB = (event, client) =>
@@ -8,15 +11,20 @@ var addPlayerCB = (event, client) =>
 	cd.clients[client.index] = {};
 };
 
-events.onPlayerJoined.push(addPlayerCB);
-
-events.onPlayerQuit.push((event,client,type) =>
+events.bind('onPlayerJoined', addPlayerCB);
+events.bind('onPlayerQuit', (event, client, type) =>
 {
 	cd.clients[client.index] = undefined;
 });
 
+
+
+
 // load
 (() => getClients().forEach(client => addPlayerCB(null, client)))();
+
+
+
 
 // string
 cd.set = (client, name, value) =>

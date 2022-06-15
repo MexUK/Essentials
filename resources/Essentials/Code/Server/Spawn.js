@@ -16,9 +16,10 @@ var cb1 = (e,c) => {
 	cd.set(c, 'playerModel', util.getRandomPedModel());
 	spawn.spawnPlayer(c);
 };
-events.onPlayerJoined.push(cb1);
 
-events.onPedWasted.push((e,p,a,w,pp) => {
+events.bind('onPlayerJoined', cb1);
+
+events.bind('onPedWasted', (e,p,a,w,pp) => {
 	if(!p.isType(ELEMENT_PLAYER))
 		return;
 	
