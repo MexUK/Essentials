@@ -1598,8 +1598,8 @@ cmds.eject = (client, _target) =>
 	chat.all(client.name + " ejected " + target.name + " from their vehicle.");
 	util.callClientFunction(target, 'generic.removeLocalPlayerFromVehicle');
 	
-	if(global.tempVehicles && tempVehicles.hasVehicle(target))
-		tempVehicles.removeVehicle(target);
+	if(global.tempPlayerVehicles && tempPlayerVehicles.hasVehicle(target))
+		tempPlayerVehicles.removeVehicle(target);
 };
 
 cmds.pingabove = (client, _amount) =>

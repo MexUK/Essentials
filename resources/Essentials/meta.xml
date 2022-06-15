@@ -36,7 +36,7 @@
 	<script src="Code/Server/Resources.js" type="server" language="javascript" />
 	<script src="Code/Server/Spawn.js" type="server" language="javascript" />
 	<script src="Code/Server/Teleports.js" type="server" language="javascript" />
-	<script src="Code/Server/TempVehicles.js" type="server" language="javascript" />
+	<script src="Code/Server/TempPlayerVehicles.js" type="server" language="javascript" />
 	<script src="Code/Server/Weapons.js" type="server" language="javascript" />
 	
 	<script src="Code/Client/Elements.js" type="client" language="javascript" />
