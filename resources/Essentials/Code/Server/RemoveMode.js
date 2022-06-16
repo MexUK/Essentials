@@ -42,6 +42,12 @@ removeMode.disableRemoveMode = (client) =>
 
 removeMode.disableRemoveModeFromClientSide = (client) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+	
+	if(!removeMode.isAnyRemoveModeEnabled())
+		return;
+	
 	removeMode.disableRemoveMode(client);
 };
 
@@ -101,6 +107,26 @@ removeMode.getElementIds = (elementType) =>
 
 removeMode.removeElement = (client, elementType, elementId) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+	
+	if(!util.isInt(elementId))
+		return;
+	
+	if(!util.isInt(elementType))
+		return;
+	
+	if(!util.isElementId(elementId))
+		return;
+	
+	if(elementType != ELEMENT_OBJECT
+	&& elementType != ELEMENT_VEHICLE
+	&& elementType != ELEMENT_PICKUP
+	&& elementType != _ELEMENT_MARKER
+	&& elementType != ELEMENT_PED
+	&& elementType != ELEMENT_BLIP)
+		return;
+	
 	if(!removeMode.isRemoveModeEnabled(client, elementType))
 		return;
 	

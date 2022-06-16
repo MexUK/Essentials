@@ -6,6 +6,12 @@ globalKeyBinds.path = 'Data/' + util.getCurrentShortGameName() + '/GlobalKeyBind
 // events
 globalKeyBinds.onClientKeyDown = (client, keyCode) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+
+	if(!util.isIntValue(keyCode))
+		return;
+	
 	var key = String.fromCharCode(keyCode);
 	
 	if(!util.isKey(key))

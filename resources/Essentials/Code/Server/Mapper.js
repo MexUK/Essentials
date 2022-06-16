@@ -10,9 +10,24 @@ bindEventHandler('onResourceStart', thisResource, function()
 
 mapper.storeActiveObject = (client, objectId, modelId, position, rotation) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+
 	if(!mapper.isEnabled(client))
 		return;
 	
+	if(!util.isIntValue(objectId))
+		return;
+
+	if(!util.isIntValue(modelId))
+		return;
+
+	if(!util.isVec3Value(position))
+		return;
+
+	if(!util.isVec3Value(rotation))
+		return;
+
 	if(elements.isObject(objectId))
 		elements.setObjectData(objectId, modelId, position, rotation);
 	else

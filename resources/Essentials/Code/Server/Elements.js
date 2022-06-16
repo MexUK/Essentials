@@ -145,6 +145,18 @@ elements.getElementTypeName = (elementId) =>
 
 elements.isElementOnScreen = (client, elementId, onScreen) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+
+	if(!util.isIntValue(elementId))
+		return;
+	
+	if(!util.isBoolValue(onScreen))
+		return;
+	
+	if(!util.isElementId(elementId))
+		return;
+	
 	chat.all(elements.getElementTypeName(elementId) + " ID " + elementId + " is " + (onScreen ? '' : 'not ') + 'on ' + client.name + "'s screen.");
 };
 

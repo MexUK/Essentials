@@ -899,6 +899,12 @@ util.toString = (object) =>
 	return object.toString();
 };
 
+// string input
+util.isBool = (inputText) =>
+{
+	return inputText !== undefined && util.boolOptionsLower.has(inputText.toLowerCase());
+};
+
 util.isInt = (inputText) =>
 {
 	return inputText !== undefined && !isNaN(parseInt(inputText));
@@ -909,9 +915,48 @@ util.isFloat = (inputText) =>
 	return inputText !== undefined && !isNaN(parseFloat(inputText));
 };
 
-util.isBool = (inputText) =>
+// raw input
+util.isBoolValue = (value) =>
 {
-	return inputText !== undefined && util.boolOptionsLower.has(inputText.toLowerCase());
+	return value !== undefined
+		&& (typeof value) == 'boolean';
+};
+
+util.isIntValue = (value) =>
+{
+	return value !== undefined
+		&& (typeof value) == 'number'
+		&& !isNaN(value);
+};
+
+util.isFloatValue = (value) =>
+{
+	return value !== undefined
+		&& (typeof value) == 'number'
+		&& !isNaN(value);
+};
+
+util.isStringValue = (value) =>
+{
+	return value !== undefined
+		&& (typeof value) == 'string';
+};
+
+util.isVec2Value = (value) =>
+{
+	return value !== undefined
+		&& (typeof value) == 'Vec2'
+		&& util.isFloatValue(value.x)
+		&& util.isFloatValue(value.y);
+};
+
+util.isVec3Value = (value) =>
+{
+	return value !== undefined
+		&& (typeof value) == 'Vec3'
+		&& util.isFloatValue(value.x)
+		&& util.isFloatValue(value.y)
+		&& util.isFloatValue(value.z);
 };
 
 util.between = (value, min, max) =>
@@ -1083,6 +1128,12 @@ util.removePendingRequestedClientFunctionCalls = function(client)
 
 addNetworkHandler('requestClientVariable', (client, result) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+	
+	if(result === undefined)
+		return;
+
 	if(!requestClientVariables.has(client))
 		return;
 	
@@ -1093,6 +1144,12 @@ addNetworkHandler('requestClientVariable', (client, result) =>
 
 addNetworkHandler('requestClientProperty', (client, result) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+	
+	if(result === undefined)
+		return;
+
 	if(!requestClientProperties.has(client))
 		return;
 	
@@ -1103,6 +1160,12 @@ addNetworkHandler('requestClientProperty', (client, result) =>
 
 addNetworkHandler('requestClientFunctionCall', (client, result) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+	
+	if(result === undefined)
+		return;
+
 	if(!requestClientFunctionCalls.has(client))
 		return;
 	
@@ -1132,6 +1195,15 @@ util.clientFunctionCalls =
 
 addNetworkHandler('callServerFunction', (client, functionName, ...args) =>
 {
+	if(!accounts.isClientAuthorized(client))
+		return;
+
+	if(functionName === undefined)
+		return;
+	
+	if(!util.isStringValue(functionName))
+		return;
+
 	for(var i in util.clientFunctionCalls)
 	{
 		if(functionName == util.clientFunctionCalls[i])
@@ -1244,3 +1316,7 @@ util.objectsToArray = (objects, properties) =>
 	return result;
 };
 
+util.isElementId = (elementId) =>
+{
+	return getElementFromId(elementId) != null;
+};
