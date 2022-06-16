@@ -29,6 +29,7 @@ playerKeyBinds.onClientKeyDown = (client, keyCode) =>
 		return;
 
 	var key = String.fromCharCode(keyCode);
+	key = key.toUpperCase();
 	
 	if(!util.isKey(key))
 		return;
@@ -46,7 +47,7 @@ cmds.key = (client, _key, _cmd, ...args) =>
 	if(!util.isKey(_key))
 		return chat.invalidKey(client, _key);
 	
-	var key = util.key(_key);
+	var key = util.key(_key).toUpperCase();
 	
 	if(_cmd === undefined)
 	{
@@ -76,7 +77,7 @@ cmds.unkey = (client, _key) =>
 	if(!util.isKey(_key))
 		return chat.invalidKey(client, _key);
 	
-	var key = util.key(_key);
+	var key = util.key(_key).toUpperCase();
 	
 	if(!playerKeyBinds.isKeyBound(client, key))
 		return chat.pm(client, "You don't have key " + key + " bound to a command.");

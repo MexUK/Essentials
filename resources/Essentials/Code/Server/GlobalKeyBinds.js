@@ -7,13 +7,14 @@ globalKeyBinds.path = 'Data/' + util.getCurrentShortGameName() + '/GlobalKeyBind
 globalKeyBinds.onClientKeyDown = (client, keyCode) =>
 {
 	if(!accounts.isClientAuthorized(client))
-		return;
+		return;toUpperCase()
 
 	if(!util.isIntValue(keyCode))
 		return;
 	
 	var key = String.fromCharCode(keyCode);
-	
+	key = key.toUpperCase();
+
 	if(!util.isKey(key))
 		return;
 	
@@ -36,7 +37,7 @@ cmds.gkey = (client, _key, _cmd, ...args) =>
 	if(!util.isKey(_key))
 		return chat.invalidKey(client, _key);
 	
-	var key = util.key(_key);
+	var key = util.key(_key).toUpperCase();
 	
 	if(_cmd === undefined)
 	{
@@ -66,7 +67,7 @@ cmds.ungkey = (client, _key) =>
 	if(!util.isKey(_key))
 		return chat.invalidKey(client, _key);
 	
-	var key = util.key(_key);
+	var key = util.key(_key).toUpperCase();
 	
 	if(!globalKeyBinds.isKeyBound(key))
 		return chat.pm(client, "Key " + key + " is not globally bound to a command.");
