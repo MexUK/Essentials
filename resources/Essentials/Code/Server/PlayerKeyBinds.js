@@ -29,10 +29,11 @@ playerKeyBinds.onClientKeyDown = (client, keyCode) =>
 		return;
 
 	var key = String.fromCharCode(keyCode);
-	key = key.toUpperCase();
 	
 	if(!util.isKey(key))
 		return;
+	
+	key = key.toUpperCase();
 	
 	if(!playerKeyBinds.isKeyBound(client, key))
 		return;

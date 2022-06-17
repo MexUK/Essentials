@@ -7,25 +7,23 @@ globalKeyBinds.path = 'Data/' + util.getCurrentShortGameName() + '/GlobalKeyBind
 globalKeyBinds.onClientKeyDown = (client, keyCode) =>
 {
 	if(!accounts.isClientAuthorized(client))
-		return;toUpperCase()
+	{
+		chat.pm(client, 'Please login before using global key binds, because your username is registered.');
+		return;
+	}
 
 	if(!util.isIntValue(keyCode))
 		return;
 	
 	var key = String.fromCharCode(keyCode);
-	key = key.toUpperCase();
 
 	if(!util.isKey(key))
 		return;
 	
+	key = key.toUpperCase();
+	
 	if(!globalKeyBinds.isKeyBound(key))
 		return;
-
-	if(!accounts.isClientAuthorized(client))
-	{
-		chat.pm(client, 'Please login before using global key binds, because your username is registered.');
-		return;
-	}
 
 	var [command, args] = globalKeyBinds.getBoundCommand(key);
 	cmds[command.toLowerCase()](client, ...args);

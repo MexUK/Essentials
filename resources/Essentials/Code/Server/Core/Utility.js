@@ -1183,7 +1183,7 @@ util.getResolvedItem = (itemName) =>
 	return o;
 };
 
-util.clientFunctionCalls =
+util.clientFunctionCalls = util.arrayToKeys(
 [
 	'playerKeyBinds.onClientKeyDown',
 	'globalKeyBinds.onClientKeyDown',
@@ -1191,27 +1191,20 @@ util.clientFunctionCalls =
 	'elements.isElementOnScreen',
 	'removeMode.removeElement',
 	'removeMode.disableRemoveModeFromClientSide'
-];
+]);
 
 addNetworkHandler('callServerFunction', (client, functionName, ...args) =>
 {
-	if(!accounts.isClientAuthorized(client))
-		return;
-
 	if(functionName === undefined)
 		return;
 	
 	if(!util.isStringValue(functionName))
 		return;
 
-	for(var i in util.clientFunctionCalls)
-	{
-		if(functionName == util.clientFunctionCalls[i])
-		{
-			util.getResolvedItem(functionName)(client, ...args);
-			break;
-		}
-	}
+	if(!util.clientFunctionCalls[functionName])
+		return;
+
+	util.getResolvedItem(functionName)(client, ...args);
 });
 
 util.callClientFunction = (client, functionName, ...args) =>
