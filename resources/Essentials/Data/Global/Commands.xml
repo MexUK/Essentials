@@ -33,7 +33,7 @@
 	<Command name="cmds" level="0" />
 	<Command name="collisionproof" level="0" />
 	<Command name="command" level="0" />
-	<Command name="commandalias" level="7" />
+	<Command name="commandalias" level="0" />
 	<Command name="commandaliases" level="0" />
 	<Command name="commandlevel" level="0" />
 	<Command name="commandlevels" level="0" />
@@ -250,4 +250,5 @@
 	<Command name="xoffset" level="0" />
 	<Command name="yoffset" level="0" />
 	<Command name="zoffset" level="0" />
+	<Command name="setcommandalias" level="7" />
 </Root>

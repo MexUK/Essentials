@@ -5,7 +5,7 @@ commandAliases.path = 'Data/Global/CommandAliases.xml';
 commandAliases.commandAliases = [];
 
 // commands
-cmds.commandalias = (client, _commandName, _commandAlias) =>
+cmds.commandalias = (client, _commandName) =>
 {
 	if(_commandName === undefined)
 		return chat.pm(client, "You didn't type a command name.");
@@ -14,22 +14,29 @@ cmds.commandalias = (client, _commandName, _commandAlias) =>
 		return chat.pm(client, 'Command not found.');
 	
 	var commandName = commands.getName(_commandName);
-	if(_commandAlias === undefined)
-	{
-		var commandIsAnAlias = commandAliases.isCommandAnAlias(commandName);
-		var commandAliasOf = commandAliases.getCommandAliasOf(commandName);
-		
-		var aliasesForCommand = commandAliases.getCommandAliases(commandName);
-		aliasesForCommand = aliasesForCommand.map((v) => v.clone);
-		
-		if(aliasesForCommand.length == 0 && !commandIsAnAlias)
-			return chat.all("Command /" + commandName + " is not an alias of any command, and does not have any command aliases.");
-		else if(aliasesForCommand.length == 0)
-			return chat.all("Command /" + commandName + " is an alias of command /" + commandAliasOf.original + ", and does not have any command aliases.");
-		else
-			return chat.all("Command /" + commandName + " is not an alias of any command, and has command aliases: /" + aliasesForCommand.join(' /'));
-	}
+	var commandIsAnAlias = commandAliases.isCommandAnAlias(commandName);
+	var commandAliasOf = commandAliases.getCommandAliasOf(commandName);
 	
+	var aliasesForCommand = commandAliases.getCommandAliases(commandName);
+	aliasesForCommand = aliasesForCommand.map((v) => v.clone);
+	
+	if(aliasesForCommand.length == 0 && !commandIsAnAlias)
+		return chat.all("Command /" + commandName + " is not an alias of any command, and does not have any command aliases.");
+	else if(aliasesForCommand.length == 0)
+		return chat.all("Command /" + commandName + " is an alias of command /" + commandAliasOf.original + ", and does not have any command aliases.");
+	else
+		return chat.all("Command /" + commandName + " is not an alias of any command, and has command aliases: /" + aliasesForCommand.join(' /'));
+};
+
+cmds.setcommandalias = (client, _commandName, _commandAlias) =>
+{
+	if(_commandName === undefined)
+		return chat.pm(client, "You didn't type a command name.");
+	
+	if(!commands.exists(_commandName))
+		return chat.pm(client, 'Command not found.');
+	
+	var commandName = commands.getName(_commandName);
 	if(commands.exists(_commandAlias))
 		return chat.pm(client, 'Command /' + _commandAlias + ' already exists.');
 	
