@@ -1,7 +1,9 @@
 global.generic = {};
 global.cmds = global.cmds || {};
 
-generic.path = 'Data/Global/Generic.xml';
+generic.globalSettingsFilePath = 'Data/Global/Generic.xml';
+generic.gameSettingsFilePath = 'Data/' + util.getCurrentShortGameName() + '/Generic.xml';
+generic.settings = {};
 generic.spawnHealth = null;
 generic.spawnArmour = null;
 generic.snowing = false;
@@ -2099,12 +2101,12 @@ generic.setSpawnHealth = (health) =>
 	util.setClientVariableForAll('generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariableForAll('generic.spawnArmour', generic.spawnArmour);
 	
-	xml.value.set(generic.path, 'SpawnHealth', health + "");
+	xml.value.set(generic.globalSettingsFilePath, 'SpawnHealth', health + "");
 };
 
 generic.loadSpawnHealth = () =>
 {
-	generic.spawnHealth = util.float(xml.value.get(generic.path, 'SpawnHealth'), 100.0);
+	generic.spawnHealth = util.float(xml.value.get(generic.globalSettingsFilePath, 'SpawnHealth'), 100.0);
 };
 
 
@@ -2123,12 +2125,12 @@ generic.setSpawnArmour = (armour) =>
 	util.setClientVariableForAll('generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariableForAll('generic.spawnArmour', generic.spawnArmour);
 	
-	xml.value.set(generic.path, 'SpawnArmour', armour + "");
+	xml.value.set(generic.globalSettingsFilePath, 'SpawnArmour', armour + "");
 };
 
 generic.loadSpawnArmour = () =>
 {
-	generic.spawnArmour = util.float(xml.value.get(generic.path, 'SpawnArmour'), 100.0);
+	generic.spawnArmour = util.float(xml.value.get(generic.globalSettingsFilePath, 'SpawnArmour'), 100.0);
 };
 
 generic.loadSpawnHealth();
@@ -2164,3 +2166,20 @@ generic.getCommandsArray = (cmds) =>
 		cmds2.pop();
 	return cmds2;
 };
+
+
+
+
+
+
+
+(() =>
+{
+	xml.load(generic.gameSettingsFilePath, 'setting', attributes =>
+	{
+		attributes.respawnDuration = parseInt(attributes.respawnDuration);
+		
+		generic.settings = attributes;
+	});
+})();
+
