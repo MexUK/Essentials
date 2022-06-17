@@ -60,7 +60,6 @@
 	<Command name="fireproof" level="0" />
 	<Command name="fix" level="0" />
 	<Command name="flip" level="0" />
-	<Command name="fly" level="0" />
 	<Command name="game" level="0" />
 	<Command name="gameversion" level="0" />
 	<Command name="get" level="0" />
@@ -86,6 +85,7 @@
 	<Command name="hp" level="0" />
 	<Command name="id" level="0" />
 	<Command name="interior" level="0" />
+	<Command name="interior2" level="0" />
 	<Command name="invalidcommandstatus" level="5" />
 	<Command name="isbliponscreen" level="0" />
 	<Command name="isgarageclosed" level="0" />
@@ -223,6 +223,7 @@
 	<Command name="ungkey" level="5" />
 	<Command name="unkey" level="0" />
 	<Command name="updateteleport" level="0" />
+	<Command name="userandomskinonspawn" level="0" />
 	<Command name="v" level="5" />
 	<Command name="vehicle" level="5" />
 	<Command name="vehicledimensions" level="0" />

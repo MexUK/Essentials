@@ -47,7 +47,6 @@
 /fireproof
 /fix
 /flip
-/fly
 /game
 /gameversion
 /get
@@ -70,6 +69,7 @@
 /hour
 /id
 /interior
+/interior2
 /invalidcommandstatus
 /isbliponscreen
 /isgarageclosed
@@ -195,6 +195,7 @@
 /ungkey
 /unkey
 /updateteleport
+/userandomskinonspawn
 /vehicle
 /vehicledimensions
 /vehicledistance
@@ -232,6 +233,7 @@
 /findcommand - Alias of /commands
 /findcommands - Alias of /commands
 /gotopos - Alias of /gotoposition
+/gun - Alias of /weapon
 /hp - Alias of /health
 /pos - Alias of /position
 /remcmdalias - Alias of /removecommandalias
