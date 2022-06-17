@@ -38,8 +38,7 @@ playerKeyBinds.onClientKeyDown = (client, keyCode) =>
 	if(!playerKeyBinds.isKeyBound(client, key))
 		return;
 	
-	var [command, args] = playerKeyBinds.getBoundCommand(client, key);
-	cmds[command.toLowerCase()](client, ...args);
+	playerKeyBinds.triggerCommand(client, key);
 };
 
 // commands
@@ -155,4 +154,10 @@ playerKeyBinds.getBoundKeys = (client) =>
 playerKeyBinds.getBoundCommand = (client, key) =>
 {
 	return cd.map.get(client, 'keys', key);
+};
+
+playerKeyBinds.triggerCommand = (client, key) =>
+{
+	var [command, args] = playerKeyBinds.getBoundCommand(client, key);
+	cmds[command.toLowerCase()](client, ...args);
 };
