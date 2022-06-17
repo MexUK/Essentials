@@ -70,7 +70,7 @@ events.bind('onPedWasted', (e,p,a,w,pp) => {
 	util.clientTimer(clientWhoDied, function()
 	{
 		spawn.spawnPlayer(clientWhoDied);
-	}, generic.respawnDuration);
+	}, generic.settings.respawnDuration);
 });
 
 // commands

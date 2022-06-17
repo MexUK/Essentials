@@ -3,7 +3,7 @@ global.playerKeyBinds = {};
 playerKeyBinds.keysDown = new Map();
 
 // events
-addEventHandler('onKeyDown', (event, key) =>
+events.bind('onKeyDown', (event, key) =>
 {
 	if(!playerKeyBinds.keysDown.has(key))
 	{
@@ -12,7 +12,7 @@ addEventHandler('onKeyDown', (event, key) =>
 	}
 });
 
-addEventHandler('onKeyUp', (event, key) =>
+events.bind('onKeyUp', (event, key) =>
 {
 	if(playerKeyBinds.keysDown.has(key))
 	{

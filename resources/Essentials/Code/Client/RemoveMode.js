@@ -25,7 +25,7 @@ removeMode.drawBB = true;
 removeMode.localPlayerPosition = null;
 removeMode.exitModeConfirm = 0;
 
-addEventHandler('onBeforeDrawHUD', function(e)
+events.bind('onBeforeDrawHUD', function(e)
 {
 	if(!removeMode.isEnabled())
 		return;
@@ -86,7 +86,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	removeMode.updateCamera();
 });
 
-addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
+events.bind('onMouseMove', function(e,mouse,isAbs,diff)
 {
 	if(!removeMode.enabled)
 		return;

@@ -1,0 +1,2 @@
+addEventHandler('onResourceReady', events.bindAll);
+

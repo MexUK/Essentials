@@ -183,13 +183,13 @@ generic.setLocalPlayerDamageStatus = (status) =>
 };
 
 // events
-addEventHandler('onPedSpawn', (event,ped) =>
+events.bind('onPedSpawn', (event,ped) =>
 {
 	ped.health = generic.spawnHealth;
 	ped.armour = generic.spawnArmour;
 });
 
-addEventHandler('onBeforeDrawHUD', (event) =>
+events.bind('onBeforeDrawHUD', (event) =>
 {
 	if(generic.drawBounds)
 	{
@@ -209,7 +209,7 @@ addEventHandler('onBeforeDrawHUD', (event) =>
 	}
 });
 
-addEventHandler('onProcess', (event, delta) =>
+events.bind('onProcess', (event, delta) =>
 {
 	if(!generic.damage)
 	{

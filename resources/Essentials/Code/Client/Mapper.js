@@ -123,7 +123,7 @@ mapper.init();
 
 // events
 var b = true;
-addEventHandler('onProcess', function(e,delta)
+events.bind('onProcess', function(e,delta)
 {
 	if(!mapper.enabled)
 		return;
@@ -200,7 +200,7 @@ mapper.getPlaceModeKeys = () =>
 		return '';
 };
 
-addEventHandler('onBeforeDrawHUD', function(e)
+events.bind('onBeforeDrawHUD', function(e)
 {
 	if(!mapper.enabled)
 		return;
@@ -256,7 +256,7 @@ addEventHandler('onBeforeDrawHUD', function(e)
 	util.drawColTriangles(mapper.object, mapper.colours.vertices);
 });
 
-addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
+events.bind('onMouseMove', function(e,mouse,isAbs,diff)
 {
 	if(!mapper.enabled)
 		return;
@@ -275,7 +275,7 @@ addEventHandler('onMouseMove', function(e,mouse,isAbs,diff)
 	mapper.updateCamera();
 });
 
-addEventHandler('onMouseWheel', function(e,mouse,coords,flipped)
+events.bind('onMouseWheel', function(e,mouse,coords,flipped)
 {
 	if(!mapper.enabled)
 		return;

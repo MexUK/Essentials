@@ -55,4 +55,6 @@
 	
 	<!-- Load/ -->
 	<script src="Code/Server/Load/After.js" type="server" language="javascript" />
+
+	<script src="Code/Client/Load/Ready.js" type="client" language="javascript" />
 </meta>

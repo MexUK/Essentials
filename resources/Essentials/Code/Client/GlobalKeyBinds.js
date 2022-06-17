@@ -3,7 +3,7 @@ global.globalKeyBinds = {};
 globalKeyBinds.keysDown = new Map();
 
 // events
-addEventHandler('onKeyDown', (event, key) =>
+events.bind('onKeyDown', (event, key) =>
 {
 	if(!globalKeyBinds.keysDown.has(key))
 	{
@@ -12,7 +12,7 @@ addEventHandler('onKeyDown', (event, key) =>
 	}
 });
 
-addEventHandler('onKeyUp', (event, key) =>
+events.bind('onKeyUp', (event, key) =>
 {
 	if(globalKeyBinds.keysDown.has(key))
 	{

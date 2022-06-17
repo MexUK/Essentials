@@ -12,13 +12,13 @@ playerList.setShown = (shown) =>
 
 	if(shown)
 	{
-		addEventHandler('OnBeforeDrawHUD', playerList.draw);
+		events.bindNow('OnBeforeDrawHUD', playerList.draw);
 		setChatWindowEnabled(false);
 		setHUDEnabled(false);
 	}
 	else
 	{
-		removeEventHandler('OnBeforeDrawHUD');
+		events.unbindNow('OnBeforeDrawHUD');
 		setChatWindowEnabled(true);
 		setHUDEnabled(true);
 	}

@@ -33,6 +33,17 @@ events.bindAll = () =>
 	}
 };
 
+// bind/unbind now
+events.bindNow = (eventName, callback) =>
+{
+	addEventHandler(eventName, callback);
+};
+
+events.unbindNow = (eventName/*, callback*/) =>
+{
+	removeEventHandler(eventName);
+};
+
 // trigger
 events.trigger = (eventName, eventObject, ...args) =>
 {
