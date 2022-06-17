@@ -143,21 +143,19 @@ cmds.vehicleinfo = (client, _target) =>
 		chat.all(target.name + " isn't in a vehicle.");
 };
 
-cmds.playermodel = (client, _target, _newModel) =>
+cmds.playermodel = (client, _target) =>
 {
 	var minModel = util.getMinPedModel();
 	var maxModel = util.getMaxPedModel();
 	var defaultNewModel = minModel;
 	
-	[_target, _newModel] = util.grabArgs(client,
+	[_target] = util.grabArgs(client,
 	[
-		(v) => util.isClient(v),
-		(v) => util.isInt(v) && util.between(util.int(v), minModel, maxModel)
+		(v) => util.isClient(v)
 	],
 	[
-		client.name,
-		undefined
-	], _target, _newModel);
+		client.name
+	], _target);
 	
 	var target = util.findClient(_target, client);
 	if(!target)
@@ -203,7 +201,34 @@ cmds.setplayermodel = (client, _target, _newModel) =>
 	target.player.modelIndex = newModel;
 };
 
-cmds.vehiclemodel = (client, _target, _newModel) =>
+cmds.vehiclemodel = (client, _target) =>
+{
+	var minModel = util.getMinVehicleModel();
+	var maxModel = util.getMaxVehicleModel();
+	var defaultNewModel = minModel;
+	
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(!target.player.vehicle)
+		return chat.notInVehicle(client, target);
+	
+	chat.all(target.name + "'s vehicle model: " + util.getVehicleModelName(target.player.vehicle.modelIndex) + ' (' + target.player.vehicle.modelIndex + ')');
+};
+
+cmds.setvehiclemodel = (client, _target, _newModel) =>
 {
 	var minModel = util.getMinVehicleModel();
 	var maxModel = util.getMaxVehicleModel();
@@ -230,7 +255,7 @@ cmds.vehiclemodel = (client, _target, _newModel) =>
 		return chat.notInVehicle(client, target);
 	
 	if(_newModel === undefined)
-		return chat.all(target.name + "'s vehicle model: " + util.getVehicleModelName(target.player.vehicle.modelIndex) + ' (' + target.player.vehicle.modelIndex + ')');
+		return chat.pm(client, 'Invalid vehicle model.');
 	
 	var newModel = util.findVehicleModel(_newModel, defaultNewModel);
 	if(newModel < minModel || newModel > maxModel)
