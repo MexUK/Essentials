@@ -399,25 +399,6 @@ cmds.setinterior = (client, _target, _interior) =>
 	util.callClientFunction(target, 'generic.setLocalPlayerInterior', interior);
 };
 
-cmds.interior2 = (client, ...args) =>
-{
-	let target = util.input.spawnedClient(args);
-	let id = util.input.interior(args, true);
-
-	if(!util.input.isValid())
-		return;
-
-	if(util.input.isFirstOptionalArgPresent())
-	{
-		chat.all(client.name + " set " + target.name + "'s camera interior to " + interior + ".");
-		util.callClientFunction(target, 'generic.setLocalPlayerInterior', interior);
-	}
-	else
-	{
-		chat.all(target.name + "'s camera interior is " + target.cameraInterior + ".");
-	}
-};
-
 cmds.gravity = (client, _target, _gravity) =>
 {
 	[_target, _gravity] = util.grabArgs(client,
