@@ -114,7 +114,7 @@ commandAliases.createCommandAlias = (originalName, cloneName) =>
 
 commandAliases.destroyCommandAlias = (cloneName) =>
 {
-	cmds[cloneName] = undefined;
+	delete cmds[cloneName];
 	commands.unbind(cloneName);
 };
 

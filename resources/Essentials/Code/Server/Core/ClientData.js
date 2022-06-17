@@ -16,7 +16,7 @@ var addPlayerCB = (event, client) =>
 events.bind('onPlayerJoined', addPlayerCB);
 events.bind('onPlayerQuit', (event, client, type) =>
 {
-	cd.clients[client.index] = undefined;
+	delete cd.clients[client.index];
 });
 
 
@@ -36,7 +36,7 @@ cd.set = (client, name, value) =>
 
 cd.unset = (client, name) =>
 {
-	cd.clients[client.index][name] = undefined;
+	delete cd.clients[client.index][name];
 };
 
 cd.get = (client, name) =>
@@ -66,7 +66,7 @@ cd.array.unset = (client, name, value) =>
 	if(index != -1)
 		cd.clients[client.index][name].splice(index, 1);
 	if(cd.clients[client.index][name].length == 0)
-		cd.clients[client.index][name] = undefined;
+		delete cd.clients[client.index][name];
 };
 
 // map
@@ -116,5 +116,5 @@ cd.map.getContainer = (client, name) =>
 cd.clear = (client) =>
 {
 	cd.clients[client.index].elements.forEach(element => destroyElement(element));
-	cd.clients[client.index] = undefined;
+	delete cd.clients[client.index];
 };
