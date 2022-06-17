@@ -166,8 +166,34 @@ cmds.playermodel = (client, _target, _newModel) =>
 	if(!target.player)
 		return chat.notSpawned(client, target);
 	
+	chat.all(target.name + "'s player model ID: " + target.player.modelIndex);
+};
+
+cmds.setplayermodel = (client, _target, _newModel) =>
+{
+	var minModel = util.getMinPedModel();
+	var maxModel = util.getMaxPedModel();
+	var defaultNewModel = minModel;
+	
+	[_target, _newModel] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v),
+		(v) => util.isInt(v) && util.between(util.int(v), minModel, maxModel)
+	],
+	[
+		client.name,
+		undefined
+	], _target, _newModel);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
 	if(_newModel === undefined)
-		return chat.all(target.name + "'s player model ID: " + target.player.modelIndex);
+		return chat.pm(client, 'Invalid player model.');
 	
 	var newModel = util.int(_newModel, defaultNewModel);
 	if(newModel < 0 || newModel > maxModel)
