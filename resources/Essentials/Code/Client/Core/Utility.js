@@ -86,6 +86,26 @@ util.getZDirection = function(vec)
 };
 
 // array
+util.arrayToKeys = (array) =>
+{
+	let dictionary = {};
+	array.map(v =>
+	{
+		dictionary[v] = true;
+	});
+	return dictionary;
+};
+
+util.arrayToKeysLower = (array) =>
+{
+	let dictionary = {};
+	array.map(v =>
+	{
+		dictionary[v.toLowerCase()] = true;
+	});
+	return dictionary;
+};
+
 util.getArgsArray = function(argsObject, startIndex)
 {
 	if(!startIndex)

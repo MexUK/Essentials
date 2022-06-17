@@ -1,7 +1,6 @@
 global.spawn = {};
 
 spawn.spawnsPath = 'Data/' + util.getCurrentShortGameName() + '/Spawns.xml';
-spawn.dataPath = 'Data/' + util.getCurrentShortGameName() + '/SpawnData.xml';
 
 spawn.spawns = [];
 
@@ -71,7 +70,7 @@ events.bind('onPedWasted', (e,p,a,w,pp) => {
 	util.clientTimer(clientWhoDied, function()
 	{
 		spawn.spawnPlayer(clientWhoDied);
-	}, spawn.respawnDuration);
+	}, generic.respawnDuration);
 });
 
 // commands
@@ -226,11 +225,6 @@ spawn.getSpawnsPath = () =>
 	return spawn.spawnsPath;
 };
 
-spawn.getDataPath = () =>
-{
-	return spawn.dataPath;
-};
-
 spawn.spawnPlayer = (client) =>
 {
 	var model = cd.get(client, 'playerModel');
@@ -356,8 +350,5 @@ spawn.teleportClientToSpawn = (client, spawnId) =>
 {
 	xml.load(spawn.getSpawnsPath(), 'Spawn', (data) => spawn.createSpawn(util.vec3(data.position), util.radians(util.float(data.heading))));
 	xml.save(spawn.getSpawnsPath(), 'Spawn', spawn.spawns, ['id', 'position', 'heading']);
-	
-	var root = util.loadXMLRoot(spawn.getDataPath());
-	spawn.respawnDuration = parseInt(util.getXMLTag(root, 'Respawn').duration);
 })();
 
