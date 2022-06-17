@@ -82,13 +82,13 @@ accounts.isClientAuthorized = (client) =>
 
 accounts.isNameRegistered = (name) =>
 {
-	return xml.getAttr(accounts.path, 'Account', 'name', name, 'name') != null;
+	return xml.attr.get(accounts.path, 'Account', 'name', name, 'name') != null;
 };
 
 accounts.addAccount = (name, password) =>
 {
 	var salt = util.rand(0, 2000000000);
-	xml.add(accounts.path, 'Account', {
+	xml.value.add(accounts.path, 'Account', {
 		name:		name,
 		password:	accounts.encodePassword(password, salt),
 		salt:		salt
@@ -97,11 +97,11 @@ accounts.addAccount = (name, password) =>
 
 accounts.isPasswordCorrect = (name, password) =>
 {
-	var password2 = xml.getAttr(accounts.path, 'Account', 'name', name, 'password');
+	var password2 = xml.attr.get(accounts.path, 'Account', 'name', name, 'password');
 	if(!password2)
 		return false;
 	
-	var salt = xml.getAttr(accounts.path, 'Account', 'name', name, 'salt');
+	var salt = xml.attr.get(accounts.path, 'Account', 'name', name, 'salt');
 	if(!salt)
 		return false;
 	

@@ -2099,12 +2099,12 @@ generic.setSpawnHealth = (health) =>
 	util.setClientVariableForAll('generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariableForAll('generic.spawnArmour', generic.spawnArmour);
 	
-	xml.set(generic.path, 'SpawnHealth', health + "");
+	xml.value.set(generic.path, 'SpawnHealth', health + "");
 };
 
 generic.loadSpawnHealth = () =>
 {
-	generic.spawnHealth = util.float(xml.get(generic.path, 'SpawnHealth'), 100.0);
+	generic.spawnHealth = util.float(xml.value.get(generic.path, 'SpawnHealth'), 100.0);
 };
 
 
@@ -2123,12 +2123,12 @@ generic.setSpawnArmour = (armour) =>
 	util.setClientVariableForAll('generic.spawnHealth', generic.spawnHealth);
 	util.setClientVariableForAll('generic.spawnArmour', generic.spawnArmour);
 	
-	xml.set(generic.path, 'SpawnArmour', armour + "");
+	xml.value.set(generic.path, 'SpawnArmour', armour + "");
 };
 
 generic.loadSpawnArmour = () =>
 {
-	generic.spawnArmour = util.float(xml.get(generic.path, 'SpawnArmour'), 100.0);
+	generic.spawnArmour = util.float(xml.value.get(generic.path, 'SpawnArmour'), 100.0);
 };
 
 generic.loadSpawnHealth();

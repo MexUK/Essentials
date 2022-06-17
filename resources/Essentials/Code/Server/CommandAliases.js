@@ -132,7 +132,7 @@ commandAliases.addCommandAlias = (originalName, cloneName) =>
 		original: originalName,
 		clone: cloneName
 	});
-	xml.add(commandAliases.path, 'Command', {
+	xml.value.add(commandAliases.path, 'Command', {
 		original: originalName,
 		clone: cloneName
 	});
@@ -155,7 +155,7 @@ commandAliases.removeCommandAlias = (cloneName) =>
 			break;
 		}
 	}
-	xml.remove(commandAliases.path, 'Command', 'clone', cloneName);
+	xml.value.remove(commandAliases.path, 'Command', 'clone', cloneName);
 	
 	if(admin)
 	{

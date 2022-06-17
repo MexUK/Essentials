@@ -122,7 +122,7 @@ elements.setPosition = (elementName, elementId, position) =>
 		peds:		'Ped',
 		blips:		'Blip'
 	};
-	xml.setAttr2(elements.gamePath(elements.paths[elementName]), elementNames[elementName], {
+	xml.attr.set2(elements.gamePath(elements.paths[elementName]), elementNames[elementName], {
 		id:			elementId
 	}, {
 		position:	util.posArray(position).join(',')
@@ -1739,7 +1739,7 @@ cmds.gotoblip = (client, _elementId) =>
 elements.addObject = (model, position, rotation) =>
 {
 	var element = elements.createObject(model, position, rotation);
-	xml.add(elements.gamePath(elements.paths.objects), 'Object',
+	xml.value.add(elements.gamePath(elements.paths.objects), 'Object',
 	{
 		id:			element.id,
 		model:		model,
@@ -1752,7 +1752,7 @@ elements.removeObject = (elementId) =>
 {
 	destroyElement(getElementFromId(elementId));
 	elements.removeElement('objects', elementId);
-	xml.remove(elements.gamePath(elements.paths.objects), 'Object', 'id', elementId);
+	xml.value.remove(elements.gamePath(elements.paths.objects), 'Object', 'id', elementId);
 };
 elements.createObject = (model, position, rotation) =>
 {
@@ -1778,7 +1778,7 @@ elements.setObjectData = (elementId, model, position, rotation) =>
 			v.model = model;
 		}
 	});
-	xml.setAttr2(elements.gamePath(elements.paths.objects), 'Object', {
+	xml.attr.set2(elements.gamePath(elements.paths.objects), 'Object', {
 		id:			elementId
 	}, {
 		model:		model,
@@ -1791,7 +1791,7 @@ elements.setObjectData = (elementId, model, position, rotation) =>
 elements.addVehicle = (model, position, rotation) =>
 {
 	var element = elements.createVehicle(model, position, rotation);
-	xml.add(elements.gamePath(elements.paths.vehicles), 'Vehicle',
+	xml.value.add(elements.gamePath(elements.paths.vehicles), 'Vehicle',
 	{
 		id:			element.id,
 		model:		model,
@@ -1804,7 +1804,7 @@ elements.removeVehicle = (elementId) =>
 {
 	destroyElement(getElementFromId(elementId));
 	elements.removeElement('vehicles', elementId);
-	xml.remove(elements.gamePath(elements.paths.vehicles), 'Vehicle', 'id', elementId);
+	xml.value.remove(elements.gamePath(elements.paths.vehicles), 'Vehicle', 'id', elementId);
 };
 elements.createVehicle = (model, position, rotation) =>
 {
@@ -1823,7 +1823,7 @@ elements.createVehicle = (model, position, rotation) =>
 elements.addPickup = (model, position) =>
 {
 	var element = elements.createPickup(model, position);
-	xml.add(elements.gamePath(elements.paths.pickups), 'Pickup',
+	xml.value.add(elements.gamePath(elements.paths.pickups), 'Pickup',
 	{
 		id:			element.id,
 		model:		model,
@@ -1835,7 +1835,7 @@ elements.removePickup = (elementId) =>
 {
 	destroyElement(getElementFromId(elementId));
 	elements.removeElement('pickups', elementId);
-	xml.remove(elements.gamePath(elements.paths.pickups), 'Pickup', 'id', elementId);
+	xml.value.remove(elements.gamePath(elements.paths.pickups), 'Pickup', 'id', elementId);
 };
 elements.createPickup = (model, position) =>
 {
@@ -1852,7 +1852,7 @@ elements.createPickup = (model, position) =>
 elements.addSphere = (position, radius) =>
 {
 	var element = elements.createSphere(position, radius);
-	xml.add(elements.gamePath(elements.paths.spheres), 'Sphere',
+	xml.value.add(elements.gamePath(elements.paths.spheres), 'Sphere',
 	{
 		id:			element.id,
 		position:	util.posArray(position).join(','),
@@ -1864,7 +1864,7 @@ elements.removeSphere = (elementId) =>
 {
 	destroyElement(getElementFromId(elementId));
 	elements.removeElement('spheres', elementId);
-	xml.remove(elements.gamePath(elements.paths.spheres), 'Sphere', 'id', elementId);
+	xml.value.remove(elements.gamePath(elements.paths.spheres), 'Sphere', 'id', elementId);
 };
 elements.createSphere = (position, radius) =>
 {
@@ -1881,7 +1881,7 @@ elements.createSphere = (position, radius) =>
 elements.addBlip = (icon, position, size, colour) =>
 {
 	var element = elements.createBlip(icon, position, size, 0xFF0025FF);
-	xml.add(elements.gamePath(elements.paths.blips), 'Blip',
+	xml.value.add(elements.gamePath(elements.paths.blips), 'Blip',
 	{
 		id:			element.id,
 		icon:		icon,
@@ -1895,7 +1895,7 @@ elements.removeBlip = (elementId) =>
 {
 	destroyElement(getElementFromId(elementId));
 	elements.removeElement('blips', elementId);
-	xml.remove(elements.gamePath(elements.paths.blips), 'Blip', 'id', elementId);
+	xml.value.remove(elements.gamePath(elements.paths.blips), 'Blip', 'id', elementId);
 };
 elements.createBlip = (icon, position, size, colour) =>
 {
@@ -1915,7 +1915,7 @@ elements.createBlip = (icon, position, size, colour) =>
 elements.addPed = (model, position, heading, pedType) =>
 {
 	var element = elements.createPed(model, position, heading, pedType);
-	xml.add(elements.gamePath(elements.paths.peds), 'Ped',
+	xml.value.add(elements.gamePath(elements.paths.peds), 'Ped',
 	{
 		id:			element.id,
 		model:		model,
@@ -1929,7 +1929,7 @@ elements.removePed = (elementId) =>
 {
 	destroyElement(getElementFromId(elementId));
 	elements.removeElement('peds', elementId);
-	xml.remove(elements.gamePath(elements.paths.peds), 'Ped', 'id', elementId);
+	xml.value.remove(elements.gamePath(elements.paths.peds), 'Ped', 'id', elementId);
 };
 elements.createPed = (model, position, heading, pedType) =>
 {

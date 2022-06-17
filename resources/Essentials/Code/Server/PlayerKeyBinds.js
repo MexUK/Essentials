@@ -121,7 +121,7 @@ playerKeyBinds.destroyAllKeyBinds = (client) =>
 playerKeyBinds.bindKey = (client, key, cmd, args) =>
 {
 	playerKeyBinds.createKeyBind(client, key, cmd, args);
-	xml.setAttr2(playerKeyBinds.path, 'Key', {
+	xml.attr.set2(playerKeyBinds.path, 'Key', {
 		name:		client.name,
 		key:		key
 	}, {
@@ -133,7 +133,7 @@ playerKeyBinds.bindKey = (client, key, cmd, args) =>
 playerKeyBinds.unbindKey = (client, key) =>
 {
 	cd.map.unset(client, 'keys', key);
-	xml.removeAttr2(playerKeyBinds.path, 'Key', {
+	xml.attr.remove2(playerKeyBinds.path, 'Key', {
 		name:		client.name,
 		key:		key
 	});

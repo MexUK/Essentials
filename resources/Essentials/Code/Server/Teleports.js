@@ -119,7 +119,7 @@ teleports.createTeleport = (name, position, rotation) =>
 teleports.addTeleport = (name, position, rotation) =>
 {
 	teleports.createTeleport(name, position, rotation);
-	xml.add(teleports.getPath(), 'Teleport', {
+	xml.value.add(teleports.getPath(), 'Teleport', {
 		name:		name,
 		position:	util.posArray(position).join(','),
 		rotation:	util.rotArray(rotation, true).join(',')
@@ -137,7 +137,7 @@ teleports.removeTeleport = (name) =>
 			break;
 		}
 	}
-	xml.remove(teleports.getPath(), 'Teleport', 'name', name);
+	xml.value.remove(teleports.getPath(), 'Teleport', 'name', name);
 };
 
 teleports.gotoTeleport = (client, name) =>
@@ -151,8 +151,8 @@ teleports.updateTeleport = (name, position, rotation) =>
 	var data = teleports.getTeleportData(name);
 	data.position = position;
 	data.rotation = rotation;
-	xml.setAttr(teleports.getPath(), 'Teleport', 'name', name, 'position', util.posArray(position).join(','));
-	xml.setAttr(teleports.getPath(), 'Teleport', 'name', name, 'rotation', util.rotArray(rotation, true).join(','));
+	xml.attr.set(teleports.getPath(), 'Teleport', 'name', name, 'position', util.posArray(position).join(','));
+	xml.attr.set(teleports.getPath(), 'Teleport', 'name', name, 'rotation', util.rotArray(rotation, true).join(','));
 };
 
 

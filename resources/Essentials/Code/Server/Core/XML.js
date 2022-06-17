@@ -1,7 +1,10 @@
 global.xml = {};
 
-// get
-xml.getAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, defaultValue) =>
+xml.attr = {};
+xml.value = {};
+
+// attributes
+xml.attr.get = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, defaultValue) =>
 {
 	var root = xml.root(path);
 	if(!root)
@@ -40,7 +43,7 @@ xml.getAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeName
 	return defaultValue;
 };
 
-xml.setAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, attributeValueNew) =>
+xml.attr.set = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, attributeValueNew) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -93,7 +96,7 @@ xml.setAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeName
 	return true;
 };
 
-xml.removeAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameRemove) =>
+xml.attr.remove = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameRemove) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -133,7 +136,7 @@ xml.removeAttr = (path, tag, attributeNameMatch, attributeValueMatch, attributeN
 	}
 };
 
-xml.setAttr2 = (path, tag, matchAttributes, newAttributes) =>
+xml.attr.set2 = (path, tag, matchAttributes, newAttributes) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -200,7 +203,7 @@ xml.setAttr2 = (path, tag, matchAttributes, newAttributes) =>
 	return true;
 };
 
-xml.removeAttr2 = (path, tag, matchAttributes) =>
+xml.attr.remove2 = (path, tag, matchAttributes) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -241,7 +244,8 @@ xml.removeAttr2 = (path, tag, matchAttributes) =>
 	return false;
 };
 
-xml.get = (path, tag) =>
+// values
+xml.value.get = (path, tag) =>
 {
 	tag = tag.toLowerCase();
 	
@@ -261,8 +265,7 @@ xml.get = (path, tag) =>
 	return '';
 };
 
-// set
-xml.set = (path, tag, value) =>
+xml.value.set = (path, tag, value) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -291,8 +294,7 @@ xml.set = (path, tag, value) =>
 	return true;
 };
 
-// remove
-xml.remove = (path, tag, attributeName, attributeValue) =>
+xml.value.remove = (path, tag, attributeName, attributeValue) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -326,8 +328,7 @@ xml.remove = (path, tag, attributeName, attributeValue) =>
 	return false;
 };
 
-// add
-xml.add = (path, tag, attributes, value) =>
+xml.value.add = (path, tag, attributes, value) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -346,7 +347,7 @@ xml.add = (path, tag, attributes, value) =>
 	return true;
 };
 
-// load
+// file
 xml.load = (path, tag, callback) =>
 {
 	var doc2 = xml.doc2(path);
@@ -370,7 +371,6 @@ xml.load = (path, tag, callback) =>
 	}
 };
 
-// save
 xml.save = (path, tag, data, attributes) =>
 {
 	var doc2 = new XmlDocument2();

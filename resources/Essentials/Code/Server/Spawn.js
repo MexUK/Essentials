@@ -212,7 +212,7 @@ cmds.userandomskinonspawn = (client, _state) =>
 		return chat.bool(client, 'Random Skin on Spawn', _state);
 	
 	chat.all(client.name + " " + (state ? "enabled" : "disabled") + " random skin on spawn.");
-	xml.add(spawn.getSettingsPath(), 'Settings', {RandomSkinOnSpawn: state}, null);
+	xml.value.add(spawn.getSettingsPath(), 'Settings', {RandomSkinOnSpawn: state}, null);
 };
 
 
@@ -247,7 +247,7 @@ spawn.spawnPlayer = (client) =>
 spawn.addSpawn = (position, heading) =>
 {
 	var spawnId = spawn.createSpawn(position, heading);
-	xml.add(spawn.getSpawnsPath(), 'Spawn', {
+	xml.value.add(spawn.getSpawnsPath(), 'Spawn', {
 		id:			spawnId,
 		position:	util.posArray(position).join(','),
 		heading: 	util.degrees(heading)
@@ -265,7 +265,7 @@ spawn.removeSpawn = (spawnId) =>
 			break;
 		}
 	}
-	xml.remove(spawn.getSpawnsPath(), 'Spawn', 'id', spawnId);
+	xml.value.remove(spawn.getSpawnsPath(), 'Spawn', 'id', spawnId);
 };
 
 spawn.setSpawnData = (spawnId, position, heading) =>
@@ -276,7 +276,7 @@ spawn.setSpawnData = (spawnId, position, heading) =>
 		spawnData.position = position;
 		spawnData.heading = heading;
 	}
-	xml.setAttr2(spawn.getSpawnsPath(), 'Spawn', {
+	xml.attr.set2(spawn.getSpawnsPath(), 'Spawn', {
 		id:			spawnId
 	}, {
 		position:	util.posArray(position).join(','),
