@@ -349,7 +349,27 @@ cmds['get'] = (client, _target, _radius) =>
 	target.player.interior = client.player.interior;
 };
 
-cmds.interior = (client, _target, _interior) =>
+cmds.interior = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	chat.all(target.name + "'s interior is " + target.cameraInterior + ".");
+};
+
+cmds.setinterior = (client, _target, _interior) =>
 {
 	[_target, _interior] = util.grabArgs(client,
 	[
@@ -369,7 +389,7 @@ cmds.interior = (client, _target, _interior) =>
 		return chat.notSpawned(client, target);
 	
 	if(_interior === undefined)
-		return chat.all(target.name + "'s interior is " + target.cameraInterior + ".");
+		return chat.pm(client, 'Invalid interior ID.');
 	
 	var interior = util.int(_interior, null);
 	if(interior === null)

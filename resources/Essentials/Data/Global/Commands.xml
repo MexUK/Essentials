@@ -252,4 +252,5 @@
 	<Command name="zoffset" level="0" />
 	<Command name="setcommandalias" level="7" />
 	<Command name="setplayermodel" level="0" />
+	<Command name="setinterior" level="1" />
 </Root>
