@@ -399,7 +399,27 @@ cmds.setinterior = (client, _target, _interior) =>
 	util.callClientFunction(target, 'generic.setLocalPlayerInterior', interior);
 };
 
-cmds.gravity = (client, _target, _gravity) =>
+cmds.gravity = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	return util.requestClientVariable(target, 'gta.gravity', (gravity) => chat.all(target.name + "'s gravity is " + gravity + "."));
+};
+
+cmds.setgravity = (client, _target, _gravity) =>
 {
 	[_target, _gravity] = util.grabArgs(client,
 	[
@@ -418,7 +438,7 @@ cmds.gravity = (client, _target, _gravity) =>
 		return chat.notSpawned(client, target);
 	
 	if(_gravity === undefined)
-		return util.requestClientVariable(target, 'gta.gravity', (gravity) => chat.all(target.name + "'s gravity is " + gravity + "."));
+		return chat.pm(client, 'You didn\'t type a new gravity level.');
 	
 	var gravity = util.float(_gravity, null);
 	if(gravity === null)
