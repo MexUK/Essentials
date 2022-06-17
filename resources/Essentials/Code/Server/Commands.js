@@ -285,12 +285,7 @@ commands.setLevel = (commandName, level) =>
 		commands.create(commandName, level);
 	var command = commands.commands.get(commandName.toLowerCase());
 	command.level = level;
-	if(commands.checkToRemoveCommandFromFile(command))
-		return;
-	else if(level == commands.defaultCommandLevel)
-		xml.removeAttr(commands.paths.commands, 'Command', 'name', commandName, 'level');
-	else
-		xml.setAttr(commands.paths.commands, 'Command', 'name', commandName, 'level', level);
+	xml.setAttr(commands.paths.commands, 'Command', 'name', commandName, 'level', level);
 };
 
 commands.getLevel = (commandName) =>
@@ -314,9 +309,7 @@ commands.setDisabled = (commandName, disabled) =>
 		commands.create(commandName, 0, disabled);
 	var command = commands.commands.get(commandName.toLowerCase());
 	command.disabled = disabled;
-	if(commands.checkToRemoveCommandFromFile(command))
-		return;
-	else if(disabled)
+	if(disabled)
 		xml.setAttr(commands.paths.commands, 'Command', 'name', commandName, 'disabled', disabled);
 	else
 		xml.removeAttr(commands.paths.commands, 'Command', 'name', commandName, 'disabled');
