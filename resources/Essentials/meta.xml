@@ -46,6 +46,7 @@
 	<script src="Code/Client/Mapper.js" type="client" language="javascript" />
 	<script src="Code/Client/Missions.js" type="client" language="javascript" />
 	<script src="Code/Client/PlayerKeyBinds.js" type="client" language="javascript" />
+	<script src="Code/Client/PlayerList.js" type="client" language="javascript" />
 	<script src="Code/Client/RemoveMode.js" type="client" language="javascript" />
 	<script src="Code/Client/Resources.js" type="client" language="javascript" />
 	<script src="Code/Client/Spawn.js" type="client" language="javascript" />

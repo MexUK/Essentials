@@ -37,6 +37,22 @@ util.weaponNames = [
 	'Minigun'
 ];
 
+// pixels
+util.x = (ratio) =>
+{
+	return gta.width * ratio;
+};
+
+util.y = (ratio) =>
+{
+	return gta.height * ratio;
+};
+
+util.xy = (x, y) =>
+{
+	return new Vec2(gta.width * x, gta.height * y);
+};
+
 // angle
 util.radians = function(deg)
 {
