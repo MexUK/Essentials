@@ -531,7 +531,12 @@ cmds.armour = (client, _target, _armour) =>
 	util.callClientFunction(target, 'generic.setLocalPlayerArmour', armour);
 };
 
-cmds.spawnhealth = (client, _health) =>
+cmds.spawnhealth = (client) =>
+{
+	chat.all("Spawn health is set to " + generic.getSpawnHealth() + ".");
+};
+
+cmds.setspawnhealth = (client, _health) =>
 {
 	[_health] = util.grabArgs(client,
 	[
@@ -541,7 +546,7 @@ cmds.spawnhealth = (client, _health) =>
 	], _health);
 	
 	if(_health === undefined)
-		return chat.all("Spawn health is set to " + generic.getSpawnHealth() + ".");
+		return chat.pm(client, "You didn't type a new spawn health amount.");
 	
 	var health = util.float(_health, null);
 	if(health === null)
@@ -551,7 +556,12 @@ cmds.spawnhealth = (client, _health) =>
 	generic.setSpawnHealth(health);
 };
 
-cmds.spawnarmour = (client, _armour) =>
+cmds.spawnarmour = (client) =>
+{
+	chat.all("Spawn armour is set to " + generic.getSpawnArmour() + ".");
+};
+
+cmds.setspawnarmour = (client, _armour) =>
 {
 	[_armour] = util.grabArgs(client,
 	[
@@ -561,7 +571,7 @@ cmds.spawnarmour = (client, _armour) =>
 	], _armour);
 	
 	if(_armour === undefined)
-		return chat.all("Spawn armour is set to " + generic.getSpawnArmour() + ".");
+		return chat.pm(client, "You didn't type a new spawn armour amount.");
 	
 	var armour = util.float(_armour, null);
 	if(armour === null)
@@ -2178,7 +2188,7 @@ generic.getCommandsArray = (cmds) =>
 	xml.load(generic.gameSettingsFilePath, 'setting', attributes =>
 	{
 		attributes.respawnDuration = parseInt(attributes.respawnDuration);
-		
+
 		generic.settings = attributes;
 	});
 })();

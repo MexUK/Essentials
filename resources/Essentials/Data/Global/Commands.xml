@@ -199,8 +199,8 @@
 	<Command name="setlevel" level="8" />
 	<Command name="smallmessage" level="0" />
 	<Command name="snow" level="0" />
-	<Command name="spawnarmour" level="6" />
-	<Command name="spawnhealth" level="6" />
+	<Command name="spawnarmour" level="0" />
+	<Command name="spawnhealth" level="0" />
 	<Command name="spawnids" level="0" />
 	<Command name="spawns" level="0" />
 	<Command name="speed" level="0" />
@@ -254,4 +254,6 @@
 	<Command name="setplayermodel" level="0" />
 	<Command name="setinterior" level="1" />
 	<Command name="setgravity" level="1" />
+	<Command name="setspawnhealth" level="6" />
+	<Command name="setspawnarmour" level="6" />
 </Root>
