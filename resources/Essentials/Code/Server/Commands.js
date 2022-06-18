@@ -285,7 +285,7 @@ commands.setLevel = (commandName, level) =>
 		commands.create(commandName, level);
 	var command = commands.commands.get(commandName.toLowerCase());
 	command.level = level;
-	xml.attr.set(commands.paths.commands, 'Command', 'name', commandName, 'level', level);
+	xml.attr.set(commands.paths.commands, 'Command', {name: commandName}, {level: level});
 };
 
 commands.getLevel = (commandName) =>
@@ -310,7 +310,7 @@ commands.setDisabled = (commandName, disabled) =>
 	var command = commands.commands.get(commandName.toLowerCase());
 	command.disabled = disabled;
 	if(disabled)
-		xml.attr.set(commands.paths.commands, 'Command', 'name', commandName, 'disabled', disabled);
+		xml.attr.set(commands.paths.commands, 'Command', {name: commandName}, {disabled: disabled});
 	else
 		xml.attr.remove(commands.paths.commands, 'Command', 'name', commandName, 'disabled');
 };

@@ -270,7 +270,7 @@ spawn.setSpawnData = (spawnId, position, heading) =>
 		spawnData.position = position;
 		spawnData.heading = heading;
 	}
-	xml.attr.set2(spawn.getSpawnsPath(), 'Spawn', {
+	xml.attr.set(spawn.getSpawnsPath(), 'Spawn', {
 		id:			spawnId
 	}, {
 		position:	util.posArray(position).join(','),

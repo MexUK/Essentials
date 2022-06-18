@@ -151,8 +151,10 @@ teleports.updateTeleport = (name, position, rotation) =>
 	var data = teleports.getTeleportData(name);
 	data.position = position;
 	data.rotation = rotation;
-	xml.attr.set(teleports.getPath(), 'Teleport', 'name', name, 'position', util.posArray(position).join(','));
-	xml.attr.set(teleports.getPath(), 'Teleport', 'name', name, 'rotation', util.rotArray(rotation, true).join(','));
+	xml.attr.set(teleports.getPath(), 'Teleport', {name: name}, {
+		position: util.posArray(position).join(','),
+		rotation: util.rotArray(rotation, true).join(',')
+	});
 };
 
 

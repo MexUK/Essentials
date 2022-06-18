@@ -121,7 +121,7 @@ playerKeyBinds.destroyAllKeyBinds = (client) =>
 playerKeyBinds.bindKey = (client, key, cmd, args) =>
 {
 	playerKeyBinds.createKeyBind(client, key, cmd, args);
-	xml.attr.set2(playerKeyBinds.path, 'Key', {
+	xml.attr.set(playerKeyBinds.path, 'Key', {
 		name:		client.name,
 		key:		key
 	}, {

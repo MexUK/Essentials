@@ -108,7 +108,7 @@ admin.setClientLevel = (client, level) =>
 	if(level == admin.defaultPlayerLevel)
 		xml.attr.remove(admin.paths.players, 'Player', 'name', client.name, 'level');
 	else
-		xml.attr.set(admin.paths.players, 'Player', 'name', client.name, 'level', level);
+		xml.attr.set(admin.paths.players, 'Player', {name: client.name}, {level: level});
 };
 
 admin.getClientLevel = (client) =>

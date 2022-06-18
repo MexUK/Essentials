@@ -99,7 +99,7 @@ globalKeyBinds.createKeyBind = (key, cmd, args) =>
 globalKeyBinds.bindKey = (key, cmd, args) =>
 {
 	globalKeyBinds.createKeyBind(key, cmd, args);
-	xml.attr.set2(globalKeyBinds.path, 'Key', {
+	xml.attr.set(globalKeyBinds.path, 'Key', {
 		key:		key
 	}, {
 		command:	cmd,

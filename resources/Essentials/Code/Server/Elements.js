@@ -122,7 +122,7 @@ elements.setPosition = (elementName, elementId, position) =>
 		peds:		'Ped',
 		blips:		'Blip'
 	};
-	xml.attr.set2(elements.gamePath(elements.paths[elementName]), elementNames[elementName], {
+	xml.attr.set(elements.gamePath(elements.paths[elementName]), elementNames[elementName], {
 		id:			elementId
 	}, {
 		position:	util.posArray(position).join(',')
@@ -1778,7 +1778,7 @@ elements.setObjectData = (elementId, model, position, rotation) =>
 			v.model = model;
 		}
 	});
-	xml.attr.set2(elements.gamePath(elements.paths.objects), 'Object', {
+	xml.attr.set(elements.gamePath(elements.paths.objects), 'Object', {
 		id:			elementId
 	}, {
 		model:		model,

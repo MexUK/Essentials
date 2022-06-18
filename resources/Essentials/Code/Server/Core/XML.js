@@ -3,6 +3,10 @@ global.xml = {};
 xml.attr = {};
 xml.value = {};
 
+/*
+xml.attr.set( string path, string root, dictionary matchAllOf, dictionary setAllOf )
+*/
+
 // attributes
 xml.attr.get = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, defaultValue) =>
 {
@@ -43,7 +47,8 @@ xml.attr.get = (path, tag, attributeNameMatch, attributeValueMatch, attributeNam
 	return defaultValue;
 };
 
-xml.attr.set = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, attributeValueNew) =>
+/*
+xml.attr.setOLD = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, attributeValueNew) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -95,6 +100,7 @@ xml.attr.set = (path, tag, attributeNameMatch, attributeValueMatch, attributeNam
 	doc2.save(path, root2);
 	return true;
 };
+*/
 
 xml.attr.remove = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameRemove) =>
 {
@@ -136,7 +142,7 @@ xml.attr.remove = (path, tag, attributeNameMatch, attributeValueMatch, attribute
 	}
 };
 
-xml.attr.set2 = (path, tag, matchAttributes, newAttributes) =>
+xml.attr.set = (path, tag, matchAttributes, newAttributes) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
