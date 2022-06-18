@@ -110,7 +110,7 @@ globalKeyBinds.bindKey = (key, cmd, args) =>
 globalKeyBinds.unbindKey = (key) =>
 {
 	globalKeyBinds.binds.delete(key);
-	xml.attr.remove2(globalKeyBinds.path, 'Key', {
+	xml.element.remove(globalKeyBinds.path, 'Key', {
 		key:		key
 	});
 };

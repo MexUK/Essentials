@@ -132,7 +132,7 @@ commandAliases.addCommandAlias = (originalName, cloneName) =>
 		original: originalName,
 		clone: cloneName
 	});
-	xml.value.add(commandAliases.path, 'Command', {
+	xml.element.add(commandAliases.path, 'Command', {
 		original: originalName,
 		clone: cloneName
 	});

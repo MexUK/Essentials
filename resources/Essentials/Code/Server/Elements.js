@@ -1739,7 +1739,7 @@ cmds.gotoblip = (client, _elementId) =>
 elements.addObject = (model, position, rotation) =>
 {
 	var element = elements.createObject(model, position, rotation);
-	xml.value.add(elements.gamePath(elements.paths.objects), 'Object',
+	xml.element.add(elements.gamePath(elements.paths.objects), 'Object',
 	{
 		id:			element.id,
 		model:		model,
@@ -1791,7 +1791,7 @@ elements.setObjectData = (elementId, model, position, rotation) =>
 elements.addVehicle = (model, position, rotation) =>
 {
 	var element = elements.createVehicle(model, position, rotation);
-	xml.value.add(elements.gamePath(elements.paths.vehicles), 'Vehicle',
+	xml.element.add(elements.gamePath(elements.paths.vehicles), 'Vehicle',
 	{
 		id:			element.id,
 		model:		model,
@@ -1823,7 +1823,7 @@ elements.createVehicle = (model, position, rotation) =>
 elements.addPickup = (model, position) =>
 {
 	var element = elements.createPickup(model, position);
-	xml.value.add(elements.gamePath(elements.paths.pickups), 'Pickup',
+	xml.element.add(elements.gamePath(elements.paths.pickups), 'Pickup',
 	{
 		id:			element.id,
 		model:		model,
@@ -1852,7 +1852,7 @@ elements.createPickup = (model, position) =>
 elements.addSphere = (position, radius) =>
 {
 	var element = elements.createSphere(position, radius);
-	xml.value.add(elements.gamePath(elements.paths.spheres), 'Sphere',
+	xml.element.add(elements.gamePath(elements.paths.spheres), 'Sphere',
 	{
 		id:			element.id,
 		position:	util.posArray(position).join(','),
@@ -1881,7 +1881,7 @@ elements.createSphere = (position, radius) =>
 elements.addBlip = (icon, position, size, colour) =>
 {
 	var element = elements.createBlip(icon, position, size, 0xFF0025FF);
-	xml.value.add(elements.gamePath(elements.paths.blips), 'Blip',
+	xml.element.add(elements.gamePath(elements.paths.blips), 'Blip',
 	{
 		id:			element.id,
 		icon:		icon,
@@ -1915,7 +1915,7 @@ elements.createBlip = (icon, position, size, colour) =>
 elements.addPed = (model, position, heading, pedType) =>
 {
 	var element = elements.createPed(model, position, heading, pedType);
-	xml.value.add(elements.gamePath(elements.paths.peds), 'Ped',
+	xml.element.add(elements.gamePath(elements.paths.peds), 'Ped',
 	{
 		id:			element.id,
 		model:		model,

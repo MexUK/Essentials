@@ -312,7 +312,7 @@ commands.setDisabled = (commandName, disabled) =>
 	if(disabled)
 		xml.attr.set(commands.paths.commands, 'Command', {name: commandName}, {disabled: disabled});
 	else
-		xml.attr.remove(commands.paths.commands, 'Command', 'name', commandName, 'disabled');
+		xml.attr.remove(commands.paths.commands, 'Command', {name: commandName}, 'disabled');
 };
 
 commands.isDisabled = (commandName) =>

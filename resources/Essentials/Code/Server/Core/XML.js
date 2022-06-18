@@ -1,22 +1,93 @@
 global.xml = {};
 
+xml.element = {};
 xml.attr = {};
 xml.value = {};
 
 /*
-xml.attr.set( string path, string root, dictionary matchAllOf, dictionary setAllOf )
+xml.element.add( string path, string root, dictionary setAttributes, [ string value = undefined ] )
+xml.element.remove( string path, string root, dictionary matchAllOf )
+
+xml.attr.get( string path, string root, dictionary matchAttributes, string fetchAttribute, [ mixed defaultValue = undefined ] ) -> string
+xml.attr.set( string path, string root, dictionary matchAttributes, dictionary setAttributes )
+xml.attr.remove( string path, string root, dictionary matchAttributes, string removeAttribute / array<string> removeAttributes )
+
+xml.value.get( string path, string element ) -> mixed
+
+dictionary matchAttributes - match element if all specified attributes match.
+dictionary setAttributes - set all specified attributes for the element.
+array<string> removeAttributes - remove all specified attributes for the element.
 */
 
+// elements
+xml.element.add = (path, tag, attributes, value) =>
+{
+	var doc2 = xml.doc2(path);
+	if(!doc2)
+		doc2 = new XmlDocument2();
+	
+	var root2 = doc2.rootElement;
+	var element2 = new XmlElement2();
+	element2.name = tag;
+	for(var k in attributes)
+		element2.attributes.push(new XmlAttribute2(k, attributes[k]));
+	if(value !== undefined && value !== null && value !== '')
+		element2.value = value;
+	root2.children.push(element2);
+	
+	doc2.save(path, root2);
+	return true;
+};
+
+xml.element.remove = (path, tag, matchAttributes) =>
+{
+	var doc2 = xml.doc2(path);
+	if(!doc2)
+		doc2 = new XmlDocument2();
+	var root2 = doc2.rootElement;
+	
+	var tagLower = tag.toLowerCase();
+	
+	for(var i in root2.children)
+	{
+		var tag2 = root2.children[i];
+		if (tag2.name.toLowerCase() != tagLower)
+			continue;
+		
+		var attr = {};
+		for(var i2 in tag2.attributes)
+			attr[tag2.attributes[i2].name.toLowerCase()] = tag2.attributes[i2].value.toLowerCase();
+		
+		var totalCount = 0;
+		var matchCount = 0;
+		for(var k in matchAttributes)
+		{
+			if(attr[k.toLowerCase()] == matchAttributes[k].toString().toLowerCase())
+			{
+				matchCount++;
+			}
+			totalCount++;
+		}
+		if(totalCount != matchCount)
+			continue;
+		
+		root2.children.splice(i, 1);
+		
+		doc2.save(path, root2);
+		return true;
+	}
+	
+	return false;
+};
+
 // attributes
-xml.attr.get = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, defaultValue) =>
+xml.attr.get = (path, tag, matchAttributes, attributeNameFetch, defaultValue) =>
 {
 	var root = xml.root(path);
 	if(!root)
 		return defaultValue;
 	
 	var tagLower = tag.toLowerCase();
-	var attributeNameMatchLower = attributeNameMatch.toLowerCase();
-	var attributeValueMatchLower = attributeValueMatch.toLowerCase();
 	var attributeNameFetchLower = attributeNameFetch.toLowerCase();
 	
 	for(var i in root.children)
@@ -25,121 +96,34 @@ xml.attr.get = (path, tag, attributeNameMatch, attributeValueMatch, attributeNam
 		if (tag2.name.toLowerCase() != tagLower)
 			continue;
 		
-		let entry = {};
-		for(var attributeName in tag2.attributes)
+		var attr = {};
+		for(var attrName in tag2.attributes)
+			attr[attrName.toLowerCase()] = tag2.attributes[attrName].toLowerCase();
+		
+		var totalCount = 0;
+		var matchCount = 0;
+		for(var k in matchAttributes)
 		{
-			let attributeValue = tag2.attributes[attributeName];
-			if(attributeNameMatchLower == attributeName.toLowerCase() && attributeValueMatchLower == attributeValue.toLowerCase())
+			if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
 			{
-				for(var attributeName2 in tag2.attributes)
-				{
-					if(attributeNameFetchLower == attributeName2.toLowerCase())
-					{
-						let attributeValue2 = tag2.attributes[attributeName2];
-						return attributeValue2;
-					}
-				}
-				return defaultValue;
+				matchCount++;
+			}
+			totalCount++;
+		}
+		if(totalCount != matchCount)
+			continue;
+		
+		for(var attributeName2 in tag2.attributes)
+		{
+			if(attributeNameFetchLower == attributeName2.toLowerCase())
+			{
+				let attributeValue2 = tag2.attributes[attributeName2];
+				return attributeValue2;
 			}
 		};
 	}
 	
 	return defaultValue;
-};
-
-/*
-xml.attr.setOLD = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameFetch, attributeValueNew) =>
-{
-	var doc2 = xml.doc2(path);
-	if(!doc2)
-		doc2 = new XmlDocument2();
-	var root2 = doc2.rootElement;
-	
-	var tagLower = tag.toLowerCase();
-	var attributeNameMatchLower = attributeNameMatch.toLowerCase();
-	var attributeValueMatchLower = attributeValueMatch.toLowerCase();
-	var attributeNameFetchLower = attributeNameFetch.toLowerCase();
-	
-	for(var i in root2.children)
-	{
-		var tag2 = root2.children[i];
-		if (tag2.name.toLowerCase() != tagLower)
-			continue;
-		
-		let entry = {};
-		for(var i2 in tag2.attributes)
-		{
-			let attributeName = tag2.attributes[i2].name;
-			let attributeValue = tag2.attributes[i2].value;
-			if(attributeNameMatchLower == attributeName.toLowerCase() && attributeValueMatchLower == attributeValue.toLowerCase())
-			{
-				for(var i3 in tag2.attributes)
-				{
-					let attributeName2 = tag2.attributes[i3].name;
-					if(attributeNameFetchLower == attributeName2.toLowerCase())
-					{
-						tag2.attributes[i3].value = attributeValueNew;
-						doc2.save(path, root2);
-						return true;
-					}
-				}
-				
-				tag2.attributes.push(new XmlAttribute2(attributeNameFetch, attributeValueNew));
-				doc2.save(path, root2);
-				return true;
-			}
-		};
-	}
-	
-	var element2 = new XmlElement2();
-	element2.name = tag;
-	element2.attributes.push(new XmlAttribute2(attributeNameMatch, attributeValueMatch));
-	element2.attributes.push(new XmlAttribute2(attributeNameFetch, attributeValueNew));
-	root2.children.push(element2);
-	
-	doc2.save(path, root2);
-	return true;
-};
-*/
-
-xml.attr.remove = (path, tag, attributeNameMatch, attributeValueMatch, attributeNameRemove) =>
-{
-	var doc2 = xml.doc2(path);
-	if(!doc2)
-		doc2 = new XmlDocument2();
-	var root2 = doc2.rootElement;
-	
-	var tagLower = tag.toLowerCase();
-	var attributeNameMatchLower = attributeNameMatch.toLowerCase();
-	var attributeValueMatchLower = attributeValueMatch.toLowerCase();
-	var attributeNameRemoveLower = attributeNameRemove.toLowerCase();
-	
-	for(var i in root2.children)
-	{
-		var tag2 = root2.children[i];
-		if (tag2.name.toLowerCase() != tagLower)
-			continue;
-		
-		let entry = {};
-		for(var i2 in tag2.attributes)
-		{
-			let attributeName = tag2.attributes[i2].name;
-			let attributeValue = tag2.attributes[i2].value;
-			if(attributeNameMatchLower == attributeName.toLowerCase() && attributeValueMatchLower == attributeValue.toLowerCase())
-			{
-				for(var i3 in tag2.attributes)
-				{
-					let attributeName2 = tag2.attributes[i3].name;
-					if(attributeNameRemoveLower == attributeName2.toLowerCase())
-					{
-						tag2.attributes.splice(i3, 1);
-						doc2.save(path, root2);
-						return true;
-					}
-				}
-			}
-		};
-	}
 };
 
 xml.attr.set = (path, tag, matchAttributes, newAttributes) =>
@@ -209,7 +193,7 @@ xml.attr.set = (path, tag, matchAttributes, newAttributes) =>
 	return true;
 };
 
-xml.attr.remove2 = (path, tag, matchAttributes) =>
+xml.attr.remove = (path, tag, matchAttributes, removeAttributes) =>
 {
 	var doc2 = xml.doc2(path);
 	if(!doc2)
@@ -217,7 +201,12 @@ xml.attr.remove2 = (path, tag, matchAttributes) =>
 	var root2 = doc2.rootElement;
 	
 	var tagLower = tag.toLowerCase();
-	
+
+	if(!util.isArray(removeAttributes))
+		removeAttributes = [removeAttributes];
+
+	let removeAttributesKeyed = util.arrayToKeysLower(removeAttributes);
+
 	for(var i in root2.children)
 	{
 		var tag2 = root2.children[i];
@@ -227,12 +216,11 @@ xml.attr.remove2 = (path, tag, matchAttributes) =>
 		var attr = {};
 		for(var i2 in tag2.attributes)
 			attr[tag2.attributes[i2].name.toLowerCase()] = tag2.attributes[i2].value.toLowerCase();
-		
+			
 		var totalCount = 0;
-		var matchCount = 0;
 		for(var k in matchAttributes)
 		{
-			if(attr[k.toLowerCase()] == matchAttributes[k].toString().toLowerCase())
+			if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
 			{
 				matchCount++;
 			}
@@ -241,13 +229,21 @@ xml.attr.remove2 = (path, tag, matchAttributes) =>
 		if(totalCount != matchCount)
 			continue;
 		
-		root2.children.splice(i, 1);
-		
-		doc2.save(path, root2);
-		return true;
+		for(var i2 in tag2.attributes)
+		{
+			for(var i3=(tag2.attributes.length - 1); i3 >= 0; i3--)
+			{
+				let attributeName2 = tag2.attributes[i3].name;
+				if(removeAttributesKeyed[attributeName2.toLowerCase()] !== undefined)
+				{
+					tag2.attributes.splice(i3, 1);
+				}
+			}
+			
+			doc2.save(path, root2);
+			return true;
+		};
 	}
-	
-	return false;
 };
 
 // values
@@ -332,25 +328,6 @@ xml.value.remove = (path, tag, attributeName, attributeValue) =>
 	}
 	
 	return false;
-};
-
-xml.value.add = (path, tag, attributes, value) =>
-{
-	var doc2 = xml.doc2(path);
-	if(!doc2)
-		doc2 = new XmlDocument2();
-	
-	var root2 = doc2.rootElement;
-	var element2 = new XmlElement2();
-	element2.name = tag;
-	for(var k in attributes)
-		element2.attributes.push(new XmlAttribute2(k, attributes[k]));
-	if(value !== undefined && value !== null && value !== '')
-		element2.value = value;
-	root2.children.push(element2);
-	
-	doc2.save(path, root2);
-	return true;
 };
 
 // file

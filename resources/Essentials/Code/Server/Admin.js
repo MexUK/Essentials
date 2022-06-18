@@ -11,7 +11,7 @@ admin.paths.players = 'Data/' + util.getCurrentShortGameName() + '/Players.xml';
 // events
 events.bind('onPlayerJoined', (event, client) =>
 {
-	cd.set(client, 'level', xml.attr.get(admin.paths.players, 'Player', 'name', client.name, 'level', admin.defaultPlayerLevel));
+	cd.set(client, 'level', xml.attr.get(admin.paths.players, 'Player', {name: client.name}, 'level', admin.defaultPlayerLevel));
 });
 
 events.bind('onPlayerCommand', (event, client, command, parameters) =>
@@ -106,7 +106,7 @@ admin.setClientLevel = (client, level) =>
 {
 	cd.set(client, 'level', level);
 	if(level == admin.defaultPlayerLevel)
-		xml.attr.remove(admin.paths.players, 'Player', 'name', client.name, 'level');
+		xml.attr.remove(admin.paths.players, 'Player', {name: client.name}, 'level');
 	else
 		xml.attr.set(admin.paths.players, 'Player', {name: client.name}, {level: level});
 };

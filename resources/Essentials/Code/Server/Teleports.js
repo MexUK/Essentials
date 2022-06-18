@@ -119,7 +119,7 @@ teleports.createTeleport = (name, position, rotation) =>
 teleports.addTeleport = (name, position, rotation) =>
 {
 	teleports.createTeleport(name, position, rotation);
-	xml.value.add(teleports.getPath(), 'Teleport', {
+	xml.element.add(teleports.getPath(), 'Teleport', {
 		name:		name,
 		position:	util.posArray(position).join(','),
 		rotation:	util.rotArray(rotation, true).join(',')

@@ -211,7 +211,7 @@ cmds.userandomskinonspawn = (client, _state) =>
 		return chat.bool(client, 'Random Skin on Spawn', _state);
 	
 	chat.all(client.name + " " + (state ? "enabled" : "disabled") + " random skin on spawn.");
-	xml.value.add(spawn.getSettingsPath(), 'Settings', {RandomSkinOnSpawn: state}, null);
+	xml.element.add(spawn.getSettingsPath(), 'Settings', {RandomSkinOnSpawn: state}, null);
 };
 
 
@@ -241,7 +241,7 @@ spawn.spawnPlayer = (client) =>
 spawn.addSpawn = (position, heading) =>
 {
 	var spawnId = spawn.createSpawn(position, heading);
-	xml.value.add(spawn.getSpawnsPath(), 'Spawn', {
+	xml.element.add(spawn.getSpawnsPath(), 'Spawn', {
 		id:			spawnId,
 		position:	util.posArray(position).join(','),
 		heading: 	util.degrees(heading)

@@ -133,7 +133,7 @@ playerKeyBinds.bindKey = (client, key, cmd, args) =>
 playerKeyBinds.unbindKey = (client, key) =>
 {
 	cd.map.unset(client, 'keys', key);
-	xml.attr.remove2(playerKeyBinds.path, 'Key', {
+	xml.element.remove(playerKeyBinds.path, 'Key', {
 		name:		client.name,
 		key:		key
 	});
