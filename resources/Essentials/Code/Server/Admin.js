@@ -14,12 +14,6 @@ events.bind('onPlayerJoined', (event, client) =>
 	cd.set(client, 'level', xml.attr.get(admin.paths.players, 'Player', {name: client.name}, 'level', admin.defaultPlayerLevel));
 });
 
-events.bind('onPlayerCommand', (event, client, command, parameters) =>
-{
-	if(!commands.exists(command))
-		commands.onInvalidCommand(client, command, parameters);
-});
-
 
 
 

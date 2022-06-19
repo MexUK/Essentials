@@ -1,0 +1,11 @@
+﻿<Root>
+	<Alt find="command" alt="cmd" />
+	<Alt find="health" alt="hp" />
+	<Alt find="armour" alt="armor" />
+	<Alt find="add" alt="new" />
+	<Alt find="remove" alt="rem" />
+	<Alt find="remove" alt="del" />
+	<Alt find="remove" alt="delete" />
+	<Alt find="vehicle" alt="veh" />
+	<Alt find="ped" alt="civ" />
+</Root>

@@ -256,4 +256,6 @@
 	<Command name="setgravity" level="1" />
 	<Command name="setspawnhealth" level="6" />
 	<Command name="setspawnarmour" level="6" />
+	<Command name="addcommandaltword" level="5" />
+	<Command name="removecommandaltword" level="5" />
 </Root>

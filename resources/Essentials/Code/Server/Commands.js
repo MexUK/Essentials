@@ -15,6 +15,12 @@ commands.commands = new Map();
 
 
 // events
+events.bind('onPlayerCommand', (event, client, command, parameters) =>
+{
+	if(!commands.exists(command))
+		commands.onInvalidCommand(client, command, parameters);
+});
+
 commands.onInvalidCommand = (client, command, parameters) =>
 {
 	if(!accounts.isClientAuthorized(client))
@@ -23,7 +29,11 @@ commands.onInvalidCommand = (client, command, parameters) =>
 	}
 	else if(commands.invalidCommandMessageEnabled)
 	{
-		chat.pm(client, "Command /"	+ command + " doesn't exist. To find a command, type: /commands search");
+		let originalCommand = commandAltWords.getCommandMatch(command);
+		if(!originalCommand)
+		{
+			chat.pm(client, "Command /"	+ command + " doesn't exist. To find a command, type: /commands search");
+		}
 	}
 };
 
@@ -250,6 +260,16 @@ commands.create = (commandName, level, disabled) =>
 		disabled:	disabled
 	};
 	commands.commands.set(commandName.toLowerCase(), command);
+};
+
+// trigger
+commands.trigger = (commandName, client, parameters) =>
+{
+	let parameters2 = [];
+	for(var i in parameters)
+		parameters2[i] = parameters[i];
+	parameters2.unshift(client);
+	cmds[commandName].apply(null, parameters2);
 };
 
 // look-up
