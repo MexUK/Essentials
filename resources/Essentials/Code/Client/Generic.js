@@ -84,7 +84,7 @@ generic.setLocalPlayerDrawBounds = function(enabled)
 generic.flipLocalPlayerVehicle = function()
 {
 	if(!localClient.player)
-		return
+		return;
 	
 	if(!localPlayer.vehicle)
 		return;
@@ -96,7 +96,7 @@ generic.flipLocalPlayerVehicle = function()
 generic.removeLocalPlayerFromVehicle = function()
 {
 	if(!localClient.player)
-		return
+		return;
 	
 	if(!localPlayer.vehicle)
 		return;
@@ -107,15 +107,26 @@ generic.removeLocalPlayerFromVehicle = function()
 generic.setLocalPlayerCallForTaxi = function()
 {
 	if(!localClient.player)
-		return
+		return;
 	
 	localPlayer.hailTaxi();
+};
+
+generic.setLocalPlayerVehicleLockedStatus = function(state)
+{
+	if(!localClient.player)
+		return;
+	
+	if(!localPlayer.vehicle)
+		return;
+	
+	localPlayer.vehicle.locked = state;
 };
 
 generic.makeLocalPlayerEnterVehicle = function(vehicleId, driver)
 {
 	if(!localClient.player)
-		return
+		return;
 	
 	var vehicle = getElementFromId(vehicleId);
 	if(!vehicle)
@@ -127,7 +138,7 @@ generic.makeLocalPlayerEnterVehicle = function(vehicleId, driver)
 generic.makeLocalPlayerExitVehicle = function()
 {
 	if(!localClient.player)
-		return
+		return;
 	
 	localPlayer.exitVehicle();
 };
@@ -135,7 +146,7 @@ generic.makeLocalPlayerExitVehicle = function()
 generic.warpLocalPlayerIntoVehicle = function(vehicleId, seat)
 {
 	if(!localClient.player)
-		return
+		return;
 	
 	var vehicle = getElementFromId(vehicleId);
 	if(!vehicle)

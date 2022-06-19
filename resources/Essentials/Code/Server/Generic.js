@@ -2089,6 +2089,41 @@ cmds.trafficdensity = (client, _density) =>
 	util.setClientVariableForAll('gta.trafficDensity', density);
 };
 
+cmds.locked = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(!client.player.vehicle)
+		return chat.notInVehicle(client, client);
+	
+	util.requestClientProperty(client, 'localPlayer.vehicle.locked', (state) => chat.all(client.name+"'s vehicle is " + (state ? "" : "un") + "locked."));
+};
+
+cmds.lock = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(!client.player.vehicle)
+		return chat.notInVehicle(client, client);
+	
+	chat.all(client.name + " set their vehicle locked.");
+	util.callClientFunction(client, 'generic.setLocalPlayerVehicleLockedStatus', true);
+};
+
+cmds.unlock = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	if(!client.player.vehicle)
+		return chat.notInVehicle(client, client);
+	
+	chat.all(client.name + " set their vehicle unlocked.");
+	util.callClientFunction(client, 'generic.setLocalPlayerVehicleLockedStatus', false);
+};
+
 
 
 
