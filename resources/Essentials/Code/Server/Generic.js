@@ -8,6 +8,15 @@ generic.spawnHealth = null;
 generic.spawnArmour = null;
 generic.snowing = false;
 
+var proofIDs =
+{
+	BULLET_PROOF:		0,
+	FIRE_PROOF:			1,
+	EXPLOSION_PROOF:	2,
+	COLLISION_PROOF:	3,
+	MELEE_PROOF:		4
+};
+
 // events
 events.bind('onPlayerJoined', (event, client) =>
 {
@@ -845,15 +854,6 @@ cmds.occupants = (client, _target) =>
 	var occupants = target.player.vehicle.getOccupants();
 	occupants = occupants.map((v,i) => getClientFromPlayerElement(v).name + (i == 0 ? ' (Driver)' : ' (Passenger)'));
 	chat.all(target.name + "'s vehicle occupants (" + occupants.length + " ped" + (occupants.length == 1 ? "" : "s") + "): " + occupants.join(', '));
-};
-
-var proofIDs =
-{
-	BULLET_PROOF:		0,
-	FIRE_PROOF:			1,
-	EXPLOSION_PROOF:	2,
-	COLLISION_PROOF:	3,
-	MELEE_PROOF:		4
 };
 
 cmds.bulletproof = (client, _target, _state) =>
@@ -2143,8 +2143,7 @@ generic.loadSpawnArmour = () =>
 	generic.spawnArmour = util.float(xml.value.get(generic.globalSettingsFilePath, 'SpawnArmour'), 100.0);
 };
 
-generic.loadSpawnHealth();
-generic.loadSpawnArmour();
+
 
 
 
@@ -2185,6 +2184,9 @@ generic.getCommandsArray = (cmds) =>
 
 (() =>
 {
+	generic.loadSpawnHealth();
+	generic.loadSpawnArmour();
+
 	xml.load(generic.gameSettingsFilePath, 'setting', attributes =>
 	{
 		attributes.respawnDuration = parseInt(attributes.respawnDuration);
