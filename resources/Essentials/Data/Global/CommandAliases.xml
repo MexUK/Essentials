@@ -30,4 +30,5 @@
 	<Command original="rotation" clone="rot" />
 	<Command original="weapon" clone="gun" />
 	<Command original="playermodel" clone="skin" />
+	<Command original="setplayermodel" clone="setskin" />
 </Root>

@@ -260,4 +260,5 @@
 	<Command name="removecommandaltword" level="5" />
 	<Command name="playerblips" level="3" />
 	<Command name="skin" level="0" />
+	<Command name="setskin" level="0" />
 </Root>
