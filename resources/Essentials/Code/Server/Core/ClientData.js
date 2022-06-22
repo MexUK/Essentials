@@ -17,12 +17,14 @@ var addPlayerCB = (event, client) =>
 	cd.load(client);
 };
 
-events.bind('onPlayerJoined', addPlayerCB);
-events.bind('onPlayerQuit', (event, client, type) =>
+events.bind('onPlayerJoin', addPlayerCB);
+setImmediate(() =>
 {
-	delete cd.clients[client.index];
+	events.bind('onPlayerQuit', (event, client, type) =>
+	{
+		cd.clear(client);
+	});
 });
-
 
 
 
@@ -57,6 +59,13 @@ cd.get = (client, name) =>
 cd.has = (client, name) =>
 {
 	return cd.clients[client.index][name] !== undefined;
+};
+
+cd.clear = (client) =>
+{
+	if(cd.clients[client.index].elements)
+		cd.clients[client.index].elements.forEach(element => destroyElement(element));
+	delete cd.clients[client.index];
 };
 
 // string + disk
@@ -135,13 +144,7 @@ cd.map.getContainer = (client, name) =>
 	return cd.clients[client.index][name];
 };
 
-// clear
-cd.clear = (client) =>
-{
-	cd.clients[client.index].elements.forEach(element => destroyElement(element));
-	delete cd.clients[client.index];
-};
-
+// load
 {
 	util.exportAll('cd', cd);
 }
