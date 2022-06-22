@@ -2,7 +2,30 @@ global.weapons = {};
 global.cmds = global.cmds || {};
 
 // commands
-cmds.weapon = (client, _target, _weapon, _ammunition) =>
+cmds.weapon = (client, _target) =>
+{
+	var maxAmmunition = 65535;
+	var defaultAmmunition = 2500;
+	
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	util.requestClientProperty(target, 'localPlayer.weapon', (weapon) => chat.all(target.name + "'s current weapon is " + util.getWeaponName(weapon) + "."));
+};
+
+cmds.giveweapon = (client, _target, _weapon, _ammunition) =>
 {
 	var maxAmmunition = 65535;
 	var defaultAmmunition = 2500;
@@ -27,7 +50,7 @@ cmds.weapon = (client, _target, _weapon, _ammunition) =>
 		return chat.notSpawned(client, target);
 	
 	if(_weapon === undefined)
-		return util.requestClientProperty(target, 'localPlayer.weapon', (weapon) => chat.all(target.name + "'s current weapon is " + util.getWeaponName(weapon) + "."));
+		return chat.pm(client, "You didn't specify a weapon.");
 	
 	var weapon = util.findWeapon(_weapon);
 	if(weapon == -1)
@@ -44,7 +67,7 @@ cmds.weapon = (client, _target, _weapon, _ammunition) =>
 	util.callClientMethod(target, 'weapons.giveLocalPlayerWeapon', weapon, ammunition);
 };
 
-cmds.weaponall = (client, _weapon, _ammunition) =>
+cmds.giveallweapon = (client, _weapon, _ammunition) =>
 {
 	var maxAmmunition = 65535;
 	var defaultAmmunition = 2500;

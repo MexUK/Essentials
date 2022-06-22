@@ -22,7 +22,7 @@
 	<Command name="centerofmass" level="0" />
 	<Command name="civilians" level="3" />
 	<Command name="clearmessages" level="0" />
-	<Command name="clearweapons" level="0" />
+	<Command name="clearweapons" level="1" />
 	<Command name="clientids" level="0" />
 	<Command name="closegarage" level="0" />
 	<Command name="cmd" level="0" />
@@ -78,7 +78,6 @@
 	<Command name="gotovehicle" level="0" />
 	<Command name="gravity" level="0" />
 	<Command name="ground" level="0" />
-	<Command name="gun" level="0" />
 	<Command name="heading" level="0" />
 	<Command name="health" level="0" />
 	<Command name="hour" level="0" />
@@ -236,15 +235,13 @@
 	<Command name="vehiclesyncer" level="0" />
 	<Command name="vehiclesyncers" level="0" />
 	<Command name="velocity" level="0" />
-	<Command name="w" level="0" />
 	<Command name="walkstyle" level="0" />
 	<Command name="warp" level="0" />
 	<Command name="weapon" level="0" />
-	<Command name="weaponall" level="0" />
+	<Command name="giveallweapon" level="1" />
 	<Command name="weapons" level="0" />
 	<Command name="weaponstate" level="0" />
 	<Command name="weather" level="0" />
-	<Command name="wep" level="0" />
 	<Command name="whoinvehicle" level="0" />
 	<Command name="whospawned" level="0" />
 	<Command name="xoffset" level="0" />
@@ -261,4 +258,7 @@
 	<Command name="playerblips" level="3" />
 	<Command name="skin" level="0" />
 	<Command name="setskin" level="0" />
+	<Command name="wep" level="0" />
+	<Command name="gun" level="0" />
+	<Command name="w" level="0" />
 </Root>

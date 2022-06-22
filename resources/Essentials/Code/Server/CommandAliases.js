@@ -33,6 +33,9 @@ cmds.setcommandalias = (client, _commandName, _commandAlias) =>
 	if(_commandName === undefined)
 		return chat.pm(client, "You didn't type a command name.");
 	
+	if(_commandAlias === undefined)
+		return chat.pm(client, "You didn't type a command alias.");
+	
 	if(!commands.exists(_commandName))
 		return chat.pm(client, 'Command not found.');
 	

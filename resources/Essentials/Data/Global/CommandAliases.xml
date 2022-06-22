@@ -12,8 +12,6 @@
 	<Command original="removepickup" clone="removepickups" />
 	<Command original="removesphere" clone="removespheres" />
 	<Command original="removevehicle" clone="removevehicles" />
-	<Command original="weapon" clone="wep" />
-	<Command original="weapon" clone="w" />
 	<Command original="commandlevel" clone="cmdlevel" />
 	<Command original="commandlevel" clone="cmdlvl" />
 	<Command original="setcommandlevel" clone="setcmdlevel" />
@@ -28,7 +26,9 @@
 	<Command original="gotoposition" clone="gotopos" />
 	<Command original="position" clone="pos" />
 	<Command original="rotation" clone="rot" />
-	<Command original="weapon" clone="gun" />
 	<Command original="playermodel" clone="skin" />
 	<Command original="setplayermodel" clone="setskin" />
+	<Command original="giveweapon" clone="wep" />
+	<Command original="giveweapon" clone="gun" />
+	<Command original="giveweapon" clone="w" />
 </Root>
