@@ -575,6 +575,14 @@ util.getRandomRGB = function()
 	];
 };
 
+util.getRandomRGBInt = function()
+{
+	return (Math.floor(util.rand(0, 255)) << 24)
+		 | (Math.floor(util.rand(0, 255)) << 16)
+		 | (Math.floor(util.rand(0, 255)) << 8)
+		 | 0xFF;
+};
+
 util.componentToHex = function(c)
 {
 	var hex = c.toString(16);
