@@ -14,6 +14,7 @@
 	<script src="Code/Server/Core/Chat.js" type="server" language="javascript" />
 	<script src="Code/Server/Core/ClientData.js" type="server" language="javascript" />
 	<script src="Code/Server/Core/ClientNetwork.js" type="server" language="javascript" />
+	<script src="Code/Server/Core/GlobalData.js" type="server" language="javascript" />
 	<script src="Code/Server/Core/Models.js" type="server" language="javascript" />
 	<script src="Code/Server/Core/XML.js" type="server" language="javascript" />
 	
@@ -24,6 +25,7 @@
 	<!-- / -->
 	<script src="Code/Server/Accounts.js" type="server" language="javascript" />
 	<script src="Code/Server/Admin.js" type="server" language="javascript" />
+	<script src="Code/Server/Blips.js" type="server" language="javascript" />
 	<script src="Code/Server/CommandAliases.js" type="server" language="javascript" />
 	<script src="Code/Server/CommandAltWords.js" type="server" language="javascript" />
 	<script src="Code/Server/Commands.js" type="server" language="javascript" />

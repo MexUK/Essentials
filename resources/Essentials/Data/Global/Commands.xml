@@ -258,4 +258,5 @@
 	<Command name="setspawnarmour" level="6" />
 	<Command name="addcommandaltword" level="5" />
 	<Command name="removecommandaltword" level="5" />
+	<Command name="playerblips" level="3" />
 </Root>

@@ -135,9 +135,12 @@ xml.attr.getAll = (path, tag, matchAttributes) =>
 	var tagLower = tag.toLowerCase();
 	
 	var matchAttr = {};
-	for(var attrName in matchAttributes)
-		matchAttr[attrName.toLowerCase()] = matchAttributes[attrName].toLowerCase();
-		
+	if(matchAttributes)
+	{
+		for(var attrName in matchAttributes)
+			matchAttr[attrName.toLowerCase()] = matchAttributes[attrName].toLowerCase();
+	}
+
 	for(var i in root.children)
 	{
 		var tag2 = root.children[i];
@@ -150,15 +153,18 @@ xml.attr.getAll = (path, tag, matchAttributes) =>
 		
 		var totalCount = 0;
 		var matchCount = 0;
-		for(var k in matchAttributes)
+		if(matchAttributes)
 		{
-			if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
+			for(var k in matchAttributes)
 			{
-				matchCount++;
+				if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
+				{
+					matchCount++;
+				}
+				totalCount++;
 			}
-			totalCount++;
 		}
-		if(totalCount != matchCount)
+		if(totalCount != matchCount && matchAttributes !== null)
 			continue;
 		
 		var attributesOut = {};
@@ -195,16 +201,19 @@ xml.attr.set = (path, tag, matchAttributes, newAttributes) =>
 			attr[tag2.attributes[i2].name.toLowerCase()] = tag2.attributes[i2].value.toLowerCase();
 		
 		var totalCount = 0;
-		var matchCount = 0;
-		for(var k in matchAttributes)
+		var matchCount = 0
+		if(matchAttributes)
 		{
-			if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
+			for(var k in matchAttributes)
 			{
-				matchCount++;
+				if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
+				{
+					matchCount++;
+				}
+				totalCount++;
 			}
-			totalCount++;
 		}
-		if(totalCount != matchCount)
+		if(totalCount != matchCount && matchAttributes !== null)
 			continue;
 		
 		for(var k in newAttributes)
@@ -231,8 +240,11 @@ xml.attr.set = (path, tag, matchAttributes, newAttributes) =>
 	
 	var element2 = new XmlElement2();
 	element2.name = tag;
-	for(var k in matchAttributes)
-		element2.attributes.push(new XmlAttribute2(k, matchAttributes[k]));
+	if(matchAttributes)
+	{
+		for(var k in matchAttributes)
+			element2.attributes.push(new XmlAttribute2(k, matchAttributes[k]));
+	}
 	for(var k in newAttributes)
 		element2.attributes.push(new XmlAttribute2(k, newAttributes[k]));
 	root2.children.push(element2);
