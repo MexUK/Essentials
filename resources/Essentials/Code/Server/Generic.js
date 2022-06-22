@@ -501,7 +501,7 @@ cmds.health = (client, _target, _health) =>
 		return chat.notSpawned(client, target);
 	
 	if(_health === undefined)
-		return chat.all(target.name + "'s health is " + target.player.health + ".");
+		return chat.all(target.name + "'s health is " + util.round(target.player.health, 3) + ".");
 	
 	var health = util.float(_health, null);
 	if(health === null)
@@ -530,7 +530,7 @@ cmds.armour = (client, _target, _armour) =>
 		return chat.notSpawned(client, target);
 	
 	if(_armour === undefined)
-		return chat.all(target.name + "'s armour is " + target.player.armour + ".");
+		return chat.all(target.name + "'s armour is " + util.round(target.player.armour, 3) + ".");
 	
 	var armour = util.float(_armour, null);
 	if(armour === null)
