@@ -4,6 +4,7 @@ logs/*
 htdocs/*
 Documentation/*
 resources/Essentials/Data/Global/Accounts.xml
+resources/Essentials/Data/Global/AccountData.xml
 resources/Essentials/Data/*/Players.xml
 resources/Essentials/Data/*/PlayerKeyBinds.xml
 resources/Essentials/Data/*/Elements/*.xml
