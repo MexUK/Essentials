@@ -20,7 +20,7 @@ commandAltWords.onInvalidCommand = (client, command, parameters) =>
 	let originalCommand = commandAltWords.getCommandMatch(command);
 	if(originalCommand)
 	{
-		commands.trigger(originalCommand, client, parameters.split(/\s+/));
+		commands.trigger(originalCommand, client, parameters.split(/\s+/g));
 		return;
 	}
 };
