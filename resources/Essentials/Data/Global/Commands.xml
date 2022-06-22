@@ -222,7 +222,8 @@
 	<Command name="ungkey" level="5" />
 	<Command name="unkey" level="0" />
 	<Command name="updateteleport" level="0" />
-	<Command name="userandomskinonspawn" level="0" />
+	<Command name="spawnrandomskin" level="0" />
+	<Command name="setspawnrandomskin" level="1" />
 	<Command name="v" level="5" />
 	<Command name="vehicle" level="5" />
 	<Command name="vehicledimensions" level="0" />

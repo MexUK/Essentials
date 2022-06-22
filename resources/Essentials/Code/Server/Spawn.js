@@ -5,15 +5,29 @@ spawn.spawnsPath = 'Data/' + util.getCurrentShortGameName() + '/Spawns.xml';
 spawn.spawns = [];
 
 // events
-var cb1 = (e,c) => {
+var cb1 = (event, client) => {
 	if(generic.spawnHealth === undefined || generic.spawnArmour === undefined)
 	{
 		setTimeout(cb1, 250);
 		return;
 	}
+
+	spawn.chooseNextSkin(client);
+	spawn.spawnPlayer(client);
+};
+
+spawn.chooseNextSkin = (client) =>
+{
+	let skin = -1;
 	
-	cd.set(c, 'playerModel', util.getRandomPedModel());
-	spawn.spawnPlayer(c);
+	if(gd.get('spawnRandomSkin'))
+		skin = util.getRandomPedModel();
+	else if(cd.get(client, 'lastUsedSkin'))
+		skin = util.int(cd.get(client, 'lastUsedSkin'), -1);
+	if(skin == -1)
+		skin = util.getRandomPedModel();
+	
+	cd.set(client, 'playerModel', skin);
 };
 
 events.bind('onPlayerJoined', cb1);
@@ -59,13 +73,9 @@ events.bind('onPedWasted', (e,p,a,w,pp) => {
 				chat.all(clientAttacker.name+' killed '+clientWhoDied.name+'. ('+weaponName+' in '+pedPieceName+')');
 			}
 		}
+
+		spawn.chooseNextSkin(clientWhoDied);
 	}
-	
-	var useRandomSkinOnRespawn = true;
-	if(useRandomSkinOnRespawn)
-		cd.set(clientWhoDied, 'playerModel', util.getRandomPedModel());
-	else
-		cd.set(clientWhoDied, 'playerModel', p.modelIndex);
 	
 	util.clientTimer(clientWhoDied, function()
 	{
@@ -197,21 +207,20 @@ cmds.savespawn = (client, _spawnId) =>
 	spawn.setSpawnData(spawnId, client.player.position, client.player.heading);
 };
 
-cmds.userandomskinonspawn = (client, _state) =>
+cmds.spawnrandomskin = (client) =>
 {
-	[_state] = util.grabArgs(client,
-	[
-		(v) => util.isBool(v)
-	],
-	[
-	], _state);
-	
+	var state = gd.get('spawnRandomSkin');
+	chat.all('Spawn with random skin is ' + (state ? 'enabled' : 'disabled'));
+};
+
+cmds.setspawnrandomskin = (client, _state) =>
+{
 	var state = util.bool(_state, null);
 	if(state === null)
 		return chat.bool(client, 'Random Skin on Spawn', _state);
 	
-	chat.all(client.name + " " + (state ? "enabled" : "disabled") + " random skin on spawn.");
-	xml.element.add(spawn.getSettingsPath(), 'Settings', {RandomSkinOnSpawn: state}, null);
+	chat.all(client.name + " " + (state ? "enabled" : "disabled") + " spawn with random skin.");
+	gd.set('spawnRandomSkin', state);
 };
 
 

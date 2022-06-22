@@ -210,6 +210,7 @@ cmds.setplayermodel = (client, _target, _newModel) =>
 	
 	chat.all(target.name + " changed "+util.their(client, target)+" player model ID to " + newModel);
 	target.player.modelIndex = newModel;
+	cd.save(target, {lastUsedSkin: newModel});
 };
 
 cmds.vehiclemodel = (client, _target) =>
