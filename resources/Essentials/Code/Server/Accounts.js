@@ -7,8 +7,23 @@ accounts.path = 'Data/Global/Accounts.xml';
 // events
 events.bind('onPlayerJoined', (event, client) =>
 {
-	cd.set(client, 'loggedIn', false);
 	cd.set(client, 'registered', accounts.isNameRegistered(client.name));
+	if(cd.get(client, 'registered') && cd.get(client, 'autoLogin'))
+	{
+		if(client.ip == cd.get(client, 'autoLoginLastIP'))
+		{
+			cd.set(client, 'loggedIn', true);
+			chat.pm(client, "You have automatically logged in.");
+		}
+		else
+		{
+			cd.set(client, 'loggedIn', false);
+		}
+	}
+	else
+	{
+		cd.set(client, 'loggedIn', false);
+	}
 });
 
 // commands
@@ -45,6 +60,12 @@ cmds.login = (client, ...args) =>
 	
 	cd.set(client, 'loggedIn', true);
 	events.trigger('onPlayerLogin', null, client);
+
+	if(cd.get(client, 'autoLogin'))
+	{
+		cd.save(client, {autoLoginLastIP: client.ip});
+	}
+
 	chat.all(client.name + " has logged in.");
 };
 
@@ -67,6 +88,32 @@ cmds.accounts = (client) =>
 	chat.all('There ' + util.isAre(count) + ' ' + count + ' accounts.');
 };
 
+cmds.autologin = (client, _status) =>
+{
+	let currentStatus = cd.get(client, 'autoLogin');
+
+	if(_status === undefined)
+		return chat.all(client.name+" has auto-login by IP turned "+(currentStatus ? 'on' : 'off')+'.');
+	
+	let status = util.bool(_status);
+
+	if(status)
+	{
+		if(currentStatus)
+			return chat.pm(client, "You already have auto-login by IP turned on.");
+
+		chat.all(client.name+" turned on auto-login by IP.");
+		cd.save(client, {autoLogin: true, autoLoginLastIP: client.ip});
+	}
+	else
+	{
+		if(!currentStatus)
+			return chat.pm(client, "You already have auto-login by IP turned off.");
+
+		chat.all(client.name+" turned off auto-login by IP.");
+		cd.save(client, {autoLogin: false});
+	}
+};
 
 
 
