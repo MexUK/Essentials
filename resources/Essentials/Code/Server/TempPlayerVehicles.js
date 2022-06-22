@@ -46,8 +46,8 @@ cmds.tempvehicle = (client, _model) =>
 	
 	client.player.warpIntoVehicle(vehicle, 0);
 	
-	cd.array.set(client, global.tempPlayerVehicles.clientElementsKey, vehicle);
-	cd.set(client, global.tempPlayerVehicles.clientVehicleKey, vehicle);
+	cd.array.set(client, tempPlayerVehicles.clientElementsKey, vehicle);
+	cd.set(client, tempPlayerVehicles.clientVehicleKey, vehicle);
 };
 
 // api
@@ -57,14 +57,14 @@ tempPlayerVehicles.removeVehicle = (client) =>
 	if(!vehicle)
 		return;
 	
-	cd.unset(client, global.tempPlayerVehicles.clientVehicleKey);
-	cd.array.unset(client, global.tempPlayerVehicles.clientElementsKey, vehicle);
+	cd.unset(client, tempPlayerVehicles.clientVehicleKey);
+	cd.array.unset(client, tempPlayerVehicles.clientElementsKey, vehicle);
 	destroyElement(vehicle);
 };
 
 tempPlayerVehicles.getVehicle = (client) =>
 {
-	return cd.get(client, global.tempPlayerVehicles.clientVehicleKey);
+	return cd.get(client, tempPlayerVehicles.clientVehicleKey);
 };
 
 tempPlayerVehicles.hasVehicle = (client) =>
