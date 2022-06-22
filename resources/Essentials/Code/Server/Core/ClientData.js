@@ -4,6 +4,9 @@ cd.clients = {};
 cd.array = {};
 cd.map = {};
 
+cd.path = 'Data/Global/AccountData.xml';
+cd.rootTag = 'Player';
+
 
 
 
@@ -11,6 +14,7 @@ cd.map = {};
 var addPlayerCB = (event, client) =>
 {
 	cd.clients[client.index] = {};
+	cd.load(client);
 };
 
 events.bind('onPlayerJoined', addPlayerCB);
@@ -34,6 +38,12 @@ cd.set = (client, name, value) =>
 	cd.clients[client.index][name] = value;
 };
 
+cd.setAll = (client, values) =>
+{
+	for(var name in values)
+		cd.clients[client.index][name] = values[name];
+};
+
 cd.unset = (client, name) =>
 {
 	delete cd.clients[client.index][name];
@@ -47,6 +57,19 @@ cd.get = (client, name) =>
 cd.has = (client, name) =>
 {
 	return cd.clients[client.index][name] !== undefined;
+};
+
+// string + disk
+cd.save = (client, saveData) =>
+{
+	for(var k in saveData)
+		cd.clients[client.index][k] = saveData[k];
+	xml.attr.set(cd.path, cd.rootTag, { name: client.name.toLowerCase() }, saveData);
+};
+
+cd.load = (client) =>
+{
+	cd.setAll(client, xml.attr.getAll(cd.path, cd.rootTag, { name: client.name.toLowerCase() }));
 };
 
 // array

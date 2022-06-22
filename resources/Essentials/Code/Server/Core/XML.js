@@ -126,6 +126,54 @@ xml.attr.get = (path, tag, matchAttributes, attributeNameFetch, defaultValue) =>
 	return defaultValue;
 };
 
+xml.attr.getAll = (path, tag, matchAttributes) =>
+{
+	var root = xml.root(path);
+	if(!root)
+		return {};
+	
+	var tagLower = tag.toLowerCase();
+	
+	var matchAttr = {};
+	for(var attrName in matchAttributes)
+		matchAttr[attrName.toLowerCase()] = matchAttributes[attrName].toLowerCase();
+		
+	for(var i in root.children)
+	{
+		var tag2 = root.children[i];
+		if (tag2.name.toLowerCase() != tagLower)
+			continue;
+		
+		var attr = {};
+		for(var attrName in tag2.attributes)
+			attr[attrName.toLowerCase()] = tag2.attributes[attrName].toLowerCase();
+		
+		var totalCount = 0;
+		var matchCount = 0;
+		for(var k in matchAttributes)
+		{
+			if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())
+			{
+				matchCount++;
+			}
+			totalCount++;
+		}
+		if(totalCount != matchCount)
+			continue;
+		
+		var attributesOut = {};
+		for(var attributeName2 in tag2.attributes)
+		{
+			let attributeValue2 = tag2.attributes[attributeName2];
+			attributesOut[attributeName2] = attributeValue2;
+		}
+		
+		return attributesOut;
+	}
+	
+	return {};
+};
+
 xml.attr.set = (path, tag, matchAttributes, newAttributes) =>
 {
 	var doc2 = xml.doc2(path);
@@ -159,12 +207,12 @@ xml.attr.set = (path, tag, matchAttributes, newAttributes) =>
 		if(totalCount != matchCount)
 			continue;
 		
-		for(var i2 in tag2.attributes)
+		for(var k in newAttributes)
 		{
-			var nameLower = tag2.attributes[i2].name.toLowerCase();
-			if(newAttributes[nameLower] !== undefined)
+			let nameLower = k.toLowerCase();
+			if(attr[nameLower])
 			{
-				tag2.attributes[i2].value = newAttributes[nameLower].toString();
+				tag2.attributes[i2].value = newAttributes[k].toString();
 				attributesSet[nameLower] = true;
 			}
 		}
