@@ -813,3 +813,5 @@ util.drawColTriangles = function(object, colour)
 	}
 };
 
+util.exportAll = () => {};
+
