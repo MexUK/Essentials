@@ -261,4 +261,5 @@
 	<Command name="wep" level="0" />
 	<Command name="gun" level="0" />
 	<Command name="w" level="0" />
+	<Command name="saveteleport" level="1" />
 </Root>

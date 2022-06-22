@@ -5,7 +5,7 @@ teleports.path = 'Data/' + util.getCurrentShortGameName() + '/Teleports.xml';
 teleports.teleports = [];
 
 // commands
-cmds.teleport = (client, _teleportName) =>
+cmds.addteleport = (client, _teleportName) =>
 {
 	if(_teleportName === undefined)
 		return chat.pm(client, "You didn't type a teleport name.");
@@ -46,7 +46,7 @@ cmds.teleports = (client) =>
 		chat.all('Teleport (' + teleports2.length + '): /' + teleports2.join(' /'));
 };
 
-cmds.gototeleport = (client, _teleportName) =>
+cmds.teleport = (client, _teleportName) =>
 {
 	if(!client.player)
 		return chat.notSpawned(client);
@@ -62,7 +62,7 @@ cmds.gototeleport = (client, _teleportName) =>
 	teleports.gotoTeleport(client, teleportName);
 };
 
-cmds.updateteleport = (client, _teleportName) =>
+cmds.saveteleport = (client, _teleportName) =>
 {
 	if(_teleportName === undefined)
 		return chat.pm(client, "You didn't type a teleport name.");
