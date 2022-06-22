@@ -223,7 +223,7 @@ util.turnZ = function(physical, speed)
 // math
 util.getDistanceAboveGround = function(element)
 {
-	return element.position.z - gta.findGroundZForCoord(element.position.x, element.position.y);
+	return element.position.z - gta.findGroundZCoordinate(new Vec2(element.position.x, element.position.y));
 };
 
 // network
@@ -323,7 +323,7 @@ util.getGroundZ = function(x, y, entities)
 	}
 	*/
 	
-	var groundZ = gta.findGroundZForCoord(x, y);
+	var groundZ = gta.findGroundZCoordinate(new Vec2(x, y));
 	
 	/*
 	if(isSpawned)
