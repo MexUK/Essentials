@@ -10,12 +10,15 @@ events.bind('onPedExitVehicle', (event, ped, vehicle, seat) =>
 	{
 		var client = getClientFromPlayerElement(ped);
 		
-		if(!tempPlayerVehicles.hasVehicle(client))
-			return;
-		
-		if(tempPlayerVehicles.getVehicle(client) == vehicle)
+		if(client)
 		{
-			tempPlayerVehicles.removeVehicle(client);
+			if(!tempPlayerVehicles.hasVehicle(client))
+				return;
+			
+			if(tempPlayerVehicles.getVehicle(client) == vehicle)
+			{
+				tempPlayerVehicles.removeVehicle(client);
+			}
 		}
 	}
 });
