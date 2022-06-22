@@ -60,3 +60,8 @@ events.trigger = (eventName, eventObject, ...args) =>
 		entries[i][0].apply(null, args);
 	}
 };
+
+{
+	util.exportAll('events', events);
+}
+

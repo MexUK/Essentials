@@ -942,6 +942,18 @@ util.isStringValue = (value) =>
 		&& (typeof value) == 'string';
 };
 
+util.isFunctionValue = (value) =>
+{
+	return value !== undefined
+		&& (typeof value) == 'function';
+};
+
+util.isArrayValue = (value) =>
+{
+	return value !== undefined
+		&& Array.isArray(value);
+};
+
 util.isVec2Value = (value) =>
 {
 	return value !== undefined
@@ -1312,4 +1324,28 @@ util.objectsToArray = (objects, properties) =>
 util.isElementId = (elementId) =>
 {
 	return getElementFromId(elementId) != null;
+};
+
+// exports
+util.exportAll = (name1, obj) =>
+{
+	for(var k in obj)
+	{
+		if(util.isFunctionValue(obj[k]))
+		{
+			exportFunction(name1+'_'+k, obj[k]);
+		}
+		else if(!util.isArrayValue(obj[k])
+			 && !util.isStringValue(obj[k]))
+		{
+			for (var k2 in obj[k])
+			{
+				if (Object.prototype.hasOwnProperty.call(obj[k], k2))
+				{
+					util.exportAll(name1+'_'+k, obj[k]);
+					break;
+				}
+			}
+		}
+	}
 };

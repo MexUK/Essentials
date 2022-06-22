@@ -109,3 +109,6 @@ chat.bool = function(client, boolName, inputText)
 	chat.pm(client, chat.messages.PM_BOOL, boolName, inputText);
 };
 
+{
+	util.exportAll('chat', chat);
+}

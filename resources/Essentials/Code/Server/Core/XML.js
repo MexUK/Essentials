@@ -524,3 +524,6 @@ global.XmlAttribute2 = function(name, value)
 	this.value = value;
 };
 
+{
+	util.exportAll('xml', xml);
+}

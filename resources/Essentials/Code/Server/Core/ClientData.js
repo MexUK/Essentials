@@ -118,3 +118,7 @@ cd.clear = (client) =>
 	cd.clients[client.index].elements.forEach(element => destroyElement(element));
 	delete cd.clients[client.index];
 };
+
+{
+	util.exportAll('cd', cd);
+}

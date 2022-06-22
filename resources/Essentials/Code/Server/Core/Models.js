@@ -1032,3 +1032,6 @@ util.getRandomWeapon = function()
 	}
 };
 
+{
+	util.exportAll('util', util);
+}
