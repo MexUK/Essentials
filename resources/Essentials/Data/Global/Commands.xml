@@ -265,4 +265,6 @@
 	<Command name="saveteleport" level="1" />
 	<Command name="sethealth" level="1" />
 	<Command name="setarmour" level="1" />
+	<Command name="setfalloffbike" level="1" />
+	<Command name="setbleeding" level="1" />
 </Root>
