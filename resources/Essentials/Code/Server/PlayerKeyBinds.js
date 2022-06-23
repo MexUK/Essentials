@@ -10,7 +10,7 @@ events.bind('onPlayerLogin', (event, client) =>
 	{
 		if(nameLower == v.name.toLowerCase())
 		{
-			playerKeyBinds.createKeyBind(client, v.key, v.command, v.args.length == 0 ? '' : v.args.split(' '));
+			playerKeyBinds.createKeyBind(client, v.key, v.command, v.args.length == 0 ? [] : v.args.split(' '));
 		}
 	});
 });
@@ -126,7 +126,7 @@ playerKeyBinds.bindKey = (client, key, cmd, args) =>
 		key:		key
 	}, {
 		command:	cmd,
-		args:		(args.length == 0 ? '' : args.join(' '))
+		args:		(args.length == 0 ? [] : args.join(' '))
 	});
 };
 
@@ -159,5 +159,5 @@ playerKeyBinds.getBoundCommand = (client, key) =>
 playerKeyBinds.triggerCommand = (client, key) =>
 {
 	var [command, args] = playerKeyBinds.getBoundCommand(client, key);
-	commands.onCommand(command, args, client);
+	commands.onCommand(command, args.join(' '), client);
 };

@@ -26,7 +26,7 @@ globalKeyBinds.onClientKeyDown = (client, keyCode) =>
 	}
 
 	var [command, args] = globalKeyBinds.getBoundCommand(key);
-	commands.onCommand(command, args, client);
+	commands.onCommand(command, args.join(' '), client);
 };
 
 // commands
@@ -103,7 +103,7 @@ globalKeyBinds.bindKey = (key, cmd, args) =>
 		key:		key
 	}, {
 		command:	cmd,
-		args:		(args.length == 0 ? '' : args.join(' '))
+		args:		(args.length == 0 ? [] : args.join(' '))
 	});
 };
 
@@ -137,6 +137,6 @@ globalKeyBinds.getBoundCommand = (key) =>
 
 xml.load(globalKeyBinds.path, 'Key', (v) =>
 {
-	globalKeyBinds.createKeyBind(v.key, v.command, v.args.length == 0 ? '' : v.args.split(' '));
+	globalKeyBinds.createKeyBind(v.key, v.command, v.args.length == 0 ? [] : v.args.split(' '));
 });
 

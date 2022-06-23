@@ -13,6 +13,7 @@ events.bind('onPlayerJoined', (event, client) =>
 		if(client.ip == cd.get(client, 'autoLoginLastIP'))
 		{
 			cd.set(client, 'loggedIn', true);
+			events.trigger('onPlayerLogin', null, client);
 			chat.pm(client, "You have automatically logged in.");
 		}
 		else
