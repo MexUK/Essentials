@@ -888,7 +888,12 @@ cmds.setvehiclehealth = (client, _target, _health) =>
 	util.setClientVariable(target, 'localPlayer.vehicle.health', health);
 };
 
-cmds.snow = (client, _state) =>
+cmds.snow = (client) =>
+{
+	chat.all('The weather is currently ' + (generic.snowing ? '' : 'not ') + 'snowing.');
+};
+
+cmds.setsnow = (client, _state) =>
 {
 	[_state] = util.grabArgs(client,
 	[
@@ -898,7 +903,7 @@ cmds.snow = (client, _state) =>
 	], _state);
 	
 	if(_state === undefined)
-		return chat.all('The weather is currently ' + (generic.snowing ? '' : 'not ') + 'snowing.');
+		return chat.pm(client, "You didn't type a new snow state.");
 	
 	var state = util.bool(_state, null);
 	if(state === null)
