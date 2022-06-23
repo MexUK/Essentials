@@ -913,7 +913,30 @@ cmds.setsnow = (client, _state) =>
 	generic.setSnowing(state);
 };
 
-cmds.speed = (client, _target, _speed) =>
+cmds.speed = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	let vehicle = target.player.vehicle;
+	let inVehicle = vehicle != null;
+
+	util.requestClientProperty(target, inVehicle ? 'localPlayer.vehicle.velocity' : 'localPlayer.velocity', (velocity) => chat.all(target.name + "'s " + (target.player.vehicle ? "vehicle " : "") + "speed is " + (util.velocityToSpeed(velocity)) + "."));
+};
+
+cmds.setspeed = (client, _target, _speed) =>
 {
 	[_target, _speed] = util.grabArgs(client,
 	[
@@ -935,7 +958,7 @@ cmds.speed = (client, _target, _speed) =>
 	let inVehicle = vehicle != null;
 
 	if(_speed === undefined)
-		return util.requestClientProperty(target, inVehicle ? 'localPlayer.vehicle.velocity' : 'localPlayer.velocity', (velocity) => chat.all(target.name + "'s " + (target.player.vehicle ? "vehicle " : "") + "speed is " + (util.velocityToSpeed(velocity)) + "."));
+		return chat.pm(client, "You didn't type a new speed.");
 	
 	var speed = util.float(_speed, null);
 	if(speed === null)
