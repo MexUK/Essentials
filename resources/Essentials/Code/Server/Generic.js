@@ -784,7 +784,27 @@ cmds.uncrouch = (client, _target) =>
 	util.setClientVariable(client, 'localPlayer.crouching', false);
 };
 
-cmds.mass = (client, _target, _mass) =>
+cmds.mass = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	util.requestClientProperty(target, 'localPlayer.mass', (mass) => chat.all(target.name + "'s mass is " + mass + "."));
+};
+
+cmds.setmass = (client, _target, _mass) =>
 {
 	[_target, _mass] = util.grabArgs(client,
 	[
