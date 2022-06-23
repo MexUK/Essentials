@@ -271,4 +271,5 @@
 	<Command name="setmass" level="1" />
 	<Command name="setvehiclehealth" level="1" />
 	<Command name="setsnow" level="1" />
+	<Command name="admincommands" level="1" />
 </Root>
