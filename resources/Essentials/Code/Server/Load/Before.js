@@ -1,3 +1,6 @@
+global.ESSENTIALS_VERSION = 2.0;
+global.ESSENTIALS_VERSION_STRING = '2.0';
+
 global.cmds = {};
 
 /*

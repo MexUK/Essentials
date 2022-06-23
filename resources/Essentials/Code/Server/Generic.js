@@ -70,6 +70,16 @@ cmds.commands = (client, searchOrIndex) =>
 	}
 };
 
+cmds.info = (client) =>
+{
+	chat.all('Resource Info: Essentials '+ESSENTIALS_VERSION_STRING+', by Mex.');
+};
+
+cmds.version = (client) =>
+{
+	chat.all('Game Version: '+client.gameVersion+'. Essentials Version: '+ESSENTIALS_VERSION_STRING+'.');
+};
+
 cmds.position = (client, _target, _dp) =>
 {
 	var defaultDp = 5;
