@@ -729,7 +729,7 @@ cmds.setfalloffbike = (client, _target, _state) =>
 	util.setClientVariable(target, 'localPlayer.canBeKnockedOffBike', state);
 };
 
-cmds.crouch = (client, _target, _state) =>
+cmds.setcrouched = (client, _target, _state) =>
 {
 	[_target, _state] = util.grabArgs(client,
 	[
@@ -748,7 +748,7 @@ cmds.crouch = (client, _target, _state) =>
 		return chat.notSpawned(client, target);
 	
 	if(_state === undefined)
-		return util.requestClientProperty(target, 'localPlayer.crouched', (state) => chat.all(target.name + "'s crouch status is " + (state ? "crouched" : "not crouched") + "."));
+		return chat.pm(client, "You didn't type a new crouched status.");
 	
 	var state = util.bool(_state, null);
 	if(state === null)
@@ -756,6 +756,32 @@ cmds.crouch = (client, _target, _state) =>
 	
 	chat.all(client.name + " set " + target.name + "'s crouch status to " + (state ? "crouched" : "not crouched") + ".");
 	util.setClientVariable(target, 'localPlayer.crouching', state);
+};
+
+cmds.crouched = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+
+	util.requestClientProperty(client, 'localPlayer.crouching', (state) => chat.all(client.name + " is " + (state ? "crouched" : "not crouched") + "."));
+};
+
+cmds.crouch = (client) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	chat.all(client.name + " crouched.");
+	util.setClientVariable(client, 'localPlayer.crouching', true);
+};
+
+cmds.uncrouch = (client, _target) =>
+{
+	if(!client.player)
+		return chat.notSpawned(client, client);
+	
+	chat.all(client.name + " uncrouched.");
+	util.setClientVariable(client, 'localPlayer.crouching', false);
 };
 
 cmds.mass = (client, _target, _mass) =>
