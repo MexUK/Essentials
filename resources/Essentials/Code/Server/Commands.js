@@ -25,7 +25,7 @@ commands.onInvalidCommand = (client, command, parameters) =>
 {
 	if(!accounts.isClientAuthorized(client))
 	{
-		chat.pm(client, "Command /"	+ command + " doesn't exist. Please login to use commands, because username " + client.name + " is registered.");
+		chat.pm(client, "Please login to use commands, because username " + client.name + " is registered.");
 	}
 	else if(commands.invalidCommandMessageEnabled)
 	{
