@@ -833,7 +833,30 @@ cmds.setmass = (client, _target, _mass) =>
 	util.setClientVariable(target, 'localPlayer.mass', mass);
 };
 
-cmds.vehiclehealth = (client, _target, _health) =>
+cmds.vehiclehealth = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	if(!target.player.vehicle)
+		return chat.notInVehicle(client, target);
+	
+	util.requestClientProperty(target, 'localPlayer.vehicle.health', (health) => chat.all(target.name + "'s vehicle health is " + health + "."));
+};
+
+cmds.setvehiclehealth = (client, _target, _health) =>
 {
 	[_target, _health] = util.grabArgs(client,
 	[
