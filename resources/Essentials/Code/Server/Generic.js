@@ -483,7 +483,27 @@ cmds.id = (client, _target, _id) =>
 	chat.all(target.name + "'s IDs. " + parts.join(' '));
 };
 
-cmds.health = (client, _target, _health) =>
+cmds.health = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	chat.all(target.name + "'s health is " + util.round(target.player.health, 3) + ".");
+};
+
+cmds.sethealth = (client, _target, _health) =>
 {
 	[_target, _health] = util.grabArgs(client,
 	[
@@ -502,7 +522,7 @@ cmds.health = (client, _target, _health) =>
 		return chat.notSpawned(client, target);
 	
 	if(_health === undefined)
-		return chat.all(target.name + "'s health is " + util.round(target.player.health, 3) + ".");
+		return chat.pm(client, "You didn't type a new health amount.");
 	
 	var health = util.float(_health, null);
 	if(health === null)
@@ -512,7 +532,27 @@ cmds.health = (client, _target, _health) =>
 	util.callClientFunction(target, 'generic.setLocalPlayerHealth', health);
 };
 
-cmds.armour = (client, _target, _armour) =>
+cmds.armour = (client, _target) =>
+{
+	[_target] = util.grabArgs(client,
+	[
+		(v) => util.isClient(v)
+	],
+	[
+		client.name
+	], _target);
+	
+	var target = util.findClient(_target, client);
+	if(!target)
+		return chat.invalidClient(client, _target);
+	
+	if(!target.player)
+		return chat.notSpawned(client, target);
+	
+	chat.all(target.name + "'s armour is " + util.round(target.player.armour, 3) + ".");
+};
+
+cmds.setarmour = (client, _target, _armour) =>
 {
 	[_target, _armour] = util.grabArgs(client,
 	[
@@ -531,7 +571,7 @@ cmds.armour = (client, _target, _armour) =>
 		return chat.notSpawned(client, target);
 	
 	if(_armour === undefined)
-		return chat.all(target.name + "'s armour is " + util.round(target.player.armour, 3) + ".");
+		return chat.pm(client, "You didn't type a new armour amount.");
 	
 	var armour = util.float(_armour, null);
 	if(armour === null)

@@ -62,7 +62,7 @@
 	<Command name="flip" level="0" />
 	<Command name="game" level="0" />
 	<Command name="gameversion" level="0" />
-	<Command name="get" level="0" />
+	<Command name="get" level="1" />
 	<Command name="gkey" level="5" />
 	<Command name="gkeys" level="0" />
 	<Command name="goto" level="0" />
@@ -263,4 +263,6 @@
 	<Command name="gun" level="0" />
 	<Command name="w" level="0" />
 	<Command name="saveteleport" level="1" />
+	<Command name="sethealth" level="1" />
+	<Command name="setarmour" level="1" />
 </Root>
