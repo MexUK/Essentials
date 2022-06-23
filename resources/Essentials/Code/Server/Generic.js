@@ -70,6 +70,61 @@ cmds.commands = (client, searchOrIndex) =>
 	}
 };
 
+cmds.admincommands = (client, searchOrIndex) =>
+{
+	let clientLevel = admin.getClientLevel(client);
+	let level = clientLevel;
+	
+	if(util.isInt(searchOrIndex))
+	{
+		level = util.int(searchOrIndex);
+	}
+
+	if(level > clientLevel)
+		level = clientLevel;
+
+	var cmds2 = [];
+	var aliasCmdCount = 0;
+	for(var cmd in cmds)
+	{
+		let cmdLevel = commands.getLevel(cmd);
+		if(cmdLevel > 0 && level == cmdLevel)
+		{
+			if(commandAliases.isCommandAnAlias(cmd))
+				aliasCmdCount++;
+			cmds2.push(cmd);
+		}
+	}
+	
+	cmds2.sort();
+	
+	if(searchOrIndex === undefined)
+	{
+		return chat.pm(client, "You didn't type an admin level.");
+	}
+	else if(!util.isInt(searchOrIndex))
+	{
+		return chat.pm(client, "The admin level you typed was invalid.");
+	}
+	else
+	{
+		if(level == 0)
+		{
+			return chat.pm(client, "The admin level cannot be zero.");
+		}
+		else if(cmds2.length == 0)
+		{
+			var chatLine = 'There aren\'t any commands for level '+level+'.';
+			chat.all(chatLine);
+		}
+		else
+		{
+			var chatLine = 'Commands for level '+level+': /'+cmds2.join(' /');
+			chat.all(chatLine);
+		}
+	}
+};
+
 cmds.info = (client) =>
 {
 	chat.all('Resource Info: Essentials '+ESSENTIALS_VERSION_STRING+', by Mex.');
