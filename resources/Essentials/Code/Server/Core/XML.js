@@ -262,7 +262,7 @@ xml.attr.remove = (path, tag, matchAttributes, removeAttributes) =>
 	
 	var tagLower = tag.toLowerCase();
 
-	if(!util.isArray(removeAttributes))
+	if(!util.isArrayValue(removeAttributes))
 		removeAttributes = [removeAttributes];
 
 	let removeAttributesKeyed = util.arrayToKeysLower(removeAttributes);
@@ -278,6 +278,7 @@ xml.attr.remove = (path, tag, matchAttributes, removeAttributes) =>
 			attr[tag2.attributes[i2].name.toLowerCase()] = tag2.attributes[i2].value.toLowerCase();
 			
 		var totalCount = 0;
+		var matchCount = 0;
 		for(var k in matchAttributes)
 		{
 			if(attr[k.toLowerCase()] == (matchAttributes[k] + '').toLowerCase())

@@ -160,7 +160,7 @@ commandAliases.removeCommandAlias = (cloneName) =>
 	}
 	xml.value.remove(commandAliases.path, 'Command', 'clone', cloneName);
 	
-	if(admin)
+	if(global.admin)
 	{
 		commands.removeLevel(cloneName);
 	}

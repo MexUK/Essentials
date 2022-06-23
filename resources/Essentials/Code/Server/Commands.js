@@ -229,21 +229,7 @@ cmds.dumpcommandstxt = (client) =>
 // bind/unbind
 commands.bind = (cmd2, callback) =>
 {
-	addCommandHandler(cmd2, (cmd,arg,client) =>
-	{
-		if(cd.get(client, 'registered') && !cd.get(client, 'loggedIn') && cmd.toLowerCase() != 'login')
-			return chat.pm(client, "You aren't logged in.");
-		
-		if(commands.isDisabled(cmd))
-			return chat.pm(client, 'Command /' + cmd + ' is disabled.');
-		
-		if(admin.getClientLevel(client) < commands.getLevel(cmd))
-			return chat.pm(client, 'Command /' + cmd + ' requires admin level ' + commands.getLevel(cmd) + '.');
-		
-		var args = util.cleanSplit(arg);
-		args.unshift(client);
-		callback.apply(null, args);
-	});
+	addCommandHandler(cmd2, (cmd,arg,client) => commands.onCommand(cmd,arg,client,callback));
 };
 
 commands.unbind = (cmd) =>
@@ -262,21 +248,38 @@ commands.create = (commandName, level, disabled) =>
 	commands.commands.set(commandName.toLowerCase(), command);
 };
 
+// callback
+commands.onCommand = (cmd, arg, client, callback) =>
+{
+	if(cd.get(client, 'registered') && !cd.get(client, 'loggedIn') && cmd.toLowerCase() != 'login')
+		return chat.pm(client, "You aren't logged in.");
+	
+	if(commands.isDisabled(cmd))
+		return chat.pm(client, 'Command /' + cmd + ' is disabled.');
+	
+	if(admin.getClientLevel(client) < commands.getLevel(cmd))
+		return chat.pm(client, 'Command /' + cmd + ' requires admin level ' + commands.getLevel(cmd) + '.');
+	
+	var args = util.cleanSplit(arg);
+	args.unshift(client);
+	
+	if(!callback)
+		callback = cmds[cmd.toLowerCase()];
+	
+	callback.apply(null, args);
+};
+
 // trigger
 commands.trigger = (commandName, client, parameters) =>
 {
-	let parameters2 = [];
-	for(var i in parameters)
-		parameters2[i] = parameters[i];
-	parameters2.unshift(client);
-	cmds[commandName].apply(null, parameters2);
+	commands.onCommand(commandName, parameters.join(' '), client);
 };
 
 // look-up
 commands.find = (text) =>
 {
 	text = commands.getName(text);
-	return cmds[text] === undefined ? null : cmds[text];
+	return cmds[text.toLowerCase()] === undefined ? null : cmds[text];
 };
 
 commands.exists = (text) =>

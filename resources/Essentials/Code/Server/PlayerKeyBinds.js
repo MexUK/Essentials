@@ -159,5 +159,5 @@ playerKeyBinds.getBoundCommand = (client, key) =>
 playerKeyBinds.triggerCommand = (client, key) =>
 {
 	var [command, args] = playerKeyBinds.getBoundCommand(client, key);
-	cmds[command.toLowerCase()](client, ...args);
+	commands.onCommand(command, args, client);
 };

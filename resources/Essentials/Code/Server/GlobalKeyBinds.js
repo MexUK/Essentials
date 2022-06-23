@@ -26,7 +26,7 @@ globalKeyBinds.onClientKeyDown = (client, keyCode) =>
 	}
 
 	var [command, args] = globalKeyBinds.getBoundCommand(key);
-	cmds[command.toLowerCase()](client, ...args);
+	commands.onCommand(command, args, client);
 };
 
 // commands
