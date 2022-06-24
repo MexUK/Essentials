@@ -747,13 +747,13 @@ cmds.setbleeding = (client, _target, _state) =>
 
 cmds.falloffbike = (client, _target) =>
 {
-	[_target, _state] = util.grabArgs(client,
+	[_target] = util.grabArgs(client,
 	[
 		(v) => util.isClient(v)
 	],
 	[
 		client.name
-	], _target, _state);
+	], _target);
 	
 	var target = util.findClient(_target, client);
 	if(!target)
@@ -790,7 +790,7 @@ cmds.setfalloffbike = (client, _target, _state) =>
 	if(state === null)
 		return chat.bool(client, 'Fall Off Bike', _state);
 	
-	chat.all(client.name + " set " + target.name + "'s fall off bike status to " + (state ? "on" : "off ") + ".");
+	chat.all(client.name + " set " + target.name + "'s fall off bike status to " + (state ? "on" : "off") + ".");
 	util.setClientVariable(target, 'localPlayer.canBeKnockedOffBike', state);
 };
 
