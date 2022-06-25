@@ -673,8 +673,8 @@ util.getColMinMax = function(object)
 
 util.getColSize = function(object)
 {
-	//var bbmm = util.getColMinMax(object);
-	var bbmm = util.getColMinMaxForObject(object);
+	var bbmm = util.getColMinMax(object);
+	//var bbmm = util.getColMinMaxForObject(object);
 	return new Vec3(bbmm[1].x - bbmm[0].x, bbmm[1].y - bbmm[0].y, bbmm[1].z - bbmm[0].z);
 };
 

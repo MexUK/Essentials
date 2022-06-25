@@ -519,7 +519,7 @@ mapper.addNextObject = function()
 	//var newObjectPosition = mapper.object.position.addPolar(1.0, mapper.objectToCameraZRotation + util.radians(180.0));
 	//var bbw = mapper.object.boundingMax.x - mapper.object.boundingMin.x;
 	//var bbd = mapper.object.boundingMax.y - mapper.object.boundingMin.y;
-	var bb = util.getColSize();
+	var bb = util.getColSize(mapper.object);
 	var bbw = bb.x;
 	var bbd = bb.y;
 	var usew = true;
@@ -844,7 +844,7 @@ mapper.rotateObjectXY = function()
 		radius = util.radians(1.0);
 	
 	var rot = mapper.object.getRotation();
-	var bb = util.getColSize();
+	var bb = util.getColSize(mapper.object);
 	var index = up ? 0 : (down ? 1 : (left ? 2 : (right ? 3 : 4)));
 	var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[index]);
@@ -978,7 +978,7 @@ mapper.getFilledObjectsData = function(object1, object2)
 	var rot1 = object1.getRotation();
 	var rot2 = object2.getRotation();
 	
-	var bb = util.getColSize();
+	var bb = util.getColSize(object1);
 	var steps = posDiff.length / bb.length;
 	
 	steps = Math.ceil(steps);
@@ -1131,7 +1131,7 @@ mapper.setObjectPositionRotationByJoinIndex = function(joinIndex)
 	rot.y += mapper.objectRotationStep.y;
 	rot.z += mapper.objectRotationStep.z;
 	
-	var bb = util.getColSize();
+	var bb = util.getColSize(mapper.object);
 	var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[joinIndex]);
 	var zrotdeg = util.degrees(rot.z - camToObZRot) % 360.0;
@@ -1185,7 +1185,7 @@ mapper.joinToLastObject = function()
 	var lastRot = lastObject.getRotation();
 	var newObjectRotation = mapper.object.getRotation();
 	
-	var bb = util.getColSize();
+	var bb = util.getColSize(lastObject);
 	var halfbb = new Vec3(bb.x/2.0, bb.y/2.0, bb.z/2.0);
 	var anglesDeg = [180.0, 0.0, 270.0, 90.0];
 	var camToObZRot = mapper.objectToCameraZRotation + util.radians(anglesDeg[index]);
